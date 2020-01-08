@@ -1,0 +1,6 @@
+while not done:
+	if zero coins in bag, then check the discard area.
+		if discard has no coins, stop.
+		else place the discarded coins in the bag and shuffle.
+	else take the top coin from the bag
+	add the coin to the player's hand

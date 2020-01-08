@@ -1,0 +1,49 @@
+init:
+	resources:
+		board
+		control markers
+		unit cards
+		unit coins
+		royal coins
+		initiative marker
+		bags
+		hand area
+		supply area	
+		discard area
+		destroyed unit area
+		players
+	shuffle unit cards 
+	deal 4 to each player
+	place 2 coins of each type and royal coin into the bag
+	place remaining coins in supply next to unit cards.
+	determine the start player
+loop:
+	update:
+		draw coin
+		use coin:
+			placement action
+			facedown action
+			faceup action (maneuvers)
+		check win
+	render:
+		draw spaces
+			board
+			discard
+			supply
+			hand
+			bag
+
+placement actions:
+	1. deploy
+	2. bloster
+
+facedown actions:
+	1. claim initiative
+	2. recruit
+	3. pass
+
+faceup actions:
+	1. move matching unit
+	2. control matching unit
+	3. attack with matching unit
+	4. tactics	
