@@ -1,3 +1,6 @@
+/* TODO: Functions to handle reading bitmaps and plaing them into structures
+ * TODO: Layers data structure for drawing
+ */
 #define _POSIX_C_SOURCE 200809L
 
 #include <stdio.h>
