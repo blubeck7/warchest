@@ -1,3 +1,4 @@
+// #TODO: Turn into generic graphics interface for client code
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
@@ -20,6 +21,23 @@ typedef struct pix {
 	int trans;
 } Pix;
 
+typedef struct pos {
+	int x;
+	int y;
+} Pos;
+
+typedef struct win {
+	Pos pos;
+	char *title;
+} Win;
+
+int init_win(Win *win);
+int print_win(Win *win);
+int get_win_pos(Win *win);
+int set_win_pos(Win *win, int x, int y);
+int get_win_title(Win *win);
+int set_win_title(Win *win);
+
 int init_scr(void);
 int exit_scr(void);
 int clr_scr(void);
@@ -32,6 +50,10 @@ int hide_cur(void);
 int show_cur(void);
 int load_bm(char *path, Bm *bm);
 int draw_bm(Bm *bm);
+int set_win_sz(int cols, int rows);
+int get_win_font(int *font);
+int set_win_font(int font);
+int get_win_sz(int *cols, int *rows);
 
 
 #endif //GRAPHICS_H

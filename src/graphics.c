@@ -1,12 +1,14 @@
 /* TODO: Functions to handle reading bitmaps and plaing them into structures
  * TODO: Layers data structure for drawing
  * TODO: Logical grid/screen to actual rows and columns and pixels
+ * TODO: Change file to be just xterm primitives
  */
 #define _POSIX_C_SOURCE 200809L
 
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
 #include "../inc/graphics.h"
@@ -20,8 +22,103 @@
 #define SHOW_CUR "\x1b[?25h"
 #define COLOR "\x1b[48;5;%dm \x1b[0m"
 #define RGB "\x1b[48;2;%d;%d;%dm \x1b[0m"
+#define SET_WIN_TITLE "\x1b]0;%s\x07"
 
 Scr scr;
+
+int init_win(Win *win)
+{
+	win->pos.x = 0;
+	win->pos.y = 0;
+	win->title = NULL;
+
+	return 0;
+};
+
+int print_win(Win *win)
+{
+	printf("Window Properties\n");
+	printf("pos=%d, %d\n", win->pos.x, win->pos.y);
+	printf("title=%s\n", win->title);
+
+	return 0;
+}
+
+int get_win_pos(Win *win)
+{
+	FILE *pipe;
+	char buf[33];
+
+	if ((pipe = popen("printf \"\x1b[13;2t\"", "r")) == NULL)
+		return -1;
+
+	if (fgets(buf, 33, pipe) == NULL)
+		return -1;
+	
+	pclose(pipe);
+
+	printf("%s\n", buf);
+	/*
+	strtok(buf, ";:"); //CSI13
+	win->pos.x = atoi(strtok(NULL, ";:")); //x
+	win->pos.y = atoi(strtok(NULL, "t")); //y
+	*/
+
+	return 0;
+}
+
+int set_win_pos(Win *win, int x, int y)
+{
+	char cmd[33];
+	int n;
+
+	if ((n = snprintf(cmd, 33, "\x1b[3;%d;%dt", x, y)) == 33)
+		return -1;
+
+	win->pos.x = x;
+	win->pos.y = y;
+	write(STDOUT_FILENO, cmd, n);
+
+	return 0;
+}
+
+int get_win_title(Win *win)
+{
+	FILE *pipe;
+	char buf[33];
+
+	if ((pipe = popen("printf \"\x1b[21t\"", "r")) == NULL)
+		return -1;
+
+	if (fgets(buf, 33, pipe) == NULL)
+		return -1;
+	
+	pclose(pipe);
+
+	printf("%s\n", buf);
+	/*
+	strtok(buf, ";:"); //CSI13
+	win->pos.x = atoi(strtok(NULL, ";:")); //x
+	win->pos.y = atoi(strtok(NULL, "t")); //y
+	*/
+
+	return 0;
+}
+
+/*
+int set_win_title(char *title)
+
+{
+	char cmd[30];
+	int n;
+
+	n = sprintf(cmd, SET_WIN_TITLE, title);
+	write(STDOUT_FILENO, cmd, n);
+
+	return 0;
+}
+*/
+
 
 int load_bm(char *path, Bm *bm)
 {
@@ -81,6 +178,11 @@ int clr_scr(void)
 
 	return 0;
 }
+
+int get_win_sz(int *cols, int *rows);
+int set_win_sz(int cols, int rows);
+int get_win_font(int *font);
+int set_win_font(int font);
 
 int move(int x, int y)
 {

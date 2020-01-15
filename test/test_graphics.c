@@ -9,34 +9,24 @@
 
 int main(int argc, char *argv[])
 {
-	Bm bm;
-	Pix pix;
+	//Bm bm;
+	//Pix pix;
+	char s;//, str[40];
+	Win win;
 
-	load_bm("./res/gold_control_marker.bmp", &bm);
-
-	int i, x, y, h, k, r;
-	double ang;
-	char s;
-
+	//load_bm("./res/gold_control_marker.bmp", &bm);
 	init_scr();
+	init_win(&win);
+	//print_win(&win);
+	get_win_pos(&win);
+	get_win_title(&win);
+	print_win(&win);
+	//set_win_pos(&win, 100, 100);
+	//print_win(&win);
+	//set_win_tit("Warchest");
+	//get_win_tit(str);
+	//printf("%s", str);
 
-	/*
-	r = 6;
-	h = 40;
-	k = 20;
-	for (i = 0; i < 360; i++) {
-		ang = i * (2 * PI / 360);
-		x = (int) r * cos(ang) + h;
-		y = (int) r * sin(ang) + k;
-		draw_sq(x, y, 40);
-	}
-	*/
-	for (i = 0; i < 100; i++) {
-		pix.red = i + 100; 
-		pix.green = 155;
-		pix.blue = 155;
-		draw_px(i, 20, &pix);
-	}
 	scanf("%1s", &s);
 	exit_scr();
 
