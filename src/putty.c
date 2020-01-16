@@ -1,0 +1,371 @@
+/* TODO: Functions to handle reading bitmaps and plaing them into structures
+ * TODO: Layers data structure for drawing
+ * TODO: Logical grid/screen to actual rows and columns and pixels
+ * TODO: Change file to be just xterm primitives
+ */
+#define _POSIX_C_SOURCE 200809L
+
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/ioctl.h>
+#include <unistd.h>
+#include "../inc/window.h"
+
+/* ansi escape sequences */
+#define ESC "\x1b"
+#define CSI ESC"["
+#define OSC ESC"]"
+#define BEL "\x07"
+#define ENT_ALT_SCR CSI"?1049h"
+#define EXIT_ALT_SCR CSI"?1049l"
+/*#define CLR_SCR "\x1b[2J"*/
+#define MOVE "\x1b[%d;%dH"
+#define GET_WIN_FONTSZ OSC"50;?"BEL
+#define HIDE_CUR CSI"?25l"
+#define SHOW_CUR CSI"?25h"
+/*#define COLOR "\x1b[48;5;%dm \x1b[0m"*/
+/*#define RGB "\x1b[48;2;%d;%d;%dm \x1b[0m"*/
+/*#define SET_WIN_TITLE "\x1b]0;%s\x07"*/
+
+static int hide_cur(void);
+static int show_cur(void);
+static int move_cur(int x, int y);
+
+int init_win(Win *win)
+{
+	//get_win_fontsz(win);  
+	//printf("CSI
+
+	return 0;
+};
+
+int print_win(Win *win)
+{
+	/* TODO */
+	return 0;
+}
+
+int get_win_fontsz(Win *win)
+{
+	FILE *std_out;
+	char buf[33];
+	int i;
+
+	std_out = popen("printf \""GET_WIN_FONTSZ"\"", "r");
+	fgets(buf, 33, std_out);
+	pclose(std_out);
+
+	for (i = 0; i < strnlen(buf, 33); i++)
+		printf("%02x", buf[i]);
+	printf("\n");
+	/***/
+	/*strtok(buf, ";:"); //CSI13*/
+	/*win->pos.x = atoi(strtok(NULL, ";:")); //x*/
+	/*win->pos.y = atoi(strtok(NULL, "t")); //y*/
+	/**/
+
+	return 0;
+}
+
+int get_win_pos(Win *win)
+{
+	FILE *std_out;
+	char buf[33];
+	int i;
+
+	std_out = popen("printf \"\x1b[13;2t\"", "r");
+	fgets(buf, 33, std_out);
+	pclose(std_out);
+
+	for (i = 0; i < strnlen(buf, 33); i++)
+		printf("%02x", buf[i]);
+	printf("\n");
+
+	return 0;
+}
+
+int get_win_title(Win *win)
+{
+	FILE *pipe;
+	char buf[33], bbuf[2000];
+	ssize_t b;
+
+	/*fflush(stdin);*/
+	/*fflush(stdout);*/
+	/*b = read(STDIN_FILENO, bbuf, sizeof(bbuf));*/
+	pipe = popen("echo -e \"\x1b[21t\"", "w");
+	fread(buf, sizeof(buf), 1, std_out);
+	//fflush(std_out);
+	pclose(std_out);
+	/*fgets(buf, 33, std_out);*/
+	/*printf("%s\n", buf);*/
+	/*for (i = 0; i < sizeof(buf); i++)*/
+		/*printf("%02x ", buf[i]);*/
+	/*printf("\n");*/
+
+	/*snprintf(buf2, 33, "%s", buf);*/
+	/*buf2[15]='F';*/
+	/*printf("%s\n", buf2);*/
+	//printf("%d\n", strnlen(buf, 33));
+	//printf("%s\n", buf);
+	//printf("%d\n", b);
+	printf("%s\n", buf);
+
+	/*for (i = 0; i < strnlen(buf, 33); i++)*/
+		/*printf("%02x", buf[i]);*/
+	/*printf("\n");*/
+
+	return 0;
+}
+
+int show_scr(void)
+{
+	write(STDOUT_FILENO, ENT_ALT_SCR, sizeof(ENT_ALT_SCR));
+	hide_cur();
+
+	return 0;
+}
+
+int exit_scr(void)
+{
+	show_cur();
+	write(STDOUT_FILENO, EXIT_ALT_SCR, sizeof(EXIT_ALT_SCR));
+
+	return 0;
+}
+
+static int hide_cur(void)
+{
+	write(STDOUT_FILENO, HIDE_CUR, sizeof(HIDE_CUR));
+
+	return 0;
+}
+
+static int show_cur(void)
+{
+	write(STDOUT_FILENO, SHOW_CUR, sizeof(SHOW_CUR));
+
+	return 0;
+}
+
+static int move_cur(int x, int y)
+{
+	char cmd[20];
+	int n;
+
+	n = sprintf(cmd, "\x1b[%d;%dH", y, x); //xterm move sequence
+	write(STDOUT_FILENO, cmd, n);
+
+	return 0;
+}
+
+/*int clr_scr(void)*/
+/*{*/
+	/*if (write(STDOUT_FILENO, CLR_SCR, sizeof(CLR_SCR)) < 0)*/
+		/*return -1;*/
+
+	/*return 0;*/
+/*}*/
+
+
+/*int print_win(Win *win)*/
+/*{*/
+	/*printf("Window Properties\n");*/
+	/*printf("pos=%d, %d\n", win->pos.x, win->pos.y);*/
+	/*printf("title=%s\n", win->title);*/
+
+	/*return 0;*/
+/*}*/
+
+/*int get_win_pos(Win *win)*/
+/*{*/
+	/*FILE *pipe;*/
+	/*char buf[33];*/
+
+	/*if ((pipe = popen("printf \"\x1b[13;2t\"", "r")) == NULL)*/
+		/*return -1;*/
+
+	/*if (fgets(buf, 33, pipe) == NULL)*/
+		/*return -1;*/
+	
+	/*pclose(pipe);*/
+
+	/*printf("%s\n", buf);*/
+	/***/
+	/*strtok(buf, ";:"); //CSI13*/
+	/*win->pos.x = atoi(strtok(NULL, ";:")); //x*/
+	/*win->pos.y = atoi(strtok(NULL, "t")); //y*/
+	/**/
+
+	/*return 0;*/
+/*}*/
+
+/*int set_win_pos(Win *win, int x, int y)*/
+/*{*/
+	/*char cmd[33];*/
+	/*int n;*/
+
+	/*if ((n = snprintf(cmd, 33, "\x1b[3;%d;%dt", x, y)) == 33)*/
+		/*return -1;*/
+
+	/*win->pos.x = x;*/
+	/*win->pos.y = y;*/
+	/*write(STDOUT_FILENO, cmd, n);*/
+
+	/*return 0;*/
+/*}*/
+
+/*int get_win_title(Win *win)*/
+/*{*/
+	/*FILE *pipe;*/
+	/*char buf[33];*/
+
+	/*if ((pipe = popen("printf \"\x1b[21t\"", "r")) == NULL)*/
+		/*return -1;*/
+
+	/*if (fgets(buf, 33, pipe) == NULL)*/
+		/*return -1;*/
+	
+	/*pclose(pipe);*/
+
+	/*printf("%s\n", buf);*/
+	/***/
+	/*strtok(buf, ";:"); //CSI13*/
+	/*win->pos.x = atoi(strtok(NULL, ";:")); //x*/
+	/*win->pos.y = atoi(strtok(NULL, "t")); //y*/
+	/***/
+
+	/*return 0;*/
+/*}*/
+
+/***/
+/*int set_win_title(char *title)*/
+
+/*{*/
+	/*char cmd[30];*/
+	/*int n;*/
+
+	/*n = sprintf(cmd, SET_WIN_TITLE, title);*/
+	/*write(STDOUT_FILENO, cmd, n);*/
+
+	/*return 0;*/
+/*}*/
+/***/
+
+
+/*int load_bm(char *path, Bm *bm)*/
+/*{*/
+	/*[> See wikipedia for bitmap file format <]*/
+	/*FILE *fp;*/
+	/*int pxa, size;*/
+
+	/*fp = fopen(path, "r");*/
+	/*fseek(fp, 0x0A, SEEK_SET); //Starting address of pixels*/
+	/*fread(&pxa, 4, 1, fp);*/
+	/*fseek(fp, 0x12, SEEK_SET); //Bitmap width and height*/
+	/*fread(&bm->px_w, 4, 1, fp);*/
+	/*fread(&bm->px_h, 4, 1, fp);*/
+	/*bm->row_sz = 4 * (int) ceil((24.0 * (double) bm->px_w) / 32.0);*/
+	/*fseek(fp, 0x22, SEEK_SET); //Size of pixel array in bytes*/
+	/*fread(&size, 4, 1, fp);*/
+	/*bm->px = malloc(size);*/
+	/*fseek(fp, pxa, SEEK_SET); //Pixel array*/
+	/*fread(bm->px, 1, size, fp);*/
+	/*fclose(fp);*/
+
+	/*return 0;*/
+/*}*/
+
+/*int init_scr(void)*/
+/*{*/
+	/*struct winsize ws;*/
+
+	/*if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) < 0)*/
+		/*return -1;*/
+
+	/*scr.rows = ws.ws_row;*/
+	/*scr.cols = ws.ws_col;*/
+
+	/*if (write(STDOUT_FILENO, ENT_ALT_SCR, sizeof(ENT_ALT_SCR)) < 0)*/
+		/*return -1;	*/
+
+	/*hide_cur();*/
+
+	/*return 0;*/
+/*}*/
+
+/*int exit_scr(void)*/
+/*{*/
+	/*show_cur();*/
+
+	/*if (write(STDOUT_FILENO, EXIT_ALT_SCR, sizeof(EXIT_ALT_SCR)) < 0)*/
+		/*return -1;	*/
+
+	/*return 0;*/
+/*}*/
+
+/*int clr_scr(void)*/
+/*{*/
+	/*if (write(STDOUT_FILENO, CLR_SCR, sizeof(CLR_SCR)) < 0)*/
+		/*return -1;*/
+
+	/*return 0;*/
+/*}*/
+
+/*int get_win_sz(int *cols, int *rows);*/
+/*int set_win_sz(int cols, int rows);*/
+/*int get_win_font(int *font);*/
+/*int set_win_font(int font);*/
+
+/*int move(int x, int y)*/
+/*{*/
+	/*char cmd[20];*/
+	/*int n;*/
+
+	/*n = sprintf(cmd, MOVE, y, x);*/
+	/*write(STDOUT_FILENO, cmd, n);*/
+
+	/*return 0;*/
+/*}*/
+
+/*int color(int color)*/
+/*{*/
+	/*char cmd[20];*/
+	/*int n;*/
+
+	/*n = sprintf(cmd, COLOR, color);*/
+	/*write(STDOUT_FILENO, cmd, n);*/
+
+	/*return 0;*/
+/*}*/
+
+/*int draw(int x, int y, int col)*/
+/*{*/
+	/*move(x, y);*/
+	/*color(col);*/
+	/*move(x, y);*/
+
+	/*return 0;*/
+/*}*/
+
+/*int draw_px(int x, int y, Pix *pix)*/
+/*{*/
+	/*char cmd[30];*/
+	/*int n;*/
+
+	/*move(x, y);*/
+	/*n = sprintf(cmd, RGB, pix->red, pix->green, pix->blue);*/
+	/*write(STDOUT_FILENO, cmd, n);*/
+
+	/*return 0;*/
+/*}*/
+
+/*int draw_sq(int x, int y, int color)*/
+/*{*/
+	/*draw(x, y, color);*/
+	/*draw(x, y + 1, color);*/
+
+	/*return 0;*/
+/*}*/
