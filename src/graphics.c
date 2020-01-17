@@ -6,245 +6,106 @@
 #define _POSIX_C_SOURCE 200809L
 
 #include <math.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <sys/ioctl.h>
-#include <unistd.h>
 #include "../inc/graphics.h"
+#include "../inc/window.h"
 
-/* ansi escape sequences */
-#define ENT_ALT_SCR "\x1b[?1049h"
-#define EXIT_ALT_SCR "\x1b[?1049l"
-#define CLR_SCR "\x1b[2J"
-#define MOVE "\x1b[%d;%dH"
-#define HIDE_CUR "\x1b[?25l"
-#define SHOW_CUR "\x1b[?25h"
-#define COLOR "\x1b[48;5;%dm \x1b[0m"
-#define RGB "\x1b[48;2;%d;%d;%dm \x1b[0m"
-#define SET_WIN_TITLE "\x1b]0;%s\x07"
-
-Scr scr;
-
-int init_win(Win *win)
+int load_bitmap(Bitmap *bitmap, char *path)
 {
-	win->pos.x = 0;
-	win->pos.y = 0;
-	win->title = NULL;
+	/* See wikipedia for bitmap file format. This is hardcoded for to parse a
+	 * bitmap with a header name of BITMAPINFOHEADER.
+	 */
+	FILE *file;
+	int pix_addr, size, row_size, i, j, width, height, n;
+	uint8_t b, g, r;
+	Pix *pix;
+	uint8_t *ind;
 
-	return 0;
-};
 
-int print_win(Win *win)
-{
-	printf("Window Properties\n");
-	printf("pos=%d, %d\n", win->pos.x, win->pos.y);
-	printf("title=%s\n", win->title);
+	file = fopen(path, "r");
 
-	return 0;
-}
+	fseek(file, 0x12, SEEK_SET); //bitmap width and height
+	fread(&width, 4, 1, file);
+	fread(&height, 4, 1, file);
+	bitmap->width = width;
+	bitmap->height = height;
+	printf("bitmap: width=%d, height=%d\n", width, height);
 
-int get_win_pos(Win *win)
-{
-	FILE *pipe;
-	char buf[33];
+	bitmap->pix_arr = malloc(width * height * sizeof(Pix));
+	bitmap->ind = malloc(width * height * sizeof(uint8_t));
 
-	if ((pipe = popen("printf \"\x1b[13;2t\"", "r")) == NULL)
-		return -1;
+	/*load the bitmap pixel array into the bitmap data structure */
+	row_size = 4 * (int) ceil((24.0 * (double) bitmap->width) / 32.0);
+	printf("row size=%d\n", row_size);
 
-	if (fgets(buf, 33, pipe) == NULL)
-		return -1;
-	
-	pclose(pipe);
+	fseek(file, 0x22, SEEK_SET); //the size of the pixel array in bytes
+	fread(&size, 4, 1, file);
+	printf("size=%d\n", size);
 
-	printf("%s\n", buf);
-	/*
-	strtok(buf, ";:"); //CSI13
-	win->pos.x = atoi(strtok(NULL, ";:")); //x
-	win->pos.y = atoi(strtok(NULL, "t")); //y
-	*/
+	fseek(file, 0x0A, SEEK_SET); //the starting address of the pixels
+	fread(&pix_addr, 4, 1, file);
+	fseek(file, pix_addr, SEEK_SET); //goto the pixel array
+	printf("pix address=%d\n", pix_addr);
 
-	return 0;
-}
+	n = 0;
+	for (i = height - 1; i >= 0; i--) {
+		for (j = 0; j <= width - 1; j++) {
+			/* read in a pixel blue, green, red */
+			fread(&b, 1, 1, file);
+			fread(&g, 1, 1, file);
+			fread(&r, 1, 1, file);
+			pix = bitmap->pix_arr + i * width + j;
+			pix->r = r;
+			pix->g = g;
+			pix->b = b;
+			ind = bitmap->ind + i * bitmap->width + j;
+			*ind = 1;
+		}
+		fseek(file, pix_addr + row_size * ++n, SEEK_SET); //goto the next row
+	}
 
-int set_win_pos(Win *win, int x, int y)
-{
-	char cmd[33];
-	int n;
-
-	if ((n = snprintf(cmd, 33, "\x1b[3;%d;%dt", x, y)) == 33)
-		return -1;
-
-	win->pos.x = x;
-	win->pos.y = y;
-	write(STDOUT_FILENO, cmd, n);
+	fclose(file);
 
 	return 0;
 }
 
-int get_win_title(Win *win)
+int draw_bitmap(Bitmap *bitmap, Win *win, Pos *pos)
 {
-	FILE *pipe;
-	char buf[33];
+	int i, j; 
+	Pos px_pos;
+	Pix *pix;
+	uint8_t *ind;
 
-	if ((pipe = popen("printf \"\x1b[21t\"", "r")) == NULL)
-		return -1;
-
-	if (fgets(buf, 33, pipe) == NULL)
-		return -1;
-	
-	pclose(pipe);
-
-	printf("%s\n", buf);
-	/*
-	strtok(buf, ";:"); //CSI13
-	win->pos.x = atoi(strtok(NULL, ";:")); //x
-	win->pos.y = atoi(strtok(NULL, "t")); //y
-	*/
+	for (i = 0; i < bitmap->height; i++) {
+		for (j = 0; j < bitmap->width; j++) {
+			pix = bitmap->pix_arr + i * bitmap->width + j;
+			ind = bitmap->ind + i * bitmap->width + j;
+			px_pos.x = pos->x + j;
+			px_pos.y = pos->y + i;
+			if (*ind)
+				draw(win, &px_pos, pix);
+		}
+	}
 
 	return 0;
 }
 
-/*
-int set_win_title(char *title)
-
+int set_ind(Bitmap *bitmap, Pix *ind)
 {
-	char cmd[30];
-	int n;
+	int i, j; 
+	Pix *pix;
+	uint8_t *temp;
 
-	n = sprintf(cmd, SET_WIN_TITLE, title);
-	write(STDOUT_FILENO, cmd, n);
-
-	return 0;
-}
-*/
-
-
-int load_bm(char *path, Bm *bm)
-{
-	/* See wikipedia for bitmap file format */
-	FILE *fp;
-	int pxa, size;
-
-	fp = fopen(path, "r");
-	fseek(fp, 0x0A, SEEK_SET); //Starting address of pixels
-	fread(&pxa, 4, 1, fp);
-	fseek(fp, 0x12, SEEK_SET); //Bitmap width and height
-	fread(&bm->px_w, 4, 1, fp);
-	fread(&bm->px_h, 4, 1, fp);
-	bm->row_sz = 4 * (int) ceil((24.0 * (double) bm->px_w) / 32.0);
-	fseek(fp, 0x22, SEEK_SET); //Size of pixel array in bytes
-	fread(&size, 4, 1, fp);
-	bm->px = malloc(size);
-	fseek(fp, pxa, SEEK_SET); //Pixel array
-	fread(bm->px, 1, size, fp);
-	fclose(fp);
-
-	return 0;
-}
-
-int init_scr(void)
-{
-	struct winsize ws;
-
-	if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) < 0)
-		return -1;
-
-	scr.rows = ws.ws_row;
-	scr.cols = ws.ws_col;
-
-	if (write(STDOUT_FILENO, ENT_ALT_SCR, sizeof(ENT_ALT_SCR)) < 0)
-		return -1;	
-
-	hide_cur();
-
-	return 0;
-}
-
-int exit_scr(void)
-{
-	show_cur();
-
-	if (write(STDOUT_FILENO, EXIT_ALT_SCR, sizeof(EXIT_ALT_SCR)) < 0)
-		return -1;	
-
-	return 0;
-}
-
-int clr_scr(void)
-{
-	if (write(STDOUT_FILENO, CLR_SCR, sizeof(CLR_SCR)) < 0)
-		return -1;
-
-	return 0;
-}
-
-int get_win_sz(int *cols, int *rows);
-int set_win_sz(int cols, int rows);
-int get_win_font(int *font);
-int set_win_font(int font);
-
-int move(int x, int y)
-{
-	char cmd[20];
-	int n;
-
-	n = sprintf(cmd, MOVE, y, x);
-	write(STDOUT_FILENO, cmd, n);
-
-	return 0;
-}
-
-int hide_cur(void)
-{
-	write(STDOUT_FILENO, HIDE_CUR, sizeof(HIDE_CUR));
-
-	return 0;
-}
-
-int show_cur(void)
-{
-	write(STDOUT_FILENO, SHOW_CUR, sizeof(SHOW_CUR));
-
-	return 0;
-}
-
-int color(int color)
-{
-	char cmd[20];
-	int n;
-
-	n = sprintf(cmd, COLOR, color);
-	write(STDOUT_FILENO, cmd, n);
-
-	return 0;
-}
-
-int draw(int x, int y, int col)
-{
-	move(x, y);
-	color(col);
-	move(x, y);
-
-	return 0;
-}
-
-int draw_px(int x, int y, Pix *pix)
-{
-	char cmd[30];
-	int n;
-
-	move(x, y);
-	n = sprintf(cmd, RGB, pix->red, pix->green, pix->blue);
-	write(STDOUT_FILENO, cmd, n);
-
-	return 0;
-}
-
-int draw_sq(int x, int y, int color)
-{
-	draw(x, y, color);
-	draw(x, y + 1, color);
+	for (i = 0; i < bitmap->height; i++) {
+		for (j = 0; j < bitmap->width; j++) {
+			pix = bitmap->pix_arr + i * bitmap->width + j;
+			temp = bitmap->ind + i * bitmap->width + j;
+			if (pix->r == ind->r && pix->g == ind->g && pix->b == ind->b)
+				*temp = 0;
+		}
+	}
 
 	return 0;
 }

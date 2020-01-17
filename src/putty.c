@@ -13,20 +13,24 @@
 #include <unistd.h>
 #include "../inc/window.h"
 
+#define BUF_SZ 33
+
 /* ansi escape sequences */
-#define ESC "\x1b"
-#define CSI ESC"["
-#define OSC ESC"]"
-#define BEL "\x07"
-#define ENT_ALT_SCR CSI"?1049h"
-#define EXIT_ALT_SCR CSI"?1049l"
-/*#define CLR_SCR "\x1b[2J"*/
-#define MOVE "\x1b[%d;%dH"
-#define GET_WIN_FONTSZ OSC"50;?"BEL
-#define HIDE_CUR CSI"?25l"
-#define SHOW_CUR CSI"?25h"
+/* ESC = \x1b
+ * CSI = \x1b\x5b ESC[
+ * OSC = \x1b\x5d ESC]
+ * ST = \x1b\x5c ESC\
+ * BEL = \x07
+ */
+#define ENT_ALT_SCR "\x1b[?1049h"
+#define EXIT_ALT_SCR "\x1b[?1049l"
+#define CLR_SCR "\x1b[2J"
+#define SHOW_CUR "\x1b[?25h"
+#define HIDE_CUR "\x1b[?25l"
+#define MOVE_CUR "\x1b[%d;%dH"
+#define RGB "\x1b[48;2;%d;%d;%dm \x1b[0m"
+//#define GET_WIN_FONTSZ OSC"50;?"BEL
 /*#define COLOR "\x1b[48;5;%dm \x1b[0m"*/
-/*#define RGB "\x1b[48;2;%d;%d;%dm \x1b[0m"*/
 /*#define SET_WIN_TITLE "\x1b]0;%s\x07"*/
 
 static int hide_cur(void);
@@ -35,8 +39,25 @@ static int move_cur(int x, int y);
 
 int init_win(Win *win)
 {
-	//get_win_fontsz(win);  
-	//printf("CSI
+	/* TODO: change this so it gets the actual state of the terminal window at
+	 * the time the application starts up.
+	 */
+	win->wx = 0;
+	win->wy = 0;
+	win->wwth = 0;
+	win->whth = 0;
+	win->tx = 0;
+	win->ty = 0;
+	win->twth = 0;
+	win->thth = 0;
+	win->cols = 0;
+	win->rows = 0;
+	win->pprow = 3;
+	win->ppcol = 1;
+	win->fontsz = 1;
+	win->scol = 3;
+	win->srow = 1;
+	char *title = NULL;
 
 	return 0;
 };
@@ -46,80 +67,6 @@ int print_win(Win *win)
 	/* TODO */
 	return 0;
 }
-
-int get_win_fontsz(Win *win)
-{
-	FILE *std_out;
-	char buf[33];
-	int i;
-
-	std_out = popen("printf \""GET_WIN_FONTSZ"\"", "r");
-	fgets(buf, 33, std_out);
-	pclose(std_out);
-
-	for (i = 0; i < strnlen(buf, 33); i++)
-		printf("%02x", buf[i]);
-	printf("\n");
-	/***/
-	/*strtok(buf, ";:"); //CSI13*/
-	/*win->pos.x = atoi(strtok(NULL, ";:")); //x*/
-	/*win->pos.y = atoi(strtok(NULL, "t")); //y*/
-	/**/
-
-	return 0;
-}
-
-int get_win_pos(Win *win)
-{
-	FILE *std_out;
-	char buf[33];
-	int i;
-
-	std_out = popen("printf \"\x1b[13;2t\"", "r");
-	fgets(buf, 33, std_out);
-	pclose(std_out);
-
-	for (i = 0; i < strnlen(buf, 33); i++)
-		printf("%02x", buf[i]);
-	printf("\n");
-
-	return 0;
-}
-
-int get_win_title(Win *win)
-{
-	FILE *pipe;
-	char buf[33], bbuf[2000];
-	ssize_t b;
-
-	/*fflush(stdin);*/
-	/*fflush(stdout);*/
-	/*b = read(STDIN_FILENO, bbuf, sizeof(bbuf));*/
-	pipe = popen("echo -e \"\x1b[21t\"", "w");
-	fread(buf, sizeof(buf), 1, std_out);
-	//fflush(std_out);
-	pclose(std_out);
-	/*fgets(buf, 33, std_out);*/
-	/*printf("%s\n", buf);*/
-	/*for (i = 0; i < sizeof(buf); i++)*/
-		/*printf("%02x ", buf[i]);*/
-	/*printf("\n");*/
-
-	/*snprintf(buf2, 33, "%s", buf);*/
-	/*buf2[15]='F';*/
-	/*printf("%s\n", buf2);*/
-	//printf("%d\n", strnlen(buf, 33));
-	//printf("%s\n", buf);
-	//printf("%d\n", b);
-	printf("%s\n", buf);
-
-	/*for (i = 0; i < strnlen(buf, 33); i++)*/
-		/*printf("%02x", buf[i]);*/
-	/*printf("\n");*/
-
-	return 0;
-}
-
 int show_scr(void)
 {
 	write(STDOUT_FILENO, ENT_ALT_SCR, sizeof(ENT_ALT_SCR));
@@ -128,10 +75,35 @@ int show_scr(void)
 	return 0;
 }
 
-int exit_scr(void)
+int close_scr(void)
 {
 	show_cur();
 	write(STDOUT_FILENO, EXIT_ALT_SCR, sizeof(EXIT_ALT_SCR));
+
+	return 0;
+}
+
+int clear_scr(void)
+{
+	write(STDOUT_FILENO, CLR_SCR, sizeof(CLR_SCR));
+
+	return 0;
+}
+
+int draw(Win *win, Pos *pos, Pix *pix)
+{
+	char cmd[BUF_SZ];
+	int row, col, i, j, n;
+
+	n = sprintf(cmd, RGB, pix->r, pix->g, pix->b);
+	col = pos->x * win->scol;
+	row = pos->y * win->srow;
+	for (i = 0; i < win->srow; i++) {
+		for (j = 0; j < win->scol; j++) {
+			move_cur(col + j, row + i);
+			write(STDOUT_FILENO, cmd, n);
+		}
+	}
 
 	return 0;
 }
@@ -150,12 +122,12 @@ static int show_cur(void)
 	return 0;
 }
 
-static int move_cur(int x, int y)
+static int move_cur(int col, int row)
 {
 	char cmd[20];
 	int n;
 
-	n = sprintf(cmd, "\x1b[%d;%dH", y, x); //xterm move sequence
+	n = sprintf(cmd, MOVE_CUR, row, col); //xterm move sequence
 	write(STDOUT_FILENO, cmd, n);
 
 	return 0;
