@@ -39,6 +39,8 @@ typedef struct win {
 	int fontsz; //the size of the terminal font
 	int scol; //the scalar to mulitply the xcoord by to get the column
 	int srow; //the scalar to mulitply the ycoord by to get the row
+	int xoff; // x offset
+	int yoff; // y offset
 	char *title; //the title of the window
 } Win;
 
@@ -57,7 +59,8 @@ int show_scr(void);
 int close_scr(void);
 int clear_scr(void);
 
-int draw(Win *win, Pos *pos, Pix *pix);
+int move(Win *win, Pos *pos);
+int draw(Win *win, Pix *pix);
 
 
 #endif //WINDOW_H

@@ -31,23 +31,23 @@ int load_bitmap(Bitmap *bitmap, char *path)
 	fread(&height, 4, 1, file);
 	bitmap->width = width;
 	bitmap->height = height;
-	printf("bitmap: width=%d, height=%d\n", width, height);
+	//printf("bitmap: width=%d, height=%d\n", width, height);
 
 	bitmap->pix_arr = malloc(width * height * sizeof(Pix));
 	bitmap->ind = malloc(width * height * sizeof(uint8_t));
 
 	/*load the bitmap pixel array into the bitmap data structure */
 	row_size = 4 * (int) ceil((24.0 * (double) bitmap->width) / 32.0);
-	printf("row size=%d\n", row_size);
+	//printf("row size=%d\n", row_size);
 
 	fseek(file, 0x22, SEEK_SET); //the size of the pixel array in bytes
 	fread(&size, 4, 1, file);
-	printf("size=%d\n", size);
+	//printf("size=%d\n", size);
 
 	fseek(file, 0x0A, SEEK_SET); //the starting address of the pixels
 	fread(&pix_addr, 4, 1, file);
 	fseek(file, pix_addr, SEEK_SET); //goto the pixel array
-	printf("pix address=%d\n", pix_addr);
+	//printf("pix address=%d\n", pix_addr);
 
 	n = 0;
 	for (i = height - 1; i >= 0; i--) {
@@ -80,12 +80,13 @@ int draw_bitmap(Bitmap *bitmap, Win *win, Pos *pos)
 
 	for (i = 0; i < bitmap->height; i++) {
 		for (j = 0; j < bitmap->width; j++) {
-			pix = bitmap->pix_arr + i * bitmap->width + j;
-			ind = bitmap->ind + i * bitmap->width + j;
 			px_pos.x = pos->x + j;
 			px_pos.y = pos->y + i;
+			move(win, &px_pos);
+			pix = bitmap->pix_arr + i * bitmap->width + j;
+			ind = bitmap->ind + i * bitmap->width + j;
 			if (*ind)
-				draw(win, &px_pos, pix);
+				draw(win, pix);
 		}
 	}
 

@@ -57,6 +57,8 @@ int init_win(Win *win)
 	win->fontsz = 1;
 	win->scol = 3;
 	win->srow = 1;
+	win->xoff = 1;
+	win->yoff = 1;
 	char *title = NULL;
 
 	return 0;
@@ -90,17 +92,25 @@ int clear_scr(void)
 	return 0;
 }
 
-int draw(Win *win, Pos *pos, Pix *pix)
+int move(Win *win, Pos *pos)
+{
+	int row, col;
+
+	col = pos->x * win->scol + win->yoff;
+	row = pos->y * win->srow + win->xoff;
+	move_cur(col, row);
+
+	return 0;
+}
+
+int draw(Win *win, Pix *pix)
 {
 	char cmd[BUF_SZ];
-	int row, col, i, j, n;
+	int i, j, n;
 
 	n = sprintf(cmd, RGB, pix->r, pix->g, pix->b);
-	col = pos->x * win->scol;
-	row = pos->y * win->srow;
 	for (i = 0; i < win->srow; i++) {
 		for (j = 0; j < win->scol; j++) {
-			move_cur(col + j, row + i);
 			write(STDOUT_FILENO, cmd, n);
 		}
 	}
