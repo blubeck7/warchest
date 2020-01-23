@@ -52,11 +52,12 @@ Bitmaps:
 	hex = 46 x 46
 	board = 294 x 360
 	control markers = 46 x 46
-	coins = 36 x 36 radius
+	coins = 36 x 36 diameter
 	bag = 150 x 112
 
 RGB:
 	archer = 105,179,156
+	beserker = 56,127,82
 	
 Coordinates:
 	Board: 0,0 absolute
