@@ -60,7 +60,8 @@ RGB:
 	beserker = 56,127,82
 	
 Coordinates:
-	Board: 0,0 absolute
+	The resolution is 640 x 360, and the screen is 620 x 360.
+	Board: 163, 0
 	Hexes relative to board:
 	0,0 = 124, 301 
 	1,0 = 87, 277

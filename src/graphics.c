@@ -2,6 +2,7 @@
  * TODO: Layers data structure for drawing
  * TODO: Logical grid/screen to actual rows and columns and pixels
  * TODO: Change file to be just xterm primitives
+ * TODO: Write a generic linked list data structure
  */
 #define _POSIX_C_SOURCE 200809L
 
@@ -109,4 +110,116 @@ int set_ind(Bitmap *bitmap, Pix *ind)
 	}
 
 	return 0;
+}
+
+int init_layer(Layer *layer)
+{
+	int i;
+	
+	for (i = 0; i < MAX_NUM_BITMAPS; i++)
+		layer->bitmaps[i] = NULL;
+
+	return 0;
+}
+
+int add_bitmap(Layer *layer, Bitmap *bitmap, Pos *pos)
+{
+	int i;
+
+	for (i = 0; i < MAX_NUM_BITMAPS; i++) {
+		if (!layer->bitmaps[i]) {
+			layer->bitmaps[i] = bitmap;
+			layer->rpos[i] = *pos;
+			break;
+		}
+	}
+
+	return 0;
+}
+
+int remove_bitmap(Layer *layer, Bitmap *bitmap)
+{
+	int i;
+
+	for (i = 0; i < MAX_NUM_BITMAPS; i++)
+		if (layer->bitmaps[i] == bitmap)
+			layer->bitmaps[i] = NULL;
+
+	return 0;
+}
+
+int draw_layer(Layer *layer, Win *win, Pos *off)
+{
+	int i;
+	Pos pos;
+
+	for (i = 0; i < MAX_NUM_BITMAPS; i++) {
+		if (layer->bitmaps[i]) {
+			/*printf("Drawing bitmap %d\n", i);*/
+			pos.x = off->x + layer->rpos[i].x;
+			pos.y = off->y + layer->rpos[i].y;
+			draw_bitmap(layer->bitmaps[i], win, &pos);
+		}
+	}
+
+	return 0;
+}
+
+int init_layers(Layers *layers)
+{
+	int i;
+
+	for (i = 0; i < MAX_NUM_LAYERS; i++)
+		layers->layers[i] = NULL;
+
+	return 0;
+}
+
+int add_layer(Layers *layers, Layer *layer, int n)
+{
+	if (n >= 0 && n < MAX_NUM_LAYERS)
+		layers->layers[n] = layer;
+
+	return 0;
+}
+
+int set_layer_pos(Layers *layers, int n, Pos *pos)
+{
+	if (n >= 0 && n < MAX_NUM_LAYERS)
+		layers->rpos[n] = *pos;
+
+	return 0;
+}
+
+Layer *get_layer(Layers *layers, int n)
+{
+	if (n >= 0 && n < MAX_NUM_LAYERS)
+		return layers->layers[n];
+
+	return NULL;
+}
+
+int remove_layer(Layers *layers, int n)
+{
+	if (n >= 0 && n < MAX_NUM_LAYERS)
+		layers->layers[n] = NULL;
+
+	return 0;
+}
+
+int draw_layers(Layers *layers, Win *win, Pos *off)
+{
+	int i;
+	Pos pos;
+
+	for (i = 0; i < MAX_NUM_LAYERS; i++) {
+		if (layers->layers[i]) {
+			/*printf("Drawing layer %d\n", i);*/
+			pos.x = off->x + layers->rpos[i].x;
+			pos.y = off->y + layers->rpos[i].y;
+			draw_layer(layers->layers[i], win, &pos);
+		}
+	}
+
+	return 0;	
 }

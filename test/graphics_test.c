@@ -6,48 +6,96 @@
 
 int main(int argc, char *argv[])
 {
-	Bitmap board, gcm, ac, bc;
-	char s;
 	Win win;
-	Pos pos;
+	Layers layers;
+	Layer base, layer1;
+	Bitmap board, gcm, scm;
+	Pos ul;
 	Pix ind;
-	int x, y, maxx, maxy;
+	char s;
 
-	x = 600 - 78 - 294;
-	y = 0;
-	maxx = 600;
-	maxy = 360;
+	init_win(&win);
+	init_layers(&layers);
+	init_layer(&base);
+	init_layer(&layer1);
 
+	load_bitmap(&board, "./res/board.bmp");
+	load_bitmap(&gcm, "./res/gold_control_marker.bmp");
+	load_bitmap(&scm, "./res/silver_control_marker.bmp");
 	ind.r = 0;
 	ind.g = 255;
 	ind.b = 0;
-
-	load_bitmap(&gcm, "./res/gold_control_marker.bmp");
-	load_bitmap(&board, "./res/board.bmp");
-	load_bitmap(&ac, "./res/archer_coin.bmp");
-	load_bitmap(&bc, "./res/beserker_coin.bmp");
 	set_ind(&gcm, &ind);
-	set_ind(&ac, &ind);
-	set_ind(&bc, &ind);
-	init_win(&win);
+	set_ind(&scm, &ind);
+
+	ul.x = 0;
+	ul.y = 0;
+	add_bitmap(&base, &board, &ul);
+	add_layer(&layers, &base, 0);
+	ul.x = 0;
+	ul.y = 0;
+	set_layer_pos(&layers, 0, &ul);
+
+	ul.x = 161;
+	ul.y = 277;
+	add_bitmap(&layer1, &gcm, &ul);
+	ul.x = 50;
+	ul.y = 253;
+	add_bitmap(&layer1, &gcm, &ul);
+	add_layer(&layers, &layer1, 1);
+	ul.x = 0;
+	ul.y = 0;
+	set_layer_pos(&layers, 1, &ul);
+
 	show_scr();
-	pos.x = x;
-	pos.y = y;
-	draw_bitmap(&board, &win, &pos);
-	pos.x = x + 161;
-	pos.y = y + 277;
-	draw_bitmap(&gcm, &win, &pos);
-	pos.x = x + 50;
-	pos.y = y + 253;
-	draw_bitmap(&gcm, &win, &pos);
-	pos.x = maxx - 2 - 36;
-	pos.y = maxy - 2 - 36 ;
-	draw_bitmap(&ac, &win, &pos);
-	pos.x = maxx - 2 - 36 - 2 - 36;
-	pos.y = maxy - 2 - 36;
-	draw_bitmap(&bc, &win, &pos);
+	ul.x = 0;
+	ul.y = 0;
+	draw_layers(&layers, &win, &ul);
 	scanf("%1s", &s);
 	close_scr();
+
+	/*Bitmap board, gcm, ac, bc;*/
+	/*char s;*/
+	/*Win win;*/
+	/*Pos pos;*/
+	/*Pix ind;*/
+	/*int x, y, maxx, maxy;*/
+
+	/*maxx = 600;*/
+	/*maxy = 360;*/
+	/*x = 600 - 78 - 294;*/
+	/*y = 0;*/
+
+	/*ind.r = 0;*/
+	/*ind.g = 255;*/
+	/*ind.b = 0;*/
+
+	/*load_bitmap(&board, "./res/board.bmp");*/
+	/*load_bitmap(&gcm, "./res/gold_control_marker.bmp");*/
+	/*load_bitmap(&ac, "./res/archer_coin.bmp");*/
+	/*load_bitmap(&bc, "./res/beserker_coin.bmp");*/
+	/*set_ind(&gcm, &ind);*/
+	/*set_ind(&ac, &ind);*/
+	/*set_ind(&bc, &ind);*/
+	/*init_win(&win);*/
+	/*show_scr();*/
+	/*pos.x = x;*/
+	/*pos.y = y;*/
+	/*draw_bitmap(&board, &win, &pos);*/
+	/*pos.x = x + 161;*/
+	/*pos.y = y + 277;*/
+	/*draw_bitmap(&gcm, &win, &pos);*/
+	/*pos.x = x + 50;*/
+	/*pos.y = y + 253;*/
+	/*draw_bitmap(&gcm, &win, &pos);*/
+	/*pos.x = maxx - 2 - 36;*/
+	/*pos.y = maxy - 2 - 36 ;*/
+	/*draw_bitmap(&ac, &win, &pos);*/
+	/*pos.x = maxx - 2 - 36 - 2 - 36;*/
+	/*pos.y = maxy - 2 - 36;*/
+	/*draw_bitmap(&bc, &win, &pos);*/
+	/*scanf("%1s", &s);*/
+	/*close_scr();*/
 
 	return 0;
 }

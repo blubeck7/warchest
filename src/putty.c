@@ -59,7 +59,7 @@ int init_win(Win *win)
 	win->srow = 1;
 	win->xoff = 1;
 	win->yoff = 1;
-	char *title = NULL;
+	//char *title = NULL;
 
 	return 0;
 };
