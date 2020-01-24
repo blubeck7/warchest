@@ -52,12 +52,15 @@ Bitmaps:
 	hex = 46 x 46
 	board = 294 x 360
 	control markers = 46 x 46
-	coins = 36 x 36 diameter
-	bag = 150 x 112
+	coins = 36 x 36
+	cards = 75 x 100
+	numbers = 36 x 36
 
 RGB:
 	archer = 105,179,156
 	beserker = 56,127,82
+	cavalry = 214,132,66
+	crossbow = 157,91,99
 	
 Coordinates:
 	The resolution is 640 x 360, and the screen is 620 x 360.
