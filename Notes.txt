@@ -66,6 +66,8 @@ RGB:
 	lancer = 204,68,57
 	light cavalry = 154,183,104
 	pikeman = 218,181,71	
+	scout = 0,108,173
+	swordsman = 54,79,124
 	
 Coordinates:
 	The resolution is 640 x 360, and the screen is 620 x 360.
