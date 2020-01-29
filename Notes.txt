@@ -49,18 +49,23 @@ faceup actions:
 	4. tactics
 
 Bitmaps:
+	screen = 620 x 360
 	hex = 46 x 46
 	board = 294 x 360
 	control markers = 46 x 46
 	coins = 36 x 36
 	cards = 75 x 100
 	numbers = 36 x 36
+	splash = 294 x 360
 
 RGB:
 	archer = 105,179,156
 	beserker = 56,127,82
 	cavalry = 214,132,66
 	crossbow = 157,91,99
+	lancer = 204,68,57
+	light cavalry = 154,183,104
+	pikeman = 218,181,71	
 	
 Coordinates:
 	The resolution is 640 x 360, and the screen is 620 x 360.
@@ -103,3 +108,5 @@ Coordinates:
 	4,6 = 198, 61
 	5,6 = 161, 37
 	6,6 = 124, 13
+	Human choice = 35, 173 
+	Computer choice = 35, 253

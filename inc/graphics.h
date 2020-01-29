@@ -25,6 +25,7 @@ typedef struct layers {
 } Layers;
 
 int load_bitmap(Bitmap *bitmap, char *path);
+int unload_bitmap(Bitmap *bitmap);
 int draw_bitmap(Bitmap *bitmap, Win *win, Pos *pos);
 int set_ind(Bitmap *bitmap, Pix *ind);
 

@@ -72,6 +72,14 @@ int load_bitmap(Bitmap *bitmap, char *path)
 	return 0;
 }
 
+int unload_bitmap(Bitmap *bitmap)
+{
+	free(bitmap->pix_arr);
+	free(bitmap->ind);
+
+	return 0;
+}
+
 int draw_bitmap(Bitmap *bitmap, Win *win, Pos *pos)
 {
 	int i, j; 
