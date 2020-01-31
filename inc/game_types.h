@@ -1,8 +1,6 @@
 #ifndef GAME_TYPES_H
 #define GAME_TYPES_H
 
-#include "graphics.h"
-
 #define MAX_NUM_UNITS 21
 #define MAX_TYPE_UNITS 5
 #define MAX_HAND 3
@@ -15,51 +13,126 @@
 #define FIRST 0
 #define RANDOM 1
 #define SNAKE 2
-#define FIRST_PLAYER_1_UNITS 18 //includes hte royal coin
-#define FIRST_PLAYER_2_UNITS 20 
+#define GOLD_PLAYER_FIRST_UNITS 18 //includes the royal coin
+#define SILVER_PLAYER_FIRST_UNITS 20 //includes the royal coin 
 
-#define SILVER_COIN (-2)
-#define GOLD_COIN (-1)
-#define ARCHER 0
-#define BESERKER 1
-#define CAVALRY 2
-#define CROSSBOW 3
-#define ENSIGN 4
-#define FOOTMAN 5
-#define KNIGHT 6
-#define LANCER 7
-#define LIGHT_CAVALRY 8
-#define MARSHALL 9
-#define MERCENARY 10
-#define PIKEMAN 11
-#define ROYAL_GUARD 12
-#define SCOUT 13
-#define SWORDSMAN 14
-#define WARRIOR_PRIEST 15
+//Hex occupiers, i.e. coins
+#define SILVER (-2)
+#define GOLD (-1)
+#define EMPTY 0
+#define ARCHER 1
+#define BESERKER 2
+#define CAVALRY 3
+#define CROSSBOWMAN 4
+#define ENSIGN 5
+#define FOOTMAN 6
+#define KNIGHT 7
+#define LANCER 8
+#define LIGHT_CAVALRY 9
+#define MARSHALL 10
+#define MERCENARY 11
+#define PIKEMAN 12
+#define ROYAL_GUARD 13
+#define SCOUT 14
+#define SWORDSMAN 15
+#define WARRIOR_PRIEST 16
 
+//Hex constants
+#define NUM_HEXES 37 
+#define BOUND 7
+#define NUM_ADJ_HEXES 6
+#define NO_HEX (-1)
+
+//History constants
+#define MAX_MOVES 300 
+
+//Move types
+#define DEPLOY 1
+#define BOLSTER 2
+#define INITIATIVE 3
+#define RECRUIT 4
+#define PASS 5
+#define MOVE 6
+#define CONTROL 7
+#define ATTACK 8
+#define TACTIC 9
+
+//Unit side
+#define UP 0
+#define DOWN 1
+
+typedef struct game Game;
+typedef struct board Board;
+typedef struct hex Hex;
 typedef struct player Player;
+typedef struct move Move;
+typedef struct turn Turn;
+typedef struct round Round;
+typedef struct history History;
+typedef struct discard Discard;
 typedef struct unit Unit;
+
+struct hex {
+	int id;
+	int num_adj;
+	int adj[NUM_ADJ_HEXES];
+	int control_space;
+	int control_marker;
+	int num_units;
+	int unit;
+};
+
+struct board {
+	Hex hexes[NUM_HEXES];
+};
 
 struct unit {
 	int type;
 	int num;
-	char *name;
-	Bitmap *card;
-	Bitmap *coin;
+};
+
+struct discard {
+	int unit;
+	int face;
 };
 
 struct player {
+	int color;
+	int control_coin;
 	int num_units;
 	Unit units[MAX_TYPE_UNITS];
-	int num_bag;
-	Unit *bag[MAX_NUM_UNITS];
-	int num_hand;
-	Unit *hand[MAX_HAND];
 	int num_supply;
-	Unit *supply[MAX_NUM_UNITS];
+	int supply[MAX_NUM_UNITS];
+	int num_bag;
+	int bag[MAX_NUM_UNITS];
+	int num_hand;
+	int hand[MAX_HAND];
+	int num_discarded;
+	Discard discarded[MAX_NUM_UNITS];
 	int num_removed;
-	Unit *removed[MAX_NUM_UNITS];
+	int removed[MAX_NUM_UNITS];
 };
 
+struct move {
+	int player;
+	int type;
+	int sub_type; //depends on move, e.g. cavalry tactic is move->attack
+	int unit; //unit coin played
+	int unit2; //depends on move, e.g. recruit, attack, etc.
+	int from_hex;
+	int to_hex;
+};
+
+//Stores changes to the board
+struct history {
+	int num_moves;
+	Move Moves[MAX_MOVES];
+};
+
+struct game {
+	Board board;
+	Player players[NUM_PLAYERS];
+	History history;
+};
 
 #endif //GAME_TYPES_H

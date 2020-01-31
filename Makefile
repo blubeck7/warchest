@@ -1,6 +1,6 @@
 warchest: warchest.o graphics.o putty.o
-	gcc -Wall -O2 -std=c11 -lm -o bin/warchest \
-	obj/warchest.o obj/graphics.o obj/putty.o
+	gcc -Wall -O2 -std=c11 -o bin/warchest \
+	obj/warchest.o obj/graphics.o obj/putty.o -lm
 
 warchest.o: src/warchest.c inc/graphics.h inc/game_types.h inc/window.h
 	gcc -Wall -O2 -std=c11 -c -o obj/warchest.o src/warchest.c
