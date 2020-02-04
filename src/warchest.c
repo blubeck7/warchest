@@ -3,17 +3,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <unistd.h>
 #include "../inc/game_types.h"
 
 Game game;
 
 int init_game(int type);
+int print_game(void);
+int init_start_player(void);
 int init_board(void);
 int print_board(void);
 int init_players_first(void);
 int init_random_game(void);
 int init_snake_game(void);
+int print_players(void);
+int init_history(void);
+int print_history(void);
 
 
 int main(int argc, char *argv[])
@@ -25,9 +31,33 @@ int main(int argc, char *argv[])
 
 int init_game(int type)
 {
+	init_start_player();
 	init_board();
 	if (type == FIRST)
 		init_players_first();
+	init_history();
+
+	return 0;
+}
+
+int print_game(void)
+{
+	printf("Game:\n");
+	printf("cur_player=%d\n", game.cur_player);
+	print_board();
+	print_players();
+	print_history();
+
+	return 0;
+}
+
+int init_start_player(void)
+{
+	srand(time(NULL));
+
+	game.cur_player = GOLD;
+	if (rand() % 2)
+		game.cur_player = SILVER;
 
 	return 0;
 }
@@ -92,7 +122,7 @@ int print_board(void)
 {
 	int i, j;
 
-	printf("Board\n");
+	printf("Board:\n");
 	for (i = 0; i < NUM_HEXES; i++) {
 		printf(
 			"Hex %d: id=%d, control_space=%d, control_marker=%d, "
@@ -211,5 +241,90 @@ int init_random_game(void)
 
 int init_snake_game(void)
 {
+	return 0;
+}
+
+int print_players(void)
+{
+	int i;
+	Player player;
+
+	printf("Players:\n");
+	for (i = 0; i < NUM_PLAYERS; i++) {
+		player = game.players[i];
+		printf("color=%d, control_coin=%d\n", player.color, player.control_coin);
+		printf("num_units=%d ", player.num_units);
+		print_units(player.units, player.num_units);
+		printf("\n");
+		printf("num_supply=%d ", player.num_supply);
+		print_units(player.supply, player.num_units);
+
+int print_units(Unit units[MAX_TYPE_UNITS], int num_units)
+{
+	int i;
+
+	for (i = 0; i < num_units; i++)
+		switch (units[i].type) {
+		case ARCHER:
+			printf("archer");
+			break;
+		case BESERKER:
+			printf("beserker");
+			break;
+		case CAVALRY:
+			printf("cavalry");
+			break;
+		case CROSSBOWMAN:
+			printf("crossbowman");
+			break;
+		case ENSIGN:
+			printf("ensign");
+			break;
+		case FOOTMAN:
+			printf("footman");
+			break;
+		case KNIGHT:
+			printf("knight");
+			break;
+		case LANCER:
+			printf("lancer");
+			break;
+		case LIGHT_CAVALRY:
+			printf("light_cavalry");
+			break;
+		case MARSHALL:
+			printf("marshall");
+			break;
+		case MERCENARY:
+			printf("mercenary");
+			break;
+		case PIKEMAN:
+			printf("pikeman");
+			break;
+		case ROYAL_GUARD:
+			printf("royal_guard");
+			break;
+		case SCOUT:
+			printf("scout");
+			break;
+		case SWORDSMAN:
+			printf("swordsman");
+			break;
+		case WARRIOR_PRIEST:
+			printf("warrior_priest");
+			break;
+		default;
+			break;
+		}
+		printf("=%d, ", units[i].num);
+	}
+
+	return 0;
+}
+
+int init_history(void)
+{
+	game.history.num_moves = 0;
+
 	return 0;
 }

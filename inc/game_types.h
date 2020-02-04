@@ -116,7 +116,7 @@ struct player {
 struct move {
 	int player;
 	int type;
-	int sub_type; //depends on move, e.g. cavalry tactic is move->attack
+	int type2; //depends on move, e.g. cavalry tactic is move->attack
 	int unit; //unit coin played
 	int unit2; //depends on move, e.g. recruit, attack, etc.
 	int from_hex;
@@ -130,6 +130,7 @@ struct history {
 };
 
 struct game {
+	int cur_player;
 	Board board;
 	Player players[NUM_PLAYERS];
 	History history;
