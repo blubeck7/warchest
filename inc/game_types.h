@@ -1,6 +1,7 @@
 #ifndef GAME_TYPES_H
 #define GAME_TYPES_H
 
+//Player constants
 #define MAX_NUM_UNITS 21
 #define MAX_TYPE_UNITS 5
 #define MAX_HAND 3
@@ -15,6 +16,8 @@
 #define SNAKE 2
 #define GOLD_PLAYER_FIRST_UNITS 18 //includes the royal coin
 #define SILVER_PLAYER_FIRST_UNITS 20 //includes the royal coin 
+#define GOLD_PLAYER_FIRST_TYPES 5 //includes the royal coin
+#define SILVER_PLAYER_FIRST_TYPES 5 //includes the royal coin 
 
 //Hex occupiers, i.e. coins
 #define SILVER (-2)
@@ -92,14 +95,14 @@ struct unit {
 };
 
 struct discard {
-	int unit;
+	int type;
 	int face;
 };
 
 struct player {
 	int color;
 	int control_coin;
-	int num_units;
+	int num_types;
 	Unit units[MAX_TYPE_UNITS];
 	int num_supply;
 	int supply[MAX_NUM_UNITS];
@@ -126,7 +129,7 @@ struct move {
 //Stores changes to the board
 struct history {
 	int num_moves;
-	Move Moves[MAX_MOVES];
+	Move moves[MAX_MOVES];
 };
 
 struct game {

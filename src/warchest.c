@@ -15,16 +15,20 @@ int init_start_player(void);
 int init_board(void);
 int print_board(void);
 int init_players_first(void);
-int init_random_game(void);
-int init_snake_game(void);
+int init_players_random(void);
+int init_players_snake(void);
 int print_players(void);
 int init_history(void);
 int print_history(void);
+int print_units(Unit units[MAX_TYPE_UNITS], int num_types);
+int print_discarded(Discard discarded[MAX_NUM_UNITS], int num_discarded);
+int print_unit(int type);
 
 
 int main(int argc, char *argv[])
 {
 	init_game(FIRST);
+	print_game();
 
 	return 0;
 }
@@ -33,8 +37,17 @@ int init_game(int type)
 {
 	init_start_player();
 	init_board();
-	if (type == FIRST)
+	switch (type) {
+	case FIRST:
 		init_players_first();
+		break;
+	case RANDOM:
+		init_players_random();
+		break;
+	case SNAKE:
+		init_players_snake();
+		break;
+	}
 	init_history();
 
 	return 0;
@@ -43,7 +56,15 @@ int init_game(int type)
 int print_game(void)
 {
 	printf("Game:\n");
-	printf("cur_player=%d\n", game.cur_player);
+	switch (game.cur_player) {
+	case GOLD:
+		printf("cur_player=GOLD");
+		break;
+	case SILVER:
+		printf("cur_player=SILVER");
+		break;
+	}
+	printf("\n");
 	print_board();
 	print_players();
 	print_history();
@@ -148,7 +169,7 @@ int init_players_first(void)
 	game.players[0].color = GOLD;
 	game.players[0].control_coin = 0;
 
-	game.players[0].num_units = GOLD_PLAYER_FIRST_UNITS;
+	game.players[0].num_types = GOLD_PLAYER_FIRST_TYPES;
 	game.players[0].units[0].type = ARCHER;
 	game.players[0].units[0].num = 4;
 	game.players[0].units[1].type = CAVALRY;
@@ -191,7 +212,7 @@ int init_players_first(void)
 	game.players[1].color = SILVER;
 	game.players[1].control_coin = 0;
 
-	game.players[1].num_units = SILVER_PLAYER_FIRST_UNITS;
+	game.players[1].num_types = SILVER_PLAYER_FIRST_TYPES;
 	game.players[1].units[0].type = CROSSBOWMAN;
 	game.players[1].units[0].num = 5;
 	game.players[1].units[1].type = LIGHT_CAVALRY;
@@ -234,37 +255,93 @@ int init_players_first(void)
 	return 0;
 }
 
-int init_random_game(void)
+int init_players_random(void)
 {
 	return 0;
 }
 
-int init_snake_game(void)
+int init_players_snake(void)
 {
 	return 0;
 }
 
 int print_players(void)
 {
-	int i;
+	int i, j;
 	Player player;
 
 	printf("Players:\n");
 	for (i = 0; i < NUM_PLAYERS; i++) {
 		player = game.players[i];
-		printf("color=%d, control_coin=%d\n", player.color, player.control_coin);
-		printf("num_units=%d ", player.num_units);
-		print_units(player.units, player.num_units);
+		if (player.color == GOLD)
+			printf("color=GOLD");
+		else if (player.color == SILVER)
+			printf("color=SILVER");
+		printf(", control_coin=%d", player.control_coin);
+		printf(", num_types=%d", player.num_types);
+		printf(", ");
+		print_units(player.units, player.num_types);
 		printf("\n");
-		printf("num_supply=%d ", player.num_supply);
-		print_units(player.supply, player.num_units);
+		printf("num_supply=%d,", player.num_supply);
+		printf(" ");
+		for (j = 0; j < player.num_supply; j++) {
+			print_unit(player.supply[j]);
+			if (j < player.num_supply - 1)
+				printf(", ");
+		}
+		printf("\n");
+		printf("num_bag=%d\n", player.num_bag);
+		for (j = 0; j < player.num_bag; j++)
+			print_unit(player.supply[j]);
+		printf("num_hand=%d\n", player.num_hand);
+		for (j = 0; j < player.num_hand; j++)
+			print_unit(player.hand[j]);
+		print_discarded(player.discarded, player.num_discarded);
+		printf("num_removed=%d\n", player.num_removed);
+		for (j = 0; j < player.num_removed; j++)
+			print_unit(player.removed[j]);
+	}
 
-int print_units(Unit units[MAX_TYPE_UNITS], int num_units)
+	return 0;
+}
+
+int print_units(Unit units[MAX_TYPE_UNITS], int num_types)
 {
 	int i;
 
-	for (i = 0; i < num_units; i++)
-		switch (units[i].type) {
+	for (i = 0; i < num_types; i++) {
+		print_unit(units[i].type);
+		printf("=%d", units[i].num);
+		if (i < num_types - 1)
+			printf(", ");
+	}
+
+	return 0;
+}
+
+int print_discarded(Discard discarded[MAX_NUM_UNITS], int num_discarded)
+{
+	int i;
+
+	for (i = 0; i < num_discarded; i++) {
+		print_unit(discarded[i].type);
+		printf("=%d, ", discarded[i].face);
+		printf("\n");
+	}
+
+	return 0;
+}
+
+int init_history(void)
+{
+	game.history.num_moves = 0;
+
+	return 0;
+}
+
+int print_unit(int type)
+{
+		switch (type) {
 		case ARCHER:
 			printf("archer");
 			break;
@@ -313,18 +390,28 @@ int print_units(Unit units[MAX_TYPE_UNITS], int num_units)
 		case WARRIOR_PRIEST:
 			printf("warrior_priest");
 			break;
-		default;
+		case GOLD: case SILVER:
+			printf("royal_coin");
 			break;
 		}
-		printf("=%d, ", units[i].num);
-	}
 
 	return 0;
 }
 
-int init_history(void)
+int print_history(void)
 {
-	game.history.num_moves = 0;
+	int i;
+
+	printf("History:\n");
+	for (i = 0; i < game.history.num_moves; i++) {
+		printf("Move: %d", i);
+		printf("player=%d, type=%d, type2=%d, unit=%d, unit2=%d, "
+				"from_hex=%d, to_hex=%d\n",
+				game.history.moves[i].player, game.history.moves[i].type,
+				game.history.moves[i].type2,
+				game.history.moves[i].unit, game.history.moves[i].unit2,
+				game.history.moves[i].from_hex, game.history.moves[i].to_hex);
+	}
 
 	return 0;
 }
