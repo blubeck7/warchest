@@ -76,7 +76,7 @@ typedef struct round Round;
 typedef struct history History;
 typedef struct discard Discard;
 typedef struct unit Unit;
-typedef Move (*GetMoveFunc)(Game *game_ptr);
+typedef Move (*GetMoveFunc)(Game *game_ptr, int n);
 
 struct hex {
 	int id;
@@ -115,6 +115,8 @@ struct player {
 	int bag[MAX_NUM_UNITS];
 	int num_hand;
 	int hand[MAX_HAND];
+	int num_deployed;
+	Deployed deployed[MAX_NUM_UNITS]; 
 	int num_discarded;
 	Discard discarded[MAX_NUM_UNITS];
 	int num_removed;
@@ -140,6 +142,7 @@ struct history {
 
 struct game {
 	int cur_player;
+	int resolve; /* whether a played coin has follow up actions to handle */
 	Board board;
 	Player players[NUM_PLAYERS];
 	History history;

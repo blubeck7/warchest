@@ -32,9 +32,10 @@ int shuffle_bag(int player);
 int have_coins(void);
 int update_game(Move move);
 int gen_moves(Game *game_ptr, Move moves[MOVE_SPACE], int *num_moves);
+int gen_deploy_moves(Game *game_ptr, Move moves[MOVE_SPACE], int *num_moves, 					int coin, int n);
 
-Move random_move(Game *game_ptr);
-Move keyboard_move(Game *game_ptr);
+Move random_move(Game *game_ptr, int n);
+Move keyboard_move(Game *game_ptr, int n);
 
 int main(int argc, char *argv[])
 {
@@ -89,7 +90,7 @@ int print_game(void)
 		printf("cur_player=SILVER");
 		break;
 	}
-	printf("\n");
+	printf(", resolve=%d\n", game.resolve);
 	print_board();
 	print_players();
 	print_history();
@@ -105,6 +106,8 @@ int init_start_player(void)
 	game.cur_player = GOLD;
 	if (rand() % 2)
 		game.cur_player = SILVER;
+	
+	game.resolve = 0;
 
 	return 0;
 }
@@ -114,10 +117,12 @@ int init_board(void)
 	FILE *file;
 	char line[128], *token, *adj;
 	int i, j;
+	char *err;
 
 	file = fopen("res/board.csv", "r");
 	//header
-	fgets(line, sizeof(line), file);
+	if ((err = fgets(line, sizeof(line), file)) == NULL)
+		return -1;
 	while (fgets(line, sizeof(line), file)) {
 		//hex reference number
 		token = strtok(line, ",");
@@ -532,7 +537,7 @@ int use_coins(void)
 		for (i = 0; i < NUM_PLAYERS; i++)
 			if (game.players[i].color == game.cur_player)
 				break;
-		move = game.players[i].get_move(&game);
+		move = game.players[i].get_move(&game, i);
 		done = update_game(move);
 	}
 
@@ -578,49 +583,76 @@ int have_coins(void)
 	return 0;
 }
 
-int gen_moves(Game *game_ptr, Move moves[MOVE_SPACE], int *num_moves)
+int gen_moves(Game *game_ptr, Move moves[MOVE_SPACE], int *num_moves, int n)
 {
+	int i, coin;
+
+	if (game_ptr->resolve)
+		;
+	else {
+		/* playing a new coin */
+		for (i = 0; i < game.players[n].num_hand, i++) {
+			/* deploy */
+			coin = game.players[n].hand[i];
+			gen_deploy_moves(game_ptr, moves, num_moves, coin, n);
+		}
+	}
+	//Deploy
 	return 0;
 }
+
+int gen_deploy_moves(Game *game_ptr, Move moves[MOVE_SPACE], int *num_moves, 					int coin, int n)
+{
+	int i;
+
+	for (i = 0; i < NUM_HEXES; i++) {
+		if (game.board.hexes[i].control_marker == game.cur_player &&
+			game.board.hexes[i].num_units == 0 && coin != (GOLD || SILVER)) {
+				moves[]	
+			}
+	}
+}
+
 
 int update_game(Move move)
 {
 	return 0;
 }
 
-Move random_move(Game *game_ptr)
+Move random_move(Game *game_ptr, int n)
 {
 	int num_moves = 0;
 	Move moves[MOVE_SPACE];
 
-	gen_moves(game_ptr, moves, &num_moves);
+	gen_moves(game_ptr, moves, &num_moves, n);
 
 	return moves[rand() % num_moves];
 }
 
-Move keyboard_move(Game *game_ptr)
+Move keyboard_move(Game *game_ptr, int n)
 {
 	Move move;
+	int n;
 
 	move.player = game_ptr->cur_player;
 	printf("Enter the move.\n");
 	printf("type: ");
-	scanf("%d", &move.type);
+	while ((n = scanf("%d", &move.type)) < 1);
 	printf("\n");
 	printf("type2: ");
-	scanf("%d", &move.type2);
+	while ((n = scanf("%d", &move.type2)) < 1);
 	printf("\n");
 	printf("unit: ");
-	scanf("%d", &move.unit);
+	while ((n = scanf("%d", &move.unit)) < 1);
 	printf("\n");
 	printf("unit2: ");
-	scanf("%d", &move.unit2);
+	while ((n = scanf("%d", &move.unit2)) < 1);
 	printf("\n");
 	printf("from_hex: ");
-	scanf("%d", &move.from_hex);
+	while ((n = scanf("%d", &move.from_hex)) < 1);
 	printf("\n");
 	printf("to_hex: ");
-	scanf("%d", &move.to_hex);
+	while ((n = scanf("%d", &move.to_hex)) < 1);
 	printf("\n");
 
 	return move;
