@@ -9,37 +9,61 @@
 
 Game game;
 
-int init_game(int type);
+int init_game(int type, char *names[NUM_PLAYERS], GetMoveFunc move_funcs[2]);
 int print_game(void);
 int init_start_player(void);
 int init_board(void);
 int print_board(void);
-int init_players_first(void);
+int init_players_first(char *names[2], GetMoveFunc move_funcs[2]);
 int init_players_random(void);
 int init_players_snake(void);
 int print_players(void);
 int init_history(void);
 int print_history(void);
+int init_bags(void);
 int print_units(Unit units[MAX_TYPE_UNITS], int num_types);
 int print_discarded(Discard discarded[MAX_NUM_UNITS], int num_discarded);
 int print_unit(int type);
+int play_game(void);
+int draw_coins(void);
+int use_coins(void);
+int fill_bag(int player);
+int shuffle_bag(int player);
+int have_coins(void);
+int update_game(Move move);
+int gen_moves(Game *game_ptr, Move moves[MOVE_SPACE], int *num_moves);
 
+Move random_move(Game *game_ptr);
+Move keyboard_move(Game *game_ptr);
 
 int main(int argc, char *argv[])
 {
-	init_game(FIRST);
+	char *names[2];
+	GetMoveFunc move_funcs[2];
+
+	names[0] = "HUMAN";
+	names[1] = "COMPUTER";
+	move_funcs[0] = keyboard_move;
+	move_funcs[1] = random_move;
+
+	init_game(FIRST, names, move_funcs);
+	print_game();
+	//play_game();
+	draw_coins();
 	print_game();
 
 	return 0;
 }
 
-int init_game(int type)
+int init_game(int type, char *names[NUM_PLAYERS], GetMoveFunc move_funcs[2])
 {
+	srand(time(NULL));
+
 	init_start_player();
 	init_board();
 	switch (type) {
 	case FIRST:
-		init_players_first();
+		init_players_first(names, move_funcs);
 		break;
 	case RANDOM:
 		init_players_random();
@@ -49,6 +73,7 @@ int init_game(int type)
 		break;
 	}
 	init_history();
+	init_bags();
 
 	return 0;
 }
@@ -68,6 +93,7 @@ int print_game(void)
 	print_board();
 	print_players();
 	print_history();
+	printf("\n");
 
 	return 0;
 }
@@ -145,15 +171,22 @@ int print_board(void)
 
 	printf("Board:\n");
 	for (i = 0; i < NUM_HEXES; i++) {
-		printf(
-			"Hex %d: id=%d, control_space=%d, control_marker=%d, "
-			"num_units=%d, unit=%d, num_adj=%d, ",
-			i, game.board.hexes[i].id,
-			game.board.hexes[i].control_space,  
-			game.board.hexes[i].control_marker,
-			game.board.hexes[i].num_units,
-			game.board.hexes[i].unit,
-			game.board.hexes[i].num_adj);
+		printf("Hex %d: id=%d, control_space=%d, ", i, game.board.hexes[i].id,
+		game.board.hexes[i].control_space);
+		switch (game.board.hexes[i].control_marker) {
+		case GOLD:
+			printf("control_marker=GOLD");
+			break;
+		case SILVER:
+			printf("control_marker=SILVER");
+			break;
+		default:
+			printf("control_marker=%d", game.board.hexes[i].control_marker);
+		}
+		printf(", ");
+		printf("num_units=%d, unit=%d, num_adj=%d, ",
+		game.board.hexes[i].num_units, game.board.hexes[i].unit,
+		game.board.hexes[i].num_adj);
 		printf("adj=");
 		for (j = 0; j < game.board.hexes[i].num_adj; j++)
 			printf(" %d", game.board.hexes[i].adj[j]);
@@ -163,11 +196,16 @@ int print_board(void)
 	return 0;
 }	
 		
-int init_players_first(void)
+int init_players_first(char *names[2], GetMoveFunc move_funcs[2])
 {
 	/* gold player */
+	game.players[0].name = names[0];
 	game.players[0].color = GOLD;
 	game.players[0].control_coin = 0;
+	if (game.cur_player == GOLD)
+		game.players[0].control_coin = 1;
+	game.players[0].control_markers = NUM_CONTROL_MARKERS - 2;
+	game.players[0].get_move = move_funcs[0];
 
 	game.players[0].num_types = GOLD_PLAYER_FIRST_TYPES;
 	game.players[0].units[0].type = ARCHER;
@@ -209,8 +247,13 @@ int init_players_first(void)
 
 	/* silver player */
 
+	game.players[1].name = names[1];
 	game.players[1].color = SILVER;
 	game.players[1].control_coin = 0;
+	if (game.cur_player == SILVER)
+		game.players[1].control_coin = 1;
+	game.players[1].control_markers = NUM_CONTROL_MARKERS - 2;
+	game.players[1].get_move = move_funcs[1];
 
 	game.players[1].num_types = SILVER_PLAYER_FIRST_TYPES;
 	game.players[1].units[0].type = CROSSBOWMAN;
@@ -273,11 +316,13 @@ int print_players(void)
 	printf("Players:\n");
 	for (i = 0; i < NUM_PLAYERS; i++) {
 		player = game.players[i];
+		printf("name=%s, ", player.name);
 		if (player.color == GOLD)
 			printf("color=GOLD");
 		else if (player.color == SILVER)
 			printf("color=SILVER");
 		printf(", control_coin=%d", player.control_coin);
+		printf(", control_markers=%d", player.control_markers);
 		printf(", num_types=%d", player.num_types);
 		printf(", ");
 		print_units(player.units, player.num_types);
@@ -290,18 +335,36 @@ int print_players(void)
 				printf(", ");
 		}
 		printf("\n");
-		printf("num_bag=%d\n", player.num_bag);
-		for (j = 0; j < player.num_bag; j++)
-			print_unit(player.supply[j]);
-		printf("num_hand=%d\n", player.num_hand);
-		for (j = 0; j < player.num_hand; j++)
+		printf("num_bag=%d,", player.num_bag);
+		printf(" ");
+		for (j = 0; j < player.num_bag; j++) {
+			print_unit(player.bag[j]);
+			if (j < player.num_bag - 1)
+				printf(", ");
+		}
+		printf("\n");
+		printf("num_hand=%d", player.num_hand);
+		for (j = 0; j < player.num_hand; j++) {
+			printf(", ");
 			print_unit(player.hand[j]);
+		}
+		printf("\n");
 		print_discarded(player.discarded, player.num_discarded);
 		printf("num_removed=%d\n", player.num_removed);
 		for (j = 0; j < player.num_removed; j++)
 			print_unit(player.removed[j]);
 	}
 
+	return 0;
+}
+
+int init_bags(void)
+{
+	int i;
+
+	for (i = 0; i < NUM_PLAYERS; i++)
+		shuffle_bag(i);
+		
 	return 0;
 }
 
@@ -318,6 +381,7 @@ int print_units(Unit units[MAX_TYPE_UNITS], int num_types)
 
 	return 0;
 }
+	char *name;
 
 int print_discarded(Discard discarded[MAX_NUM_UNITS], int num_discarded)
 {
@@ -415,3 +479,150 @@ int print_history(void)
 
 	return 0;
 }
+
+int play_game(void)
+{
+	int done;
+
+	done = 0;
+	while (!done) {
+		draw_coins();
+		done = use_coins();
+	}
+
+	return 0;
+}
+
+int draw_coins(void)
+{
+	int i, j, n;
+
+	for (i = 0; i < NUM_PLAYERS; i++) {
+		game.players[i].num_hand = 0;
+
+		if (game.players[i].num_bag < MAX_HAND)
+			n = game.players[i].num_bag;
+		else
+			n = MAX_HAND;
+
+		for (j = 0; j < n; j++)
+			game.players[i].hand[game.players[i].num_hand++] =
+			game.players[i].bag[--game.players[i].num_bag];
+
+		if (game.players[i].num_hand < MAX_HAND) {
+			fill_bag(i);	
+			shuffle_bag(i);
+		}
+
+		n = MAX_HAND - game.players[i].num_hand;
+		for (j = 0; j < n; j++)
+			game.players[i].hand[game.players[i].num_hand++] =
+			game.players[i].bag[--game.players[i].num_bag];
+	}
+
+	return 0;
+}
+
+int use_coins(void)
+{
+	int i, done;
+	Move move;
+
+	while (have_coins() && !done) {
+		for (i = 0; i < NUM_PLAYERS; i++)
+			if (game.players[i].color == game.cur_player)
+				break;
+		move = game.players[i].get_move(&game);
+		done = update_game(move);
+	}
+
+	return done;
+}
+
+int fill_bag(int player)
+{
+	int i;
+
+	for (i = 0; i < game.players[player].num_discarded; i++)
+		game.players[player].bag[game.players[player].num_bag++] = 
+		game.players[player].discarded[i].type;
+
+	game.players[player].num_discarded = 0;
+
+	return 0;
+}
+
+
+int shuffle_bag(int player)
+{
+	int i, j, temp;
+
+	for (i = game.players[player].num_bag; i > 0; i--) {
+		j = rand() % i;
+		temp = game.players[player].bag[i - 1];
+		game.players[player].bag[i - 1] = game.players[player].bag[j];
+		game.players[player].bag[j] = temp;
+	}
+
+	return 0;
+}
+
+int have_coins(void)
+{
+	int i;
+
+	for (i = 0; i < NUM_PLAYERS; i++)
+		if (game.players[i].num_hand)
+			return 1;
+
+	return 0;
+}
+
+int gen_moves(Game *game_ptr, Move moves[MOVE_SPACE], int *num_moves)
+{
+	return 0;
+}
+
+int update_game(Move move)
+{
+	return 0;
+}
+
+Move random_move(Game *game_ptr)
+{
+	int num_moves = 0;
+	Move moves[MOVE_SPACE];
+
+	gen_moves(game_ptr, moves, &num_moves);
+
+	return moves[rand() % num_moves];
+}
+
+Move keyboard_move(Game *game_ptr)
+{
+	Move move;
+
+	move.player = game_ptr->cur_player;
+	printf("Enter the move.\n");
+	printf("type: ");
+	scanf("%d", &move.type);
+	printf("\n");
+	printf("type2: ");
+	scanf("%d", &move.type2);
+	printf("\n");
+	printf("unit: ");
+	scanf("%d", &move.unit);
+	printf("\n");
+	printf("unit2: ");
+	scanf("%d", &move.unit2);
+	printf("\n");
+	printf("from_hex: ");
+	scanf("%d", &move.from_hex);
+	printf("\n");
+	printf("to_hex: ");
+	scanf("%d", &move.to_hex);
+	printf("\n");
+
+	return move;
+}
+

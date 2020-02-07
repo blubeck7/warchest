@@ -18,6 +18,8 @@
 #define SILVER_PLAYER_FIRST_UNITS 20 //includes the royal coin 
 #define GOLD_PLAYER_FIRST_TYPES 5 //includes the royal coin
 #define SILVER_PLAYER_FIRST_TYPES 5 //includes the royal coin 
+#define NUM_CONTROL_MARKERS 6
+#define MOVE_SPACE 200
 
 //Hex occupiers, i.e. coins
 #define SILVER (-2)
@@ -74,6 +76,7 @@ typedef struct round Round;
 typedef struct history History;
 typedef struct discard Discard;
 typedef struct unit Unit;
+typedef Move (*GetMoveFunc)(Game *game_ptr);
 
 struct hex {
 	int id;
@@ -100,8 +103,10 @@ struct discard {
 };
 
 struct player {
+	char *name;
 	int color;
 	int control_coin;
+	int control_markers;
 	int num_types;
 	Unit units[MAX_TYPE_UNITS];
 	int num_supply;
@@ -114,6 +119,7 @@ struct player {
 	Discard discarded[MAX_NUM_UNITS];
 	int num_removed;
 	int removed[MAX_NUM_UNITS];
+	GetMoveFunc get_move;
 };
 
 struct move {
