@@ -61,6 +61,8 @@
 #define CONTROL 7
 #define ATTACK 8
 #define TACTIC 9
+#define DRAW 10
+#define SELECT 11
 
 //Unit side
 #define UP 0
@@ -76,7 +78,14 @@ typedef struct round Round;
 typedef struct history History;
 typedef struct discard Discard;
 typedef struct unit Unit;
+typedef struct deployed Deployed;
 typedef Move (*GetMoveFunc)(Game *game_ptr, int n);
+
+typedef int (*MoveFunc)(Game *game, Move *move);
+
+struct deployed {
+	int n;
+};
 
 struct hex {
 	int id;
@@ -127,15 +136,14 @@ struct player {
 struct move {
 	int player;
 	int type;
-	int type2; //depends on move, e.g. cavalry tactic is move->attack
-	int unit; //unit coin played
-	int unit2; //depends on move, e.g. recruit, attack, etc.
+	int unit;
 	int from_hex;
 	int to_hex;
 };
 
 //Stores changes to the board
 struct history {
+	Unit *units[NUM_PLAYERS][MAX_TYPE_UNITS];
 	int num_moves;
 	Move moves[MAX_MOVES];
 };
