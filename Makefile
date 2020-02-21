@@ -9,3 +9,13 @@ ds: ds.o
 
 ds.o: src/ds.c inc/ds.h
 	gcc -Wall -O2 -std=c11 -c -o obj/ds.o src/ds.c
+
+test_coinqueue: coinqueue.o coin.o inc/coinqueue.h inc/coin.h
+	gcc -Wall -O2 -std=c11 -o bin/test_coinqueue obj/coinqueue.o \
+		obj/coin.o test/test_coinqueue.c
+
+coinqueue.o: src/coinqueue.c inc/coinqueue.h
+	gcc -Wall -O2 -std=c11 -c -o obj/coinqueue.o src/coinqueue.c
+
+coin.o: src/coin.c inc/coin.h
+	gcc -Wall -O2 -std=c11 -c -o obj/coin.o src/coin.c
