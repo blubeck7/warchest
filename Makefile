@@ -19,3 +19,9 @@ coinqueue.o: src/coinqueue.c inc/coinqueue.h
 
 coin.o: src/coin.c inc/coin.h
 	gcc -Wall -O2 -std=c11 -c -o obj/coin.o src/coin.c
+
+game.o: src/game.c inc/game.h inc/types.h
+	gcc -Wall -O2 -std=c11 -c -o obj/game.o src/game.c
+
+clean:
+	rm ./obj/* ./bin/*
