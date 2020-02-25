@@ -4,8 +4,8 @@ warchest: warchest.o
 warchest.o: src/warchest.c inc/game_types.h
 	gcc -Wall -O2 -std=c11 -c -o obj/warchest.o src/warchest.c
 
-ds: ds.o
-	gcc -Wall -O2 -std=c11 -o bin/ds obj/ds.o -lm
+test_ds: src/ds.c inc/ds.h
+	gcc -D TESTDS -Wall -O2 -std=c11 -o bin/test_ds src/ds.c
 
 ds.o: src/ds.c inc/ds.h
 	gcc -Wall -O2 -std=c11 -c -o obj/ds.o src/ds.c
@@ -22,6 +22,9 @@ coin.o: src/coin.c inc/coin.h
 
 game.o: src/game.c inc/game.h inc/types.h
 	gcc -Wall -O2 -std=c11 -c -o obj/game.o src/game.c
+
+move.o: src/move.c inc/coin.h inc/game.h inc/move.h inc/player.h inc/types.h
+	gcc -Wall -O2 -std=c11 -c -o obj/move.o src/move.c
 
 clean:
 	rm ./obj/* ./bin/*
