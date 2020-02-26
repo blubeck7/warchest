@@ -50,8 +50,8 @@ int do_move(Move move, Game game)
 
 int deploy_move(Move move, Game game)
 {
-	remove_coin_hand_player(move->played_coin, move->player);
-	add_coin_hex(move->played_coin, move->receiver_hexes[0]);
+	remove_coin_hand_player(move->player, move->played_coin);
+	add_coin_hex(move->receiver_hexes[0], move->played_coin);
 
 	return 0;
 }

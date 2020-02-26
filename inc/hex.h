@@ -3,7 +3,7 @@
 
 #include "types.h"
 
-int add_coin_hex(Coin coin, Hex hex);
+int add_coin_hex(Hex hex, Coin coin);
 
 #endif //HEX_H
 

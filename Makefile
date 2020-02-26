@@ -23,8 +23,14 @@ coin.o: src/coin.c inc/coin.h
 game.o: src/game.c inc/game.h inc/types.h
 	gcc -Wall -O2 -std=c11 -c -o obj/game.o src/game.c
 
+hex.o: src/hex.c inc/ds.h inc/hex.h inc/types.h
+	gcc -Wall -O2 -std=c11 -c -o obj/hex.o src/hex.c
+
 move.o: src/move.c inc/coin.h inc/game.h inc/move.h inc/player.h inc/types.h
 	gcc -Wall -O2 -std=c11 -c -o obj/move.o src/move.c
+
+player.o: src/player.c inc/ds.h inc/player.h inc/types.h
+	gcc -Wall -O2 -std=c11 -c -o obj/player.o src/player.c
 
 clean:
 	rm ./obj/* ./bin/*

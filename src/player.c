@@ -1,11 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "../inc/ds.h"
 #include "../inc/player.h"
 #include "../inc/types.h"
 
-Player whose_move_game(Game game);
-
-//struct player {
+struct player {
 	//char *name;
 	//int color;
 	//int control_coin;
@@ -17,7 +16,7 @@ Player whose_move_game(Game game);
 	//int num_bag;
 	//int bag[MAX_NUM_UNITS];
 	//int num_hand;
-	//int hand[MAX_HAND];
+	List hand;
 	//int num_deployed;
 	//Deployed deployed[MAX_NUM_UNITS]; 
 	//int num_discarded;
@@ -25,4 +24,13 @@ Player whose_move_game(Game game);
 	//int num_removed;
 	//int removed[MAX_NUM_UNITS];
 	//GetMoveFunc get_move;
-//};
+};
+
+int remove_coin_hand_player(Player player, Coin coin)
+{
+	if (remove_list(player->hand, (Item) coin) == NULL)
+		return -1;
+
+	return 0;
+}
+
