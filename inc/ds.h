@@ -17,6 +17,7 @@ int len_list(List list);
 Item peak_list(List list, int n);
 int add_list(List list, Item item);
 Item remove_list(List list, Item item);
+int clear_list(List list);
 //int contains_list(List *list, Item item);
 //int iterate_list(List *list);
 //Item next_list(List *list);
@@ -42,4 +43,5 @@ int print_stack(Stack stack);
 int print_all_stack(Stack stack);
 int add_stack(Stack stack, Item item);
 Item remove_stack(Stack stack);
+Item peak_stack(Stack stack, int n);
 #endif //DS_H

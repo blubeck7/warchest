@@ -10,5 +10,10 @@ int print_all_game(Game game);
 int is_done_game(Game game);
 Player whose_move_game(Game game);
 int update_game(Move move, Game game);
+int switch_initiative_coin_game(Player to_player, Game game);
+int set_triggered_game(Game game);
+int gen_moves_game(List hand, Game game, List move_space);
+int has_unoccupied_control_hexes_game(Game game, Player player);
+List get_unoccupied_control_hexes_game(Game game, Player player);
 
 #endif //GAME_H

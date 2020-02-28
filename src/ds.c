@@ -31,6 +31,7 @@ struct stack {
 	Item *items; //array of pointers to the items
 };
 
+int test_list(void);
 int test_queue(void);
 int test_queuearray(void);
 int test_stack(void);
@@ -38,9 +39,138 @@ int test_stack(void);
 #ifdef TESTDS
 int main(int argc, char *argv[])
 {
-	test_queue();
-	/*test_stack();*/
+	/*test_list();*/
+	/*test_queue();*/
+	test_stack();
 	//test_queuearray();
+
+	return 0;
+}
+
+int test_list(void)
+{
+	int i;
+	List list;
+	Item item;
+
+	list = create_list(20);
+	print_all_list(list);
+	for (i = 0; i < 22; i++)
+		add_list(list, (Item) i + 1);
+	print_all_list(list);
+	printf("%d\n", len_list(list));
+	printf("%p\n", peak_list(list, -1));
+	printf("%p\n", peak_list(list, 100));
+	printf("%p\n", peak_list(list, 10));
+	print_all_list(list);
+	remove_list(list, (Item) 8);
+	remove_list(list, (Item) 11);
+	remove_list(list, (Item) 110);
+	print_all_list(list);
+	add_list(list, (Item) 112);
+	print_all_list(list);
+	clear_list(list);
+	print_all_list(list);
+	printf("%p\n", peak_list(list, -1));
+	printf("%p\n", peak_list(list, 100));
+	item = remove_list(list, (Item) 8);
+	printf("item is %p\n", item);
+	add_list(list, (Item) 5);
+	add_list(list, (Item) 7);
+	print_all_list(list);
+	destroy_list(list);
+
+	return 0;
+}
+
+int test_queue(void)
+{
+	Queue queue;
+
+	queue = create_queue(7);
+	add_queue(queue, (Item) 1);
+	add_queue(queue, (Item) 2);
+	add_queue(queue, (Item) 3);
+	add_queue(queue, (Item) 4);
+	add_queue(queue, (Item) 5);
+	add_queue(queue, (Item) 6);
+	add_queue(queue, (Item) 7);
+	print_all_queue(queue);
+	shuffle_queue(queue);
+	print_all_queue(queue);
+	remove_queue(queue);
+	remove_queue(queue);
+	print_all_queue(queue);
+	shuffle_queue(queue);
+	print_all_queue(queue);
+	remove_queue(queue);
+	print_all_queue(queue);
+	add_queue(queue, (Item) 33);
+	print_all_queue(queue);
+	destroy_queue(queue);
+
+	return 0;
+}
+
+int test_queuearray(void)
+{
+	int queue_sizes[5];
+	QueueArray queuearray;
+	Item item;
+
+	queue_sizes[0] = 1;
+	queue_sizes[1] = 6;
+	queue_sizes[2] = 4;
+	queue_sizes[3] = 5;
+	queue_sizes[4] = 5;
+	queuearray = create_queuearray(5, queue_sizes);
+	print_all_queuearray(queuearray);
+	printf("%d\n", add_queuearray(queuearray, 0, (Item) 9));
+	printf("%d\n", add_queuearray(queuearray, 0, (Item) 9));
+	print_all_queuearray(queuearray);
+	item = remove_queuearray(queuearray, 0);
+	printf("%ld\n", (long) item);
+	print_all_queuearray(queuearray);
+	printf("%d\n", add_queuearray(queuearray, 1, (Item) 8));
+	printf("%d\n", add_queuearray(queuearray, 2, (Item) 9));
+	print_all_queuearray(queuearray);
+	destroy_queuearray(queuearray);
+
+	return 0;
+}
+
+int test_stack(void)
+{
+	Stack stack;
+
+	stack = create_stack(5);
+	print_all_stack(stack);
+	add_stack(stack, (Item) 1);
+	add_stack(stack, (Item) 2);
+	add_stack(stack, (Item) 3);
+	add_stack(stack, (Item) 4);
+	add_stack(stack, (Item) 5);
+	print_all_stack(stack);
+	printf("peak stack %d is %p\n", 2, peak_stack(stack, 2));
+	printf("peak stack %d is %p\n", 1, peak_stack(stack, 1));
+	remove_stack(stack);
+	remove_stack(stack);
+	remove_stack(stack);
+	print_all_stack(stack);
+	add_stack(stack, (Item) 9);
+	add_stack(stack, (Item) 9);
+	print_all_stack(stack);
+	remove_stack(stack);
+	print_all_stack(stack);
+	remove_stack(stack);
+	remove_stack(stack);
+	remove_stack(stack);
+	remove_stack(stack);
+	remove_stack(stack);
+	print_all_stack(stack);
+	add_stack(stack, (Item) 8);
+	print_all_stack(stack);
+	destroy_stack(stack);
 
 	return 0;
 }
@@ -143,6 +273,13 @@ Item remove_list(List list, Item item)
 	list->len--;
 
 	return temp;
+}
+
+int clear_list(List list)
+{
+	list->len = 0;
+
+	return 0;
 }
 
 QueueArray create_queuearray(int size, int queue_sizes[])
@@ -389,94 +526,12 @@ Item remove_stack(Stack stack)
 	return item;
 }
 
-int test_queue(void)
+Item peak_stack(Stack stack, int n)
 {
-	Queue queue;
+	if (n < 0 || n >= stack->num)
+		return NULL;
 
-	queue = create_queue(7);
-	add_queue(queue, (Item) 1);
-	add_queue(queue, (Item) 2);
-	add_queue(queue, (Item) 3);
-	add_queue(queue, (Item) 4);
-	add_queue(queue, (Item) 5);
-	add_queue(queue, (Item) 6);
-	add_queue(queue, (Item) 7);
-	print_all_queue(queue);
-	shuffle_queue(queue);
-	print_all_queue(queue);
-	remove_queue(queue);
-	remove_queue(queue);
-	print_all_queue(queue);
-	shuffle_queue(queue);
-	print_all_queue(queue);
-	remove_queue(queue);
-	print_all_queue(queue);
-	add_queue(queue, (Item) 33);
-	print_all_queue(queue);
-	destroy_queue(queue);
-
-	return 0;
-}
-
-int test_queuearray(void)
-{
-	int queue_sizes[5];
-	QueueArray queuearray;
-	Item item;
-
-	queue_sizes[0] = 1;
-	queue_sizes[1] = 6;
-	queue_sizes[2] = 4;
-	queue_sizes[3] = 5;
-	queue_sizes[4] = 5;
-	queuearray = create_queuearray(5, queue_sizes);
-	print_all_queuearray(queuearray);
-	printf("%d\n", add_queuearray(queuearray, 0, (Item) 9));
-	printf("%d\n", add_queuearray(queuearray, 0, (Item) 9));
-	print_all_queuearray(queuearray);
-	item = remove_queuearray(queuearray, 0);
-	printf("%ld\n", (long) item);
-	print_all_queuearray(queuearray);
-	printf("%d\n", add_queuearray(queuearray, 1, (Item) 8));
-	printf("%d\n", add_queuearray(queuearray, 2, (Item) 9));
-	print_all_queuearray(queuearray);
-	destroy_queuearray(queuearray);
-
-	return 0;
-}
-
-int test_stack(void)
-{
-	Stack stack;
-
-	stack = create_stack(5);
-	print_all_stack(stack);
-	add_stack(stack, (Item) 1);
-	add_stack(stack, (Item) 2);
-	add_stack(stack, (Item) 3);
-	add_stack(stack, (Item) 4);
-	add_stack(stack, (Item) 5);
-	print_all_stack(stack);
-	remove_stack(stack);
-	remove_stack(stack);
-	remove_stack(stack);
-	print_all_stack(stack);
-	add_stack(stack, (Item) 9);
-	add_stack(stack, (Item) 9);
-	print_all_stack(stack);
-	remove_stack(stack);
-	print_all_stack(stack);
-	remove_stack(stack);
-	remove_stack(stack);
-	remove_stack(stack);
-	remove_stack(stack);
-	remove_stack(stack);
-	print_all_stack(stack);
-	add_stack(stack, (Item) 8);
-	print_all_stack(stack);
-	destroy_stack(stack);
-
-	return 0;
+	return stack->items[stack->top - n - 1];
 }
 
 /*List *create_list(void)*/

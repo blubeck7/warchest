@@ -1,6 +1,8 @@
 #ifndef TYPES_H
 #define TYPES_H
 
+#include "ds.h"
+
 typedef struct board *Board;
 typedef struct coin *Coin;
 typedef struct game *Game;
@@ -8,8 +10,35 @@ typedef struct hex *Hex;
 typedef struct history *History;
 typedef struct move *Move;
 typedef struct player *Player;
+typedef Move (*GetMoveFunc)(Player player, Game game);
+typedef int (*GenMoveFunc)(Coin coin, Game game, List move_space);
 
-typedef Move **(*MoveFunc)(Coin coin, Game game);
+#define NUM_PLAYERS 2
+#define GOLD_PLAYER 0
+#define SILVER_PLAYER 1
+
+#define MAX_COINS 2
+#define NONE 0
+#define DEPLOY 1
+#define BOLSTER 2
+#define INITIATIVE 3
+#define RECRUIT 4
+#define PASS 5
+#define MOVE 6
+#define CONTROL 7
+#define ATTACK 8
+#define TACTIC 9
+
+#define COIN_DOWN 0
+#define COIN_UP 1
+
+#define NUM_ADJ_HEXES 6
+
+/*#define DRAW 10*/
+/*#define SELECT 11*/
+/*#define REMOVE 12*/
+/*#define MANEUVER 13*/
+/*#define ENSIGN_MOVE 14*/
 
 //Player constants
 //#define MAX_NUM_UNITS 21

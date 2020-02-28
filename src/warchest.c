@@ -1,11 +1,14 @@
-#define _POSIX_C_SOURCE 200809L
-
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <unistd.h>
-#include "../inc/game_types.h"
+#include "../inc/coin.h"
+#include "../inc/ds.h"
+#include "../inc/game.h"
+#include "../inc/hex.h"
+#include "../inc/history.h"
+#include "../inc/move.h"
+#include "../inc/player.h"
+#include "../inc/types.h"
+#include "../inc/warchest.h"
 
 /*Game game;*/
 
@@ -34,17 +37,21 @@
 /*int gen_moves(Game *game_ptr, Move moves[MOVE_SPACE], int *num_moves, int n);*/
 /*int gen_deploy_moves(Game *game_ptr, Move moves[MOVE_SPACE], int *num_moves, 					int coin, int n);*/
 
-History *run_game(MoveFunc move_funcs[NUM_PLAYERS], int game_type);
+//History *run_game(MoveFunc move_funcs[NUM_PLAYERS], int game_type);
 
 /*Move random_move(Game *game_ptr, int n);*/
 /*Move keyboard_move(Game *game_ptr, int n);*/
 
 int main(int argc, char *argv[])
 {
-	History *history;
-	MoveFunc move_funcs[2] = {NULL, NULL};
+	QueueArray gamebox, Game game;
 
-	history = run_game(move_funcs, FIRST);
+	gamebox = create_gamebox();
+	load_gamebox(gamebox);
+	/*History history;*/
+	/*MoveFunc move_funcs[2] = {NULL, NULL};*/
+
+	/*history = run_game(move_funcs, FIRST);*/
 
 	/*char *names[2];*/
 	/*GetMoveFunc move_funcs[2];*/
@@ -63,14 +70,24 @@ int main(int argc, char *argv[])
 	return 0;
 }
 
-History *run_game(MoveFunc move_funcs[], int game_type)
+QueueArray create_gamebox(void)
 {
-	History *history;
-
-	history = malloc(sizeof(History));
-
-	return history;
+	return NULL;
 }
+
+int load_gamebox(QueueArray gamebox)
+{
+	return 0;
+}
+
+/*History run_game(MoveFunc move_funcs[], int game_type)*/
+/*{*/
+	/*[>History history;<]*/
+
+	/*[>history = malloc(sizeof(History));<]*/
+
+	/*return NULL; //history;*/
+/*}*/
 
 /*int init_game(int type, char *names[NUM_PLAYERS], GetMoveFunc move_funcs[2])*/
 /*{*/

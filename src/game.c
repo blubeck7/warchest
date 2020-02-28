@@ -1,23 +1,25 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "../inc/coin.h"
+#include "../inc/ds.h"
 #include "../inc/game.h"
+#include "../inc/hex.h"
+#include "../inc/history.h"
 #include "../inc/move.h"
 #include "../inc/player.h"
 #include "../inc/types.h"
-
-#define NUM_PLAYERS 2
-#define GOLD_PLAYER 0
-#define SILVER_PLAYER 1
 
 struct game {
 	int has_winner;
 	int num_moves;
 	int max_moves;
-	int cur_player;
+	int cur_player_id;
 	int round_start;
-	int who_initiative_coin;
+	int triggered;
 	int did_initiative_coin_switch;
+	Player initiative_player;
 	Player players[NUM_PLAYERS];
+	History history;
 };
 
 int play_game(Game game)
@@ -45,16 +47,54 @@ int is_done_game(Game game)
 Player whose_move_game(Game game)
 {
 	if (game->round_start)
-		return game->players[game->who_initiative_coin];
+		return game->initiative_player;
 
 	return NULL;
 }
 
 int update_game(Move move, Game game)
 {
+	do_move(move, game);
+	add_move_history(game->history, move);
+
+	return 0;
+}
+
+int switch_initiative_coin_game(Player to_player, Game game)
+{
+	Coin coin;
+
+	coin = remove_initiative_coin_player(game->initiative_player);
+	add_initiative_coin_player(to_player, coin);
+	game->did_initiative_coin_switch = 1;
+	game->initiative_player = to_player;
+
+	return 0;
+}
+
+int set_triggered_game(Game game)
+{
+	game->triggered = 1;
+
+	return 0;
+}
+
+int gen_moves_game(List hand, Game game, List move_space)
+{
+	Coin coin;
 	int i;
 
-	i = do_move(move, game);
+	clear_list(move_space);
+	/*If a coin was triggered by a previous move then we need to handle that;
+	 *otherwise, a new coin is to be played.
+	 */
+	if (!game->triggered)
+		for (i = 0; i < len_list(hand); i++) {
+			coin = (Coin) peak_list(hand, i);
+			gen_moves_coin(coin, game, move_space);
+		}
+	else
+		;
 
-	return i;
+	return 0;
 }

@@ -9,7 +9,8 @@
 #include "../inc/player.h"
 #include "../inc/types.h"
 
-struct hex {
+struct history {
+	Stack moves;
 	int id;
 	int num_adj;
 	int adj[NUM_ADJ_HEXES];
@@ -18,8 +19,3 @@ struct hex {
 	int num_units;
 	Queue units;
 };
-
-int add_coin_hex(Hex hex, Coin coin)
-{
-	return add_queue(hex->units, (Item) coin);
-}
