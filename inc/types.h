@@ -34,6 +34,11 @@ typedef int (*GenMoveFunc)(Coin coin, Game game, List move_space);
 
 #define NUM_ADJ_HEXES 6
 
+#define MAX_NUM_STACKS 5
+#define MAX_NUM_UNITS 21
+#define MAX_TYPE_UNITS 5
+#define MAX_HAND 3
+
 /*#define DRAW 10*/
 /*#define SELECT 11*/
 /*#define REMOVE 12*/

@@ -14,12 +14,21 @@ struct hex {
 	int num_adj;
 	int adj[NUM_ADJ_HEXES];
 	int control_space;
-	int control_marker;
-	int num_units;
-	Queue units;
+	Coin control_coin;
+	Stack unit_coins;
 };
 
-int add_coin_hex(Hex hex, Coin coin)
+int add_unit_coin_hex(Hex hex, Coin coin)
 {
-	return add_queue(hex->units, (Item) coin);
+	return add_stack(hex->unit_coins, (Item) coin);
+}
+
+Coin remove_unit_coin_hex(Hex hex)
+{
+	return remove_stack(hex->unit_coins);
+}
+
+int has_unit_coin_hex(Hex hex, Coin coin)
+{
+	return same_type_coin((Coin) peak_stack(hex->unit_coins, 0), coin);
 }

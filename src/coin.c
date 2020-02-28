@@ -120,6 +120,14 @@ int gen_deploy_moves_coin(Coin coin, Game game, List move_space)
 	return 0;
 }
 
+int same_type_coin(Coin coin1, Coin coin2)
+{
+	if (coin1->type == coin2->type)
+		return 1;
+
+	return 0;
+}
+
 /*	
 	remove_coin_hand_player(move->player, move->played_coin);
 	add_coin_hex(move->receiver_hexes[0], move->played_coin);

@@ -44,7 +44,8 @@
 
 int main(int argc, char *argv[])
 {
-	QueueArray gamebox, Game game;
+	QueueArray gamebox;
+	Game game;
 
 	gamebox = create_gamebox();
 	load_gamebox(gamebox);

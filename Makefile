@@ -1,7 +1,9 @@
-objects = coin.o ds.o game.o hex.o history.o move.o player.o warchest.o
+objs = coin.o ds.o game.o hex.o history.o move.o player.o warchest.o
+objs_dir = obj/coin.o obj/ds.o obj/game.o obj/hex.o obj/history.o \
+	   obj/move.o obj/player.o obj/warchest.o 
 
-warchest: $(objects)
-	gcc -Wall -O2 -std=c11 -o bin/warchest $(objects)
+warchest: $(objs)
+	gcc -Wall -O2 -std=c11 -o bin/warchest $(objs_dir)
 
 coin.o: src/coin.c inc/coin.h
 	gcc -Wall -O2 -std=c11 -c -o obj/coin.o src/coin.c

@@ -12,6 +12,6 @@ int print_coin_all(Coin coin);
 int set_face_down_coin(Coin coin);
 int set_face_up_coin(Coin coin);
 int gen_moves_coin(Coin coin, Game game, List move_space);
-int same_type(Coin coin1, Coin coin2);
+int same_type_coin(Coin coin1, Coin coin2);
 
 #endif //COIN_H

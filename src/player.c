@@ -11,8 +11,8 @@
 #include "../inc/types.h"
 
 struct player {
-	//char *name;
-	//int color;
+	char *name;
+	int color;
 	//int control_coin;
 	//int control_markers;
 	//int num_types;
@@ -25,8 +25,9 @@ struct player {
 	Coin initiative_coin;
 	List hand;
 	Queue discard;
+	List hex_stacks[MAX_NUM_STACKS]; //the hexes with deployed unit stacks
 	//int num_deployed;
-	//Deployed deployed[MAX_NUM_UNITS]; 
+	//List deployed[MAX_NUM_UNITS]; 
 	//int num_discarded;
 	//Discard discarded[MAX_NUM_UNITS];
 	//int num_removed;
@@ -82,4 +83,19 @@ Move random_move_player(Player player, Game game)
 	destroy_list(moves);
 
 	return move;
+}
+
+int num_coin_stacks_player(Player player, Coin coin)
+{
+	int i, n;
+	Hex hex;
+
+	n = 0;
+	for (i = 0; i < len_list(player->hex_stacks); i++) {
+		hex = (Hex) peak_list(player->hex_stacks, i);
+		if (has_coin_hex(hex, coin))
+			n++;
+	}
+
+	return n;
 }
