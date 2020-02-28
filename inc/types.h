@@ -16,6 +16,15 @@ typedef int (*GenMoveFunc)(Coin coin, Game game, List move_space);
 #define NUM_PLAYERS 2
 #define GOLD_PLAYER 0
 #define SILVER_PLAYER 1
+#define FIRST_GAME 0
+#define RANDOM_GAME 1
+#define SNAKE_GAME 2
+#define GOLD_PLAYER_FIRST_UNITS 18 //includes the royal coin
+#define SILVER_PLAYER_FIRST_UNITS 20 //includes the royal coin 
+#define GOLD_PLAYER_FIRST_TYPES 5 //includes the royal coin
+#define SILVER_PLAYER_FIRST_TYPES 5 //includes the royal coin 
+#define NUM_CONTROL_MARKERS 6
+#define MOVE_SPACE_SIZE 200
 
 #define MAX_COINS 2
 #define NONE 0

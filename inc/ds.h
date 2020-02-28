@@ -44,4 +44,5 @@ int print_all_stack(Stack stack);
 int add_stack(Stack stack, Item item);
 Item remove_stack(Stack stack);
 Item peak_stack(Stack stack, int n);
+int num_stack(Stack stack);
 #endif //DS_H

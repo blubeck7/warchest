@@ -190,7 +190,7 @@ int do_move(Move move, Game game)
 int deploy_move(Move move, Game game)
 {
 	remove_coin_hand_player(move->player, move->played_coin);
-	add_coin_hex(move->receiver_hexes[0], move->played_coin);
+	add_unit_coin_hex(move->receiver_hexes[0], move->played_coin);
 
 	return 0;
 }
@@ -198,7 +198,7 @@ int deploy_move(Move move, Game game)
 int bolster_move(Move move, Game game)
 {
 	remove_coin_hand_player(move->player, move->played_coin);
-	add_coin_hex(move->receiver_hexes[0], move->played_coin);
+	add_unit_coin_hex(move->receiver_hexes[0], move->played_coin);
 
 	return 0;
 }

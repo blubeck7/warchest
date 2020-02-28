@@ -25,7 +25,7 @@ struct player {
 	Coin initiative_coin;
 	List hand;
 	Queue discard;
-	List hex_stacks[MAX_NUM_STACKS]; //the hexes with deployed unit stacks
+	List hex_stacks; //the hexes with deployed unit stacks
 	//int num_deployed;
 	//List deployed[MAX_NUM_UNITS]; 
 	//int num_discarded;
@@ -77,7 +77,7 @@ Move random_move_player(Player player, Game game)
 	
 	srand(time(NULL));
 
-	moves = create_list(300);
+	moves = create_list(MOVE_SPACE_SIZE);
 	gen_moves_game(player->hand, game, moves);
 	move = (Move) peak_list(moves, rand() % len_list(moves));
 	destroy_list(moves);
@@ -93,7 +93,7 @@ int num_coin_stacks_player(Player player, Coin coin)
 	n = 0;
 	for (i = 0; i < len_list(player->hex_stacks); i++) {
 		hex = (Hex) peak_list(player->hex_stacks, i);
-		if (has_coin_hex(hex, coin))
+		if (has_unit_coin_hex(hex, coin))
 			n++;
 	}
 

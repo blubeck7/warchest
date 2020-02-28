@@ -10,52 +10,18 @@
 #include "../inc/types.h"
 #include "../inc/warchest.h"
 
-/*Game game;*/
-
-/*int init_game(int type, char *names[NUM_PLAYERS], GetMoveFunc move_funcs[2]);*/
-/*int print_game(void);*/
-/*int init_start_player(void);*/
-/*int init_board(void);*/
-/*int print_board(void);*/
-/*int init_players_first(char *names[2], GetMoveFunc move_funcs[2]);*/
-/*int init_players_random(void);*/
-/*int init_players_snake(void);*/
-/*int print_players(void);*/
-/*int init_history(void);*/
-/*int print_history(void);*/
-/*int init_bags(void);*/
-/*int print_units(Unit units[MAX_TYPE_UNITS], int num_types);*/
-/*int print_discarded(Discard discarded[MAX_NUM_UNITS], int num_discarded);*/
-/*int print_unit(int type);*/
-/*int play_game(void);*/
-/*int draw_coins(void);*/
-/*int use_coins(void);*/
-/*int fill_bag(int player);*/
-/*int shuffle_bag(int player);*/
-/*int have_coins(void);*/
-/*int update_game(Move move);*/
-/*int gen_moves(Game *game_ptr, Move moves[MOVE_SPACE], int *num_moves, int n);*/
-/*int gen_deploy_moves(Game *game_ptr, Move moves[MOVE_SPACE], int *num_moves, 					int coin, int n);*/
-
-//History *run_game(MoveFunc move_funcs[NUM_PLAYERS], int game_type);
-
-/*Move random_move(Game *game_ptr, int n);*/
-/*Move keyboard_move(Game *game_ptr, int n);*/
 
 int main(int argc, char *argv[])
 {
 	QueueArray gamebox;
-	Game game;
+	History history;
+	GetMoveFunc movefuncs[2] = {NULL, NULL};
+	char *names[NUM_PLAYERS] = {"HUMAN", "RANDOM"};
 
-	gamebox = create_gamebox();
-	load_gamebox(gamebox);
-	/*History history;*/
-	/*MoveFunc move_funcs[2] = {NULL, NULL};*/
+	gamebox = create_gamebox(); //allocates the space for all the coins
+	init_gamebox(gamebox); //creates the coins and puts them in the box
+	history = run_game(movefuncs, names, FIRST_GAME);
 
-	/*history = run_game(move_funcs, FIRST);*/
-
-	/*char *names[2];*/
-	/*GetMoveFunc move_funcs[2];*/
 
 	/*names[0] = "HUMAN";*/
 	/*names[1] = "COMPUTER";*/
@@ -76,19 +42,24 @@ QueueArray create_gamebox(void)
 	return NULL;
 }
 
-int load_gamebox(QueueArray gamebox)
+int init_gamebox(QueueArray gamebox)
 {
 	return 0;
 }
 
-/*History run_game(MoveFunc move_funcs[], int game_type)*/
-/*{*/
-	/*[>History history;<]*/
+History run_game(GetMoveFunc movefuncs[NUM_PLAYERS], char *names[NUM_PLAYERS],
+	int game_type)
+{
+	Game game;
+	History history;
 
-	/*[>history = malloc(sizeof(History));<]*/
+	game = create_game(movefuncs, names);
+	init_game(game, game_type);
+	history = play_game(game);
+	destroy_game(game);
 
-	/*return NULL; //history;*/
-/*}*/
+	return history;
+}
 
 /*int init_game(int type, char *names[NUM_PLAYERS], GetMoveFunc move_funcs[2])*/
 /*{*/

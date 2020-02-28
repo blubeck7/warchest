@@ -4,7 +4,9 @@
 #include "types.h"
 
 QueueArray create_gamebox(void);
-int load_gamebox(QueueArray gamebox);
+int init_gamebox(QueueArray gamebox);
+History run_game(GetMoveFunc movefuncs[NUM_PLAYERS], char *names[NUM_PLAYERS],
+	int game_type);
 
 #endif //WARCHEST_H
 

@@ -22,7 +22,20 @@ struct game {
 	History history;
 };
 
-int play_game(Game game)
+Game create_game(GetMoveFunc movefuncs[NUM_PLAYERS], char *names[NUM_PLAYERS])
+{
+	int i;
+	Game game;
+
+	game = malloc(sizeof(struct game));
+	for (i = 0; i < NUM_PLAYERS; i++)
+		game->players[i] = create_player(movefuncs[i], names[i]);
+	game->history = create_history();
+
+	return game;
+}
+
+History play_game(Game game)
 {
 	Move move;
 	Player cur_player;
@@ -33,7 +46,7 @@ int play_game(Game game)
 		update_game(move, game);
 	}
 
-	return 0;
+	return game->history;
 }
 
 int is_done_game(Game game)
