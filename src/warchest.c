@@ -1,26 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../inc/coin.h"
 #include "../inc/ds.h"
 #include "../inc/game.h"
 #include "../inc/hex.h"
 #include "../inc/history.h"
-#include "../inc/move.h"
-#include "../inc/player.h"
 #include "../inc/types.h"
 #include "../inc/warchest.h"
 
 
 int main(int argc, char *argv[])
 {
-	QueueArray gamebox;
+	ListArray gamebox;
 	History history;
 	GetMoveFunc movefuncs[2] = {NULL, NULL};
 	char *names[NUM_PLAYERS] = {"HUMAN", "RANDOM"};
 
 	gamebox = create_gamebox(); //allocates the space for all the coins
-	init_gamebox(gamebox); //creates the coins and puts them in the box
+	init_gamebox(gamebox); //creates everything needed to play a game
 	history = run_game(movefuncs, names, FIRST_GAME);
+	destroy_gamebox(gamebox);
 
 
 	/*names[0] = "HUMAN";*/
@@ -37,28 +35,65 @@ int main(int argc, char *argv[])
 	return 0;
 }
 
-QueueArray create_gamebox(void)
+ListArray create_gamebox(void)
 {
-	return NULL;
+	//TODO: move the data to a file
+	int i;
+	ListArray listarray;
+	int list_sizes[] = RESOURCES;
+	
+	listarray = create_listarray(GAMEBOX_SIZE);
+	for (i = 0; i < GAMEBOX_SIZE; i++)
+		add_listarray(listarray, i, create_list(list_sizes[i]));
+
+	return listarray;
 }
 
-int init_gamebox(QueueArray gamebox)
+int init_gamebox(ListArray gamebox)
 {
+	Board board;
+
+	board = create_board(); 
+	add_list(get_listarray(gamebox, BOARD), (Item) board);
+
+	return 0;
+}
+
+int destroy_gamebox(ListArray gamebox)
+{
+	int i, j, m, n;
+	List list;
+	Item item;
+
+	m = len_listarray(gamebox);
+	for (i = m - 1; i >= 0; i--) {
+		list = remove_listarray(gamebox, i);
+		n = len_list(list);
+		for (j = n - 1; j >= 0; j--) {
+			item = remove_pos_list(list, j);
+			if (i == BOARD)
+				destroy_board((Board) item);
+			else
+				destroy_coin((Coin) item);
+		}
+	}
+
 	return 0;
 }
 
 History run_game(GetMoveFunc movefuncs[NUM_PLAYERS], char *names[NUM_PLAYERS],
 	int game_type)
 {
-	Game game;
-	History history;
+	/*Game game;*/
+	/*History history;*/
 
-	game = create_game(movefuncs, names);
-	init_game(game, game_type);
-	history = play_game(game);
-	destroy_game(game);
+	/*game = create_game(movefuncs, names);*/
+	/*init_game(game, game_type);*/
+	/*history = play_game(game);*/
+	/*destroy_game(game);*/
 
-	return history;
+	/*return history;*/
+	return NULL;
 }
 
 /*int init_game(int type, char *names[NUM_PLAYERS], GetMoveFunc move_funcs[2])*/

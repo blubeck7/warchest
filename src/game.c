@@ -24,15 +24,16 @@ struct game {
 
 Game create_game(GetMoveFunc movefuncs[NUM_PLAYERS], char *names[NUM_PLAYERS])
 {
-	int i;
-	Game game;
+	/*int i;*/
+	/*Game game;*/
 
-	game = malloc(sizeof(struct game));
-	for (i = 0; i < NUM_PLAYERS; i++)
-		game->players[i] = create_player(movefuncs[i], names[i]);
-	game->history = create_history();
+	/*game = malloc(sizeof(struct game));*/
+	/*for (i = 0; i < NUM_PLAYERS; i++)*/
+		/*game->players[i] = create_player(movefuncs[i], names[i]);*/
+	/*game->history = create_history();*/
 
-	return game;
+	/*return game;*/
+	return NULL;
 }
 
 History play_game(Game game)
@@ -43,7 +44,8 @@ History play_game(Game game)
 	while(!is_done_game(game)) {
 		cur_player = whose_move_game(game);
 		move = get_move_player(cur_player, game);
-		update_game(move, game);
+		update_game(game, move);
+		//display_game(game);
 	}
 
 	return game->history;
@@ -65,10 +67,10 @@ Player whose_move_game(Game game)
 	return NULL;
 }
 
-int update_game(Move move, Game game)
+int update_game(Game game, Move move)
 {
-	do_move(move, game);
-	add_move_history(game->history, move);
+	/*do_move(move, game);*/
+	/*add_move_history(game->history, move);*/
 
 	return 0;
 }

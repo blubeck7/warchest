@@ -94,28 +94,28 @@ int gen_moves_coin(Coin coin, Game game, List move_space)
 
 int gen_deploy_moves_coin(Coin coin, Game game, List move_space)
 {
-	List hexes;
-	Hex rhexes[MAX_COINS] = {NULL};
-	Move move;
-	int i;
+	/*List hexes;*/
+	/*Hex rhexes[MAX_COINS] = {NULL};*/
+	/*Move move;*/
+	/*int i;*/
 
-	/* deploy function for all coins except the scout and footman*/
-	if (num_coin_stacks_player(coin->owner, coin))
-		return -1;
+	/*[> deploy function for all coins except the scout and footman<]*/
+	/*if (num_coin_stacks_player(coin->owner, coin))*/
+		/*return -1;*/
 
-	if (!has_unoccupied_control_hexes_game(game, coin->owner))
-		return -1;
+	/*if (!has_unoccupied_control_hexes_game(game, coin->owner))*/
+		/*return -1;*/
 
-	hexes = get_unoccupied_control_hexes_game(game, coin->owner);
-	for (i = 0; i < len_list(hexes); i++) {
-		move = create_move();
-		set_player_move(move, coin->owner);
-		set_played_coin_move(move, coin);
-		set_num_types_move(move, 1);
-		rhexes[0] = peak_list(hexes, i);
-		set_receiver_hexes(move, rhexes);
-		add_list(move_space, move);
-	}
+	/*hexes = get_unoccupied_control_hexes_game(game, coin->owner);*/
+	/*for (i = 0; i < len_list(hexes); i++) {*/
+		/*move = create_move();*/
+		/*set_player_move(move, coin->owner);*/
+		/*set_played_coin_move(move, coin);*/
+		/*set_num_types_move(move, 1);*/
+		/*rhexes[0] = peak_list(hexes, i);*/
+		/*set_receiver_hexes(move, rhexes);*/
+		/*add_list(move_space, move);*/
+	/*}*/
 
 	return 0;
 }

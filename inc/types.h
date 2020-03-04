@@ -10,8 +10,16 @@ typedef struct hex *Hex;
 typedef struct history *History;
 typedef struct move *Move;
 typedef struct player *Player;
+
+typedef int (*DoMoveFunc)(Move move, Game game);
 typedef Move (*GetMoveFunc)(Player player, Game game);
 typedef int (*GenMoveFunc)(Coin coin, Game game, List move_space);
+
+struct move {
+	void *data;
+	DoMoveFunc do_move;
+};
+
 
 #define NUM_PLAYERS 2
 #define GOLD_PLAYER 0
@@ -25,6 +33,31 @@ typedef int (*GenMoveFunc)(Coin coin, Game game, List move_space);
 #define SILVER_PLAYER_FIRST_TYPES 5 //includes the royal coin 
 #define NUM_CONTROL_MARKERS 6
 #define MOVE_SPACE_SIZE 200
+
+#define GAMEBOX_SIZE 22
+#define BOARD 0
+#define ARCHER 1
+#define BESERKER 2
+#define CAVALRY 3
+#define CROSSBOWMAN 4
+#define ENSIGN 5
+#define FOOTMAN 6
+#define KNIGHT 7
+#define LANCER 8
+#define LIGHT_CAVALRY 9
+#define MARSHALL 10
+#define MERCENARY 11
+#define PIKEMAN 12
+#define ROYAL_GUARD 13
+#define SCOUT 14
+#define SWORDSMAN 15
+#define WARRIOR_PRIEST 16
+#define GOLD_ROYAL_COIN 17
+#define SILVER_ROYAL_COIN 18
+#define GOLD_CONTROL_COIN 19
+#define SILVER_CONTROL_COIN 20
+#define INITIATIVE_COIN 21
+#define RESOURCES {1,4,5,4,5,5,5,4,4,5,5,5,4,5,5,5,4,1,1,6,6,1}
 
 #define MAX_COINS 2
 #define NONE 0

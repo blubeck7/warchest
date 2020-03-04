@@ -10,6 +10,12 @@ struct list {
 	Item *items; //array of pointers to the items
 };
 
+struct listarray {
+	int num;
+	int size;
+	List *lists;
+};
+
 struct queue {
 	int num;
 	int size;
@@ -32,6 +38,7 @@ struct stack {
 };
 
 int test_list(void);
+int test_listarray(void);
 int test_queue(void);
 int test_queuearray(void);
 int test_stack(void);
@@ -40,8 +47,9 @@ int test_stack(void);
 int main(int argc, char *argv[])
 {
 	/*test_list();*/
+	test_listarray();
 	/*test_queue();*/
-	test_stack();
+	//test_stack();
 	//test_queuearray();
 
 	return 0;
@@ -53,32 +61,62 @@ int test_list(void)
 	List list;
 	Item item;
 
-	list = create_list(20);
+	list = create_list(6);
 	print_all_list(list);
-	for (i = 0; i < 22; i++)
-		add_list(list, (Item) i + 1);
+	add_pos_list(list, (Item) 10, 0);
+	add_pos_list(list, (Item) 17, 1);
+	add_pos_list(list, (Item) 19, 2);
+	add_pos_list(list, (Item) 4, 3);
+	add_pos_list(list, (Item) 5, 4);
+	add_pos_list(list, (Item) 4, 5);
+	i = add_pos_list(list, (Item) 11, 2);
+	printf("i=%d\n", i);
+	i = add_pos_list(list, (Item) 11, 0);
+	printf("i=%d\n", i);
+	i = add_pos_list(list, (Item) 11, 9);
+	printf("i=%d\n", i);
 	print_all_list(list);
-	printf("%d\n", len_list(list));
-	printf("%p\n", peak_list(list, -1));
-	printf("%p\n", peak_list(list, 100));
-	printf("%p\n", peak_list(list, 10));
+	item = remove_pos_list(list, 4);
+	printf("item=%ld\n", (long) item);
 	print_all_list(list);
-	remove_list(list, (Item) 8);
-	remove_list(list, (Item) 11);
-	remove_list(list, (Item) 110);
-	print_all_list(list);
-	add_list(list, (Item) 112);
-	print_all_list(list);
-	clear_list(list);
-	print_all_list(list);
-	printf("%p\n", peak_list(list, -1));
-	printf("%p\n", peak_list(list, 100));
-	item = remove_list(list, (Item) 8);
-	printf("item is %p\n", item);
-	add_list(list, (Item) 5);
-	add_list(list, (Item) 7);
+	add_pos_list(list, (Item) 7, 0);
 	print_all_list(list);
 	destroy_list(list);
+
+	return 0;
+}
+
+int test_listarray(void)
+{
+	int i, n;
+	List list;
+	ListArray listarray;
+
+	listarray = create_listarray(4);
+	list = create_list(1);
+	add_listarray(listarray, 0, list);
+	list = create_list(4);
+	add_listarray(listarray, 1, list);
+	list = create_list(5);
+	add_listarray(listarray, 2, list);
+	list = create_list(5);
+	add_listarray(listarray, 3, list);
+	print_all_listarray(listarray);
+	printf("\n");
+	n = len_listarray(listarray);
+	for (i = 0; i < n; i++) {
+		list = get_listarray(listarray, i);
+		add_pos_list(list, (Item) i, 0);
+	}
+	print_all_listarray(listarray);
+	printf("\n");
+	n = len_listarray(listarray);
+	for (i = 0; i < n; i++) {
+		list = remove_listarray(listarray, 0);
+		destroy_list(list);
+	}
+	print_all_listarray(listarray);
+	destroy_listarray(listarray);
 
 	return 0;
 }
@@ -268,11 +306,47 @@ Item remove_list(List list, Item item)
 	if (pos == -1)
 		return NULL;
 
-	for (i = pos; i < list->len - 1; i++)
-		list->items[i] = list->items[i + 1];
 	list->len--;
+	for (i = pos; i < list->len; i++)
+		list->items[i] = list->items[i + 1];
 
 	return temp;
+}
+
+int add_pos_list(List list, Item item, int n)
+{
+	int i;
+
+	if (list->len >= list->size)
+		return -1;
+
+	if (n < 0 || n > list->len)
+		return -1;
+
+	// make room for the item at the specified position
+	for (i = list->len; i > n; i--)
+		list->items[i] = list->items[i - 1];
+
+	list->items[n] = item;
+	list->len++;
+
+	return 0;
+}
+
+Item remove_pos_list(List list, int n)
+{
+	int i;
+	Item item;
+
+	if (n < 0 || n >= list->len)
+		return NULL;
+
+	item = list->items[n];
+	list->len--;
+	for (i = n; i < list->len; i++)
+		list->items[i] = list->items[i + 1];
+
+	return item;
 }
 
 int clear_list(List list)
@@ -280,6 +354,99 @@ int clear_list(List list)
 	list->len = 0;
 
 	return 0;
+}
+
+ListArray create_listarray(int size)
+{
+	ListArray listarray;
+
+	listarray = malloc(sizeof(struct listarray));
+	listarray->num = 0;
+	listarray->size = size;
+	listarray->lists = malloc(size * sizeof(List));
+
+	return listarray;
+}
+
+int destroy_listarray(ListArray listarray)
+{
+	free(listarray->lists);
+	free(listarray);
+
+	return 0;
+}
+
+int print_listarray(ListArray listarray)
+{
+	int i;
+
+	printf("listarray=%p:\n", listarray);
+	printf("num=%d, size=%d\n", listarray->num, listarray->size);
+	for (i = 0; i < listarray->num; i++)
+		print_list(listarray->lists[i]);
+
+	return 0;
+}
+
+int print_all_listarray(ListArray listarray)
+{
+	int i;
+
+	printf("listarray=%p:\n", listarray);
+	printf("num=%d, size=%d\n", listarray->num, listarray->size);
+	for (i = 0; i < listarray->num; i++)
+		print_all_list(listarray->lists[i]);
+
+	return 0;
+}
+
+int add_listarray(ListArray listarray, int key, List list)
+{
+	int i;
+
+	if (listarray->num >= listarray->size)
+		return -1;
+
+	if (key < 0 || key > listarray->num)
+		return -1;
+
+	// make room for the item at the specified position
+	for (i = listarray->num; i > key; i--)
+		listarray->lists[i] = listarray->lists[i - 1];
+
+	listarray->lists[key] = list;
+	listarray->num++;
+
+	return 0;
+}
+
+List remove_listarray(ListArray listarray, int key)
+{
+	int i;
+	List list;
+
+	if (key < 0 || key >= listarray->num)
+		return NULL;
+
+	list = listarray->lists[key];
+	listarray->num--;
+	for (i = key; i < listarray->num; i++)
+		listarray->lists[i] = listarray->lists[i + 1];
+
+	return list;
+}
+
+int len_listarray(ListArray listarray)
+{
+	return listarray->num;
+}
+
+List get_listarray(ListArray listarray, int key)
+{
+	if (key < 0 || key >= listarray->num)
+		return NULL;
+
+	return listarray->lists[key];
 }
 
 QueueArray create_queuearray(int size, int queue_sizes[])

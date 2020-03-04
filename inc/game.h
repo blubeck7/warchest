@@ -11,7 +11,7 @@ int print_game(Game game);
 int print_all_game(Game game);
 int is_done_game(Game game);
 Player whose_move_game(Game game);
-int update_game(Move move, Game game);
+int update_game(Game game, Move move);
 int switch_initiative_coin_game(Player to_player, Game game);
 int set_triggered_game(Game game);
 int gen_moves_game(List hand, Game game, List move_space);

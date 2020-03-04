@@ -1,6 +1,6 @@
-objs = coin.o ds.o game.o hex.o history.o move.o player.o warchest.o
+objs = coin.o ds.o game.o hex.o history.o player.o warchest.o
 objs_dir = obj/coin.o obj/ds.o obj/game.o obj/hex.o obj/history.o \
-	   obj/move.o obj/player.o obj/warchest.o 
+	   obj/player.o obj/warchest.o 
 inc_dir = inc/coin.h inc/ds.h inc/game.h inc/hex.h inc/history.h \
 	   inc/move.h inc/player.h inc/warchest.h 
 
