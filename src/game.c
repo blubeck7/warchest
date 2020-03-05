@@ -24,16 +24,19 @@ struct game {
 
 Game create_game(GetMoveFunc movefuncs[NUM_PLAYERS], char *names[NUM_PLAYERS])
 {
-	/*int i;*/
-	/*Game game;*/
+	int i, color;
+	Game game;
 
-	/*game = malloc(sizeof(struct game));*/
-	/*for (i = 0; i < NUM_PLAYERS; i++)*/
-		/*game->players[i] = create_player(movefuncs[i], names[i]);*/
-	/*game->history = create_history();*/
+	game = malloc(sizeof(struct game));
+	for (i = 0; i < NUM_PLAYERS; i++) {
+		color = GOLD_PLAYER;
+		if (i)
+			color = SILVER_PLAYER;
+		game->players[i] = create_player(movefuncs[i], names[i], color);
+	}
+	game->history = create_history();
 
-	/*return game;*/
-	return NULL;
+	return game;
 }
 
 History play_game(Game game)

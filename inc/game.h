@@ -7,6 +7,7 @@ Game create_game(GetMoveFunc movefuncs[NUM_PLAYERS], char *names[NUM_PLAYERS]);
 int destroy_game(Game game);
 int init_game(Game game, int game_type);
 History play_game(Game game);
+int display_game(Game game);
 int print_game(Game game);
 int print_all_game(Game game);
 int is_done_game(Game game);

@@ -31,7 +31,7 @@ struct move {
 #define SILVER_PLAYER_FIRST_UNITS 20 //includes the royal coin 
 #define GOLD_PLAYER_FIRST_TYPES 5 //includes the royal coin
 #define SILVER_PLAYER_FIRST_TYPES 5 //includes the royal coin 
-#define NUM_CONTROL_MARKERS 6
+#define NUM_CONTROL_COINS 6
 #define MOVE_SPACE_SIZE 200
 
 #define GAMEBOX_SIZE 22
@@ -74,12 +74,24 @@ struct move {
 #define COIN_DOWN 0
 #define COIN_UP 1
 
+//hex constants
+#define NUM_HEXES 37 
 #define NUM_ADJ_HEXES 6
+#define BOUND 7
+#define NO_HEX 0 
 
-#define MAX_NUM_STACKS 5
+//player constants
+#define MAX_STACKS 5
+#define MAX_COINS_STACK 5
 #define MAX_NUM_UNITS 21
 #define MAX_TYPE_UNITS 5
-#define MAX_HAND 3
+#define MAX_COINS_HAND 3
+
+//init data and bitmap paths
+#define BOARD_BITMAP "res/board.bmp"
+#define HEX_BITMAP "res/hex.bmp"
+#define CONTROL_HEX_BITMAP "res/control_hex.bmp"
+#define BOARD_DATA "res/board.csv"
 
 /*#define DRAW 10*/
 /*#define SELECT 11*/

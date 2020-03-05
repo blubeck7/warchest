@@ -13,27 +13,43 @@
 struct player {
 	char *name;
 	int color;
-	//int control_coin;
-	//int control_markers;
+	Coin initiative_coin;
+	List supply;
+	List hand;
+	List discard;
+	Queue control_coins;
+	GetMoveFunc get_move;
 	//int num_types;
 	//Unit units[MAX_TYPE_UNITS];
-	//int num_supply;
-	//int supply[MAX_NUM_UNITS];
 	//int num_bag;
 	//int bag[MAX_NUM_UNITS];
 	//int num_hand;
-	Coin initiative_coin;
-	List hand;
-	Queue discard;
-	List hex_stacks; //the hexes with deployed unit stacks
+	/*List hex_stacks; //the hexes with deployed unit stacks*/
 	//int num_deployed;
 	//List deployed[MAX_NUM_UNITS]; 
 	//int num_discarded;
 	//Discard discarded[MAX_NUM_UNITS];
 	//int num_removed;
 	//int removed[MAX_NUM_UNITS];
-	GetMoveFunc get_move;
 };
+
+Player create_player(GetMoveFunc movefunc, char *name, int color)
+{
+	Player player;
+
+	player = malloc(sizeof(struct player));
+
+	player->name = name;
+	player->color = color;
+	player->initiative_coin = NULL;
+	player->supply = create_list(MAX_NUM_UNITS);
+	player->hand = create_list(MAX_COINS_HAND);
+	player->discard = create_list(MAX_NUM_UNITS);
+	player->control_coins = create_queue(NUM_CONTROL_COINS);
+	player->get_move = movefunc;
+
+	return player;
+}
 
 Move get_move_player(Player player, Game game)
 {
@@ -50,7 +66,7 @@ int remove_coin_hand_player(Player player, Coin coin)
 
 int add_coin_discard_player(Player player, Coin coin)
 {
-	return add_queue(player->discard, (Item) coin);
+	return add_list(player->discard, (Item) coin);
 }
 
 Coin remove_initiative_coin_player(Player player)
@@ -87,15 +103,16 @@ Move random_move_player(Player player, Game game)
 
 int num_coin_stacks_player(Player player, Coin coin)
 {
-	int i, n;
-	Hex hex;
+	/*int i, n;*/
+	/*Hex hex;*/
 
-	n = 0;
-	for (i = 0; i < len_list(player->hex_stacks); i++) {
-		hex = (Hex) peak_list(player->hex_stacks, i);
-		if (has_unit_coin_hex(hex, coin))
-			n++;
-	}
+	/*n = 0;*/
+	/*for (i = 0; i < len_list(player->hex_stacks); i++) {*/
+		/*hex = (Hex) peak_list(player->hex_stacks, i);*/
+		/*if (has_unit_coin_hex(hex, coin))*/
+			/*n++;*/
+	/*}*/
 
-	return n;
+	/*return n;*/
+	return 0;
 }

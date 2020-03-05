@@ -7,22 +7,26 @@
 #define MAX_NUM_BITMAPS 50
 #define MAX_NUM_LAYERS 10
 
-typedef struct bitmap {
+typedef struct bitmap Bitmap;
+typedef struct layer Layer;
+typedef struct layers Layers;
+
+struct bitmap {
 	int width; //the width in pixels of the bitmap
 	int height; //the height in pixels of the bitmap 
 	Pix *pix_arr; //the pixel array
 	uint8_t *ind; //indicator array 0 = don't display the pixel
-} Bitmap;
+};
 
-typedef struct layer {
+struct layer {
 	Bitmap *bitmaps[MAX_NUM_BITMAPS];
 	Pos rpos[MAX_NUM_BITMAPS];
-} Layer;
+};
 
-typedef struct layers {
+struct layers {
 	Layer *layers[MAX_NUM_LAYERS];
 	Pos rpos[MAX_NUM_LAYERS];
-} Layers;
+};
 
 int load_bitmap(Bitmap *bitmap, char *path);
 int unload_bitmap(Bitmap *bitmap);

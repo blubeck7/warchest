@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "../inc/coin.h"
 #include "../inc/ds.h"
 #include "../inc/game.h"
 #include "../inc/hex.h"
 #include "../inc/history.h"
 #include "../inc/types.h"
 #include "../inc/warchest.h"
-
 
 int main(int argc, char *argv[])
 {
@@ -15,10 +15,10 @@ int main(int argc, char *argv[])
 	GetMoveFunc movefuncs[2] = {NULL, NULL};
 	char *names[NUM_PLAYERS] = {"HUMAN", "RANDOM"};
 
-	gamebox = create_gamebox(); //allocates the space for all the coins
+	gamebox = create_gamebox(); //allocates the space for all the resources
 	init_gamebox(gamebox); //creates everything needed to play a game
 	history = run_game(movefuncs, names, FIRST_GAME);
-	destroy_gamebox(gamebox);
+	//destroy_gamebox(gamebox);
 
 
 	/*names[0] = "HUMAN";*/
@@ -37,11 +37,10 @@ int main(int argc, char *argv[])
 
 ListArray create_gamebox(void)
 {
-	//TODO: move the data to a file
 	int i;
 	ListArray listarray;
 	int list_sizes[] = RESOURCES;
-	
+
 	listarray = create_listarray(GAMEBOX_SIZE);
 	for (i = 0; i < GAMEBOX_SIZE; i++)
 		add_listarray(listarray, i, create_list(list_sizes[i]));
@@ -84,10 +83,10 @@ int destroy_gamebox(ListArray gamebox)
 History run_game(GetMoveFunc movefuncs[NUM_PLAYERS], char *names[NUM_PLAYERS],
 	int game_type)
 {
-	/*Game game;*/
-	/*History history;*/
+	Game game;
+	History history;
 
-	/*game = create_game(movefuncs, names);*/
+	game = create_game(movefuncs, names);
 	/*init_game(game, game_type);*/
 	/*history = play_game(game);*/
 	/*destroy_game(game);*/
@@ -249,7 +248,7 @@ History run_game(GetMoveFunc movefuncs[NUM_PLAYERS], char *names[NUM_PLAYERS],
 	/*game.players[0].control_coin = 0;*/
 	/*if (game.cur_player == GOLD)*/
 		/*game.players[0].control_coin = 1;*/
-	/*game.players[0].control_markers = NUM_CONTROL_MARKERS - 2;*/
+	/*game.players[0].control_markers = NUM_CONTROL_COINS - 2;*/
 	/*game.players[0].get_move = move_funcs[0];*/
 
 	/*game.players[0].num_types = GOLD_PLAYER_FIRST_TYPES;*/
@@ -297,7 +296,7 @@ History run_game(GetMoveFunc movefuncs[NUM_PLAYERS], char *names[NUM_PLAYERS],
 	/*game.players[1].control_coin = 0;*/
 	/*if (game.cur_player == SILVER)*/
 		/*game.players[1].control_coin = 1;*/
-	/*game.players[1].control_markers = NUM_CONTROL_MARKERS - 2;*/
+	/*game.players[1].control_markers = NUM_CONTROL_COINS - 2;*/
 	/*game.players[1].get_move = move_funcs[1];*/
 
 	/*game.players[1].num_types = SILVER_PLAYER_FIRST_TYPES;*/

@@ -3,7 +3,7 @@
 
 #include "types.h"
 
-Player create_player(GetMoveFunc movefunc, char *name);
+Player create_player(GetMoveFunc movefunc, char *name, int color);
 int destroy_player(Player player);
 Move get_move_player(Player cur_player, Game game);
 int remove_coin_hand_player(Player player, Coin coin);
