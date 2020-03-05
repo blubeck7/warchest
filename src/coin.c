@@ -3,28 +3,14 @@
 #include "../inc/coin.h"
 #include "../inc/ds.h"
 #include "../inc/game.h"
+#include "../inc/graphics.h"
 #include "../inc/hex.h"
 #include "../inc/history.h"
 #include "../inc/move.h"
 #include "../inc/player.h"
 #include "../inc/types.h"
-
-struct coin {
-	Player owner;
-	int type;
-	Hex hex;
-	int face; //up or down
-	GenMoveFunc deploy;
-	GenMoveFunc bolster;
-	GenMoveFunc claim;
-	GenMoveFunc recruit;
-	GenMoveFunc pass;
-	GenMoveFunc move;
-	GenMoveFunc control;
-	GenMoveFunc attack;
-	GenMoveFunc tactic;
-};
-
+#include "../inc/warchest.h"
+#include "../inc/window.h"
 
 Coin create_coin(int type, GenMoveFunc movefuncs[9])
 {
@@ -47,9 +33,47 @@ Coin create_coin(int type, GenMoveFunc movefuncs[9])
 	return coin;
 }
 
+Coin create_archer_coin(void)
+{
+	Coin coin;
+	Pix pix;
+
+	coin = malloc(sizeof(struct coin));
+	coin->owner = NULL;
+	coin->type = ARCHER;
+	coin->hex = NULL;
+	coin->face = COIN_UP; //up or down
+	load_bitmap(&coin->bitmap, ARCHER_BITMAP);
+	pix.r = 0;
+	pix.g = 255;
+	pix.b = 0;
+	set_ind(&coin->bitmap, &pix); 
+	coin->pos.x = 0;
+	coin->pos.y = 0;
+	coin->deploy = NULL;
+	coin->bolster = NULL;
+	coin->claim = NULL;
+	coin->recruit = NULL;
+	coin->pass = NULL;
+	coin->move = NULL;
+	coin->control = NULL;
+	coin->attack = NULL;
+	coin->tactic = NULL;
+	coin->display = display_coin;
+
+	return coin;
+}
+
 int destroy_coin(Coin coin)
 {
 	free(coin);
+
+	return 0;
+}
+
+int display_coin(Coin coin)
+{
+	draw_bitmap(&coin->bitmap, &win, &coin->pos);
 
 	return 0;
 }

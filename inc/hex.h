@@ -5,6 +5,7 @@
 #include "types.h"
 
 Board create_board(void);
+int init_board(Board board, ListArray gamebox);
 int destroy_board(Board board);
 int display_board(Board board);
 int print_board(Board board);

@@ -3,10 +3,14 @@
 #include "../inc/coin.h"
 #include "../inc/ds.h"
 #include "../inc/game.h"
+#include "../inc/graphics.h"
 #include "../inc/hex.h"
 #include "../inc/history.h"
 #include "../inc/types.h"
 #include "../inc/warchest.h"
+#include "../inc/window.h"
+
+Win win;
 
 int main(int argc, char *argv[])
 {
@@ -15,9 +19,11 @@ int main(int argc, char *argv[])
 	GetMoveFunc movefuncs[2] = {NULL, NULL};
 	char *names[NUM_PLAYERS] = {"HUMAN", "RANDOM"};
 
-	gamebox = create_gamebox(); //allocates the space for all the resources
-	init_gamebox(gamebox); //creates everything needed to play a game
-	history = run_game(movefuncs, names, FIRST_GAME);
+	init_win(&win);
+	show_scr();
+	gamebox = create_gamebox(); //Stores the board and coins
+	init_gamebox(gamebox); //Creates the board and coins
+	history = run_game(movefuncs, names, FIRST_GAME, gamebox);
 	//destroy_gamebox(gamebox);
 
 
@@ -31,6 +37,7 @@ int main(int argc, char *argv[])
 	/*//play_game();*/
 	/*draw_coins();*/
 	/*print_game();*/
+	close_scr();
 
 	return 0;
 }
@@ -50,10 +57,18 @@ ListArray create_gamebox(void)
 
 int init_gamebox(ListArray gamebox)
 {
+	int i;
 	Board board;
+	List list;
+	int list_sizes[] = RESOURCES;
 
 	board = create_board(); 
-	add_list(get_listarray(gamebox, BOARD), (Item) board);
+	add_list(get_listarray(gamebox, BOARD2), (Item) board);
+	add_list(get_listarray(gamebox, BOARD4), (Item) NULL);
+
+	list = get_listarray(gamebox, ARCHER);
+	for (i = 0; i < list_sizes[ARCHER]; i++)
+		add_list(list, (Item) create_archer_coin());
 
 	return 0;
 }
@@ -70,7 +85,7 @@ int destroy_gamebox(ListArray gamebox)
 		n = len_list(list);
 		for (j = n - 1; j >= 0; j--) {
 			item = remove_pos_list(list, j);
-			if (i == BOARD)
+			if (i == BOARD2 || i == BOARD4)
 				destroy_board((Board) item);
 			else
 				destroy_coin((Coin) item);
@@ -81,18 +96,21 @@ int destroy_gamebox(ListArray gamebox)
 }
 
 History run_game(GetMoveFunc movefuncs[NUM_PLAYERS], char *names[NUM_PLAYERS],
-	int game_type)
+	int game_type, ListArray gamebox)
 {
-	Game game;
-	History history;
+	Game game = NULL;
+	History history = NULL;
 
-	game = create_game(movefuncs, names);
-	/*init_game(game, game_type);*/
+	Coin archer; 
+
+	archer = (Coin) peak_list(get_listarray(gamebox, ARCHER), 0);
+	archer->display(archer);
+	/*game = create_game(movefuncs, names);*/
+	/*init_game(game, game_type, gamebox);*/
 	/*history = play_game(game);*/
 	/*destroy_game(game);*/
 
-	/*return history;*/
-	return NULL;
+	return history;
 }
 
 /*int init_game(int type, char *names[NUM_PLAYERS], GetMoveFunc move_funcs[2])*/

@@ -13,16 +13,15 @@
 struct player {
 	char *name;
 	int color;
+	int num_types;
 	Coin initiative_coin;
+	List control_coins;
 	List supply;
+	List bag;
 	List hand;
 	List discard;
-	Queue control_coins;
+	List removed;
 	GetMoveFunc get_move;
-	//int num_types;
-	//Unit units[MAX_TYPE_UNITS];
-	//int num_bag;
-	//int bag[MAX_NUM_UNITS];
 	//int num_hand;
 	/*List hex_stacks; //the hexes with deployed unit stacks*/
 	//int num_deployed;
@@ -42,15 +41,153 @@ Player create_player(GetMoveFunc movefunc, char *name, int color)
 	player->name = name;
 	player->color = color;
 	player->initiative_coin = NULL;
+	player->control_coins = create_list(NUM_CONTROL_COINS);
 	player->supply = create_list(MAX_NUM_UNITS);
+	player->bag = create_list(MAX_NUM_UNITS);
 	player->hand = create_list(MAX_COINS_HAND);
 	player->discard = create_list(MAX_NUM_UNITS);
-	player->control_coins = create_queue(NUM_CONTROL_COINS);
+	player->removed = create_list(MAX_NUM_UNITS);
 	player->get_move = movefunc;
 
 	return player;
 }
 
+int init_first_game_player(Player players[NUM_PLAYERS], ListArray gamebox)
+{
+	int i;
+	Player gold;//, silver;
+	List list;
+	Coin coin;
+
+	//gold player
+	gold = players[GOLD_PLAYER];
+	gold->num_types = GOLD_PLAYER_FIRST_TYPES;
+	for (i = NUM_CONTROL_COINS_BOARD; i < NUM_CONTROL_COINS; i++) {
+		list = get_listarray(gamebox, GOLD_CONTROL_COIN);
+		coin = peak_list(list, i);
+		add_list(players[GOLD_PLAYER]->control_coins, (Item) coin);
+	}
+
+	for (i = 0; i < 4; i++) {	
+		list = get_listarray(gamebox, ARCHER);
+		coin = peak_list(list, i);
+		add_list(players[GOLD_PLAYER]->supply, (Item) coin);
+	}
+
+	for (i = 0; i < 4; i++) {	
+		list = get_listarray(gamebox, CAVALRY);
+		coin = peak_list(list, i);
+		add_list(players[GOLD_PLAYER]->supply, (Item) coin);
+	}
+
+	return 0;
+}
+	/*init_game(game, game_type);*/
+/*#define NUM_PLAYERS 2*/
+/*#define GOLD_PLAYER 0*/
+/*#define SILVER_PLAYER 1*/
+/*#define FIRST_GAME 0*/
+/*#define RANDOM_GAME 1*/
+/*#define SNAKE_GAME 2*/
+/*#define GOLD_PLAYER_FIRST_UNITS 18 //includes the royal coin*/
+/*#define SILVER_PLAYER_FIRST_UNITS 20 //includes the royal coin */
+/*#define GOLD_PLAYER_FIRST_TYPES 5 //includes the royal coin*/
+/*#define SILVER_PLAYER_FIRST_TYPES 5 //includes the royal coin */
+/*#define NUM_CONTROL_COINS 6*/
+/*#define MOVE_SPACE_SIZE 200*/
+/*#define MAX_MOVES 200 */
+/*#define MAX_TYPE_UNITS 5*/
+
+
+	/*game.players[0].units[0].type = ARCHER;*/
+	/*game.players[0].units[0].num = 4;*/
+	/*game.players[0].units[1].type = CAVALRY;*/
+	/*game.players[0].units[1].num = 4;*/
+	/*game.players[0].units[2].type = LANCER;*/
+	/*game.players[0].units[2].num = 4;*/
+	/*game.players[0].units[3].type = SCOUT;*/
+	/*game.players[0].units[3].num = 5;*/
+	/*game.players[0].units[4].type = GOLD;*/
+	/*game.players[0].units[4].num = 1;*/
+
+	/*game.players[0].num_supply = GOLD_PLAYER_FIRST_UNITS - 9;*/
+	/*game.players[0].supply[0] = ARCHER;*/
+	/*game.players[0].supply[1] = ARCHER;*/
+	/*game.players[0].supply[2] = CAVALRY;*/
+	/*game.players[0].supply[3] = CAVALRY;*/
+	/*game.players[0].supply[4] = LANCER;*/
+	/*game.players[0].supply[5] = LANCER;*/
+	/*game.players[0].supply[6] = SCOUT;*/
+	/*game.players[0].supply[7] = SCOUT;*/
+	/*game.players[0].supply[8] = SCOUT;*/
+
+	/*game.players[0].num_bag = 9;*/
+	/*game.players[0].bag[0] = ARCHER;*/
+	/*game.players[0].bag[1] = ARCHER;*/
+	/*game.players[0].bag[2] = CAVALRY;*/
+	/*game.players[0].bag[3] = CAVALRY;*/
+	/*game.players[0].bag[4] = LANCER;*/
+	/*game.players[0].bag[5] = LANCER;*/
+	/*game.players[0].bag[6] = SCOUT;*/
+	/*game.players[0].bag[7] = SCOUT;*/
+	/*game.players[0].bag[8] = GOLD;*/
+
+	/*game.players[0].num_hand = 0;*/
+	/*game.players[0].num_discarded = 0;*/
+	/*game.players[0].num_removed = 0;*/
+
+	/*[> silver player <]*/
+
+	/*game.players[1].name = names[1];*/
+	/*game.players[1].color = SILVER;*/
+	/*game.players[1].control_coin = 0;*/
+	/*if (game.cur_player == SILVER)*/
+		/*game.players[1].control_coin = 1;*/
+	/*game.players[1].control_markers = NUM_CONTROL_COINS - 2;*/
+	/*game.players[1].get_move = move_funcs[1];*/
+
+	/*game.players[1].num_types = SILVER_PLAYER_FIRST_TYPES;*/
+	/*game.players[1].units[0].type = CROSSBOWMAN;*/
+	/*game.players[1].units[0].num = 5;*/
+	/*game.players[1].units[1].type = LIGHT_CAVALRY;*/
+	/*game.players[1].units[1].num = 5;*/
+	/*game.players[1].units[2].type = PIKEMAN;*/
+	/*game.players[1].units[2].num = 4;*/
+	/*game.players[1].units[3].type = SWORDSMAN;*/
+	/*game.players[1].units[3].num = 5;*/
+	/*game.players[1].units[4].type = SILVER;*/
+	/*game.players[1].units[4].num = 1;*/
+
+	/*game.players[1].num_supply = SILVER_PLAYER_FIRST_UNITS - 9;*/
+	/*game.players[1].supply[0] = CROSSBOWMAN;*/
+	/*game.players[1].supply[1] = CROSSBOWMAN;*/
+	/*game.players[1].supply[2] = CROSSBOWMAN;*/
+	/*game.players[1].supply[3] = LIGHT_CAVALRY;*/
+	/*game.players[1].supply[4] = LIGHT_CAVALRY;*/
+	/*game.players[1].supply[5] = LIGHT_CAVALRY;*/
+	/*game.players[1].supply[6] = PIKEMAN;*/
+	/*game.players[1].supply[7] = PIKEMAN;*/
+	/*game.players[1].supply[8] = SWORDSMAN;*/
+	/*game.players[1].supply[9] = SWORDSMAN;*/
+	/*game.players[1].supply[10] = SWORDSMAN;*/
+
+	/*game.players[1].num_bag = 9;*/
+	/*game.players[1].bag[0] = CROSSBOWMAN;*/
+	/*game.players[1].bag[1] = CROSSBOWMAN;*/
+	/*game.players[1].bag[2] = LIGHT_CAVALRY;*/
+	/*game.players[1].bag[3] = LIGHT_CAVALRY;*/
+	/*game.players[1].bag[4] = PIKEMAN;*/
+	/*game.players[1].bag[5] = PIKEMAN;*/
+	/*game.players[1].bag[6] = SWORDSMAN;*/
+	/*game.players[1].bag[7] = SWORDSMAN;*/
+	/*game.players[1].bag[8] = SILVER;*/
+
+	/*game.players[1].num_hand = 0;*/
+	/*game.players[1].num_discarded = 0;*/
+	/*game.players[1].num_removed = 0;*/
+
+	/*return 0;*/
+/*}*/
 Move get_move_player(Player player, Game game)
 {
 	return player->get_move(player, game);

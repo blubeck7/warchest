@@ -53,6 +53,24 @@ Board create_board(void)
 	return board;
 }
 
+int init_board(Board board, ListArray gamebox)
+{
+	int i, j, k;
+	List list;
+	
+	j = k = 0;
+	for (i = 0; i < NUM_HEXES; i++) {
+		if (board->hexes[i]->init_control_coin == GOLD_CONTROL_COIN) {
+			list = get_listarray(gamebox, GOLD_CONTROL_COIN);
+			board->hexes[i]->control_coin = (Coin) peak_list(list, j++);
+		} else if (board->hexes[i]->init_control_coin == SILVER_CONTROL_COIN) {
+			list = get_listarray(gamebox, SILVER_CONTROL_COIN);
+			board->hexes[i]->control_coin = (Coin) peak_list(list, k++);
+		}
+	}
+
+	return 0;
+}
 
 int destroy_board(Board board)
 {

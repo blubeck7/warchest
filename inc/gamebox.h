@@ -1,7 +1,9 @@
-#ifndef WARCHEST_H
-#define WARCHEST_H
+#ifndef GAMEBOX_H
+#define GAMEBOX_H
 
-#include "types.h"
+typedef struct gamebox *Gamebox;
+
+//#include "types.h"
 
 /* create_gamebox
  * 
