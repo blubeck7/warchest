@@ -29,6 +29,7 @@ Game create_game(GetMoveFunc movefuncs[NUM_PLAYERS], char *names[NUM_PLAYERS])
 	Game game;
 
 	game = malloc(sizeof(struct game));
+	game->board = NULL;
 	for (i = 0; i < NUM_PLAYERS; i++) {
 		color = GOLD_PLAYER;
 		if (i)
@@ -42,9 +43,11 @@ Game create_game(GetMoveFunc movefuncs[NUM_PLAYERS], char *names[NUM_PLAYERS])
 
 int init_game(Game game, int game_type, ListArray gamebox)
 {
+
+	game->board = peak_list(get_listarray(gamebox, BOARD2), 0);
+	init_board(game->board, gamebox);
 	switch (game_type) {
 	case FIRST_GAME:
-		init_board(game->board, gamebox);
 		init_first_game_player(game->players, gamebox);
 		break;
 	case RANDOM_GAME:

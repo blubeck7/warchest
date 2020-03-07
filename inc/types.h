@@ -34,6 +34,7 @@ extern Win win;
 #define SILVER_PLAYER_FIRST_UNITS 20 //includes the royal coin 
 #define GOLD_PLAYER_FIRST_TYPES 5 //includes the royal coin
 #define SILVER_PLAYER_FIRST_TYPES 5 //includes the royal coin 
+#define NUM_START_COINS 2
 #define NUM_CONTROL_COINS 6
 #define NUM_CONTROL_COINS_BOARD 2
 #define MOVE_SPACE_SIZE 200
@@ -95,11 +96,31 @@ extern Win win;
 #define MAX_COINS_HAND 3
 
 //init data and bitmap paths
-#define BOARD_BITMAP "res/board.bmp"
+#define BOARD2_DATA "res/board.csv"
+#define BOARD2_BITMAP "res/board.bmp"
 #define HEX_BITMAP "res/hex.bmp"
 #define CONTROL_HEX_BITMAP "res/control_hex.bmp"
-#define BOARD_DATA "res/board.csv"
 #define ARCHER_BITMAP "res/archer_coin.bmp"
+#define BESERKER_BITMAP "res/beserker_coin.bmp"
+#define CAVALRY_BITMAP "res/cavalry_coin.bmp"
+#define CROSSBOWMAN_BITMAP "res/crossbowman_coin.bmp"
+#define ENSIGN_BITMAP "res/ensign_coin.bmp"
+#define FOOTMAN_BITMAP "res/footman_coin.bmp"
+#define KNIGHT_BITMAP "res/knight_coin.bmp"
+#define LANCER_BITMAP "res/lancer_coin.bmp"
+#define LIGHT_CAVALRY_BITMAP "res/light_cavalry_coin.bmp"
+#define MARSHALL_BITMAP "res/marshall_coin.bmp"
+#define MERCENARY_BITMAP "res/mercenary_coin.bmp"
+#define PIKEMAN_BITMAP "res/pikeman_coin.bmp"
+#define ROYAL_GUARD_BITMAP "res/royal_guard_coin.bmp"
+#define SCOUT_BITMAP "res/scout_coin.bmp"
+#define SWORDSMAN_BITMAP "res/swordsman_coin.bmp"
+#define WARRIOR_PRIEST_BITMAP "res/warrior_priest_coin.bmp"
+#define GOLD_ROYAL_COIN_BITMAP "res/gold_royal_coin.bmp"
+#define SILVER_ROYAL_COIN_BITMAP "res/silver_royal_coin.bmp"
+#define GOLD_CONTROL_COIN_BITMAP "res/gold_control_coin.bmp"
+#define SILVER_CONTROL_COIN_BITMAP "res/silver_control_coin.bmp"
+#define INITIATIVE_COIN_BITMAP "res/initiative_coin.bmp"
 
 /*#define DRAW 10*/
 /*#define SELECT 11*/

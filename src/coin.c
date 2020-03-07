@@ -64,8 +64,629 @@ Coin create_archer_coin(void)
 	return coin;
 }
 
+Coin create_beserker_coin(void)
+{
+	Coin coin;
+	Pix pix;
+
+	coin = malloc(sizeof(struct coin));
+	coin->owner = NULL;
+	coin->type = BESERKER;
+	coin->hex = NULL;
+	coin->face = COIN_UP; //up or down
+	load_bitmap(&coin->bitmap, BESERKER_BITMAP);
+	pix.r = 0;
+	pix.g = 255;
+	pix.b = 0;
+	set_ind(&coin->bitmap, &pix); 
+	coin->pos.x = 0;
+	coin->pos.y = 0;
+	coin->deploy = NULL;
+	coin->bolster = NULL;
+	coin->claim = NULL;
+	coin->recruit = NULL;
+	coin->pass = NULL;
+	coin->move = NULL;
+	coin->control = NULL;
+	coin->attack = NULL;
+	coin->tactic = NULL;
+	coin->display = display_coin;
+
+	return coin;
+}
+
+Coin create_cavalry_coin(void)
+{
+	Coin coin;
+	Pix pix;
+
+	coin = malloc(sizeof(struct coin));
+	coin->owner = NULL;
+	coin->type = CAVALRY;
+	coin->hex = NULL;
+	coin->face = COIN_UP; //up or down
+	load_bitmap(&coin->bitmap, CAVALRY_BITMAP);
+	pix.r = 0;
+	pix.g = 255;
+	pix.b = 0;
+	set_ind(&coin->bitmap, &pix); 
+	coin->pos.x = 0;
+	coin->pos.y = 0;
+	coin->deploy = NULL;
+	coin->bolster = NULL;
+	coin->claim = NULL;
+	coin->recruit = NULL;
+	coin->pass = NULL;
+	coin->move = NULL;
+	coin->control = NULL;
+	coin->attack = NULL;
+	coin->tactic = NULL;
+	coin->display = display_coin;
+
+	return coin;
+}
+
+Coin create_crossbowman_coin(void)
+{
+	Coin coin;
+	Pix pix;
+
+	coin = malloc(sizeof(struct coin));
+	coin->owner = NULL;
+	coin->type = CROSSBOWMAN;
+	coin->hex = NULL;
+	coin->face = COIN_UP; //up or down
+	load_bitmap(&coin->bitmap, CROSSBOWMAN_BITMAP);
+	pix.r = 0;
+	pix.g = 255;
+	pix.b = 0;
+	set_ind(&coin->bitmap, &pix); 
+	coin->pos.x = 0;
+	coin->pos.y = 0;
+	coin->deploy = NULL;
+	coin->bolster = NULL;
+	coin->claim = NULL;
+	coin->recruit = NULL;
+	coin->pass = NULL;
+	coin->move = NULL;
+	coin->control = NULL;
+	coin->attack = NULL;
+	coin->tactic = NULL;
+	coin->display = display_coin;
+
+	return coin;
+}
+
+Coin create_ensign_coin(void)
+{
+	Coin coin;
+	Pix pix;
+
+	coin = malloc(sizeof(struct coin));
+	coin->owner = NULL;
+	coin->type = ENSIGN;
+	coin->hex = NULL;
+	coin->face = COIN_UP; //up or down
+	load_bitmap(&coin->bitmap, ENSIGN_BITMAP);
+	pix.r = 0;
+	pix.g = 255;
+	pix.b = 0;
+	set_ind(&coin->bitmap, &pix); 
+	coin->pos.x = 0;
+	coin->pos.y = 0;
+	coin->deploy = NULL;
+	coin->bolster = NULL;
+	coin->claim = NULL;
+	coin->recruit = NULL;
+	coin->pass = NULL;
+	coin->move = NULL;
+	coin->control = NULL;
+	coin->attack = NULL;
+	coin->tactic = NULL;
+	coin->display = display_coin;
+
+	return coin;
+}
+
+Coin create_footman_coin(void)
+{
+	Coin coin;
+	Pix pix;
+
+	coin = malloc(sizeof(struct coin));
+	coin->owner = NULL;
+	coin->type = FOOTMAN;
+	coin->hex = NULL;
+	coin->face = COIN_UP; //up or down
+	load_bitmap(&coin->bitmap, FOOTMAN_BITMAP);
+	pix.r = 0;
+	pix.g = 255;
+	pix.b = 0;
+	set_ind(&coin->bitmap, &pix); 
+	coin->pos.x = 0;
+	coin->pos.y = 0;
+	coin->deploy = NULL;
+	coin->bolster = NULL;
+	coin->claim = NULL;
+	coin->recruit = NULL;
+	coin->pass = NULL;
+	coin->move = NULL;
+	coin->control = NULL;
+	coin->attack = NULL;
+	coin->tactic = NULL;
+	coin->display = display_coin;
+
+	return coin;
+}
+
+Coin create_knight_coin(void)
+{
+	Coin coin;
+	Pix pix;
+
+	coin = malloc(sizeof(struct coin));
+	coin->owner = NULL;
+	coin->type = KNIGHT;
+	coin->hex = NULL;
+	coin->face = COIN_UP; //up or down
+	load_bitmap(&coin->bitmap, KNIGHT_BITMAP);
+	pix.r = 0;
+	pix.g = 255;
+	pix.b = 0;
+	set_ind(&coin->bitmap, &pix); 
+	coin->pos.x = 0;
+	coin->pos.y = 0;
+	coin->deploy = NULL;
+	coin->bolster = NULL;
+	coin->claim = NULL;
+	coin->recruit = NULL;
+	coin->pass = NULL;
+	coin->move = NULL;
+	coin->control = NULL;
+	coin->attack = NULL;
+	coin->tactic = NULL;
+	coin->display = display_coin;
+
+	return coin;
+}
+
+Coin create_lancer_coin(void)
+{
+	Coin coin;
+	Pix pix;
+
+	coin = malloc(sizeof(struct coin));
+	coin->owner = NULL;
+	coin->type = LANCER;
+	coin->hex = NULL;
+	coin->face = COIN_UP; //up or down
+	load_bitmap(&coin->bitmap, LANCER_BITMAP);
+	pix.r = 0;
+	pix.g = 255;
+	pix.b = 0;
+	set_ind(&coin->bitmap, &pix); 
+	coin->pos.x = 0;
+	coin->pos.y = 0;
+	coin->deploy = NULL;
+	coin->bolster = NULL;
+	coin->claim = NULL;
+	coin->recruit = NULL;
+	coin->pass = NULL;
+	coin->move = NULL;
+	coin->control = NULL;
+	coin->attack = NULL;
+	coin->tactic = NULL;
+	coin->display = display_coin;
+
+	return coin;
+}
+
+Coin create_light_cavalry_coin(void)
+{
+	Coin coin;
+	Pix pix;
+
+	coin = malloc(sizeof(struct coin));
+	coin->owner = NULL;
+	coin->type = LIGHT_CAVALRY;
+	coin->hex = NULL;
+	coin->face = COIN_UP; //up or down
+	load_bitmap(&coin->bitmap, LIGHT_CAVALRY_BITMAP);
+	pix.r = 0;
+	pix.g = 255;
+	pix.b = 0;
+	set_ind(&coin->bitmap, &pix); 
+	coin->pos.x = 0;
+	coin->pos.y = 0;
+	coin->deploy = NULL;
+	coin->bolster = NULL;
+	coin->claim = NULL;
+	coin->recruit = NULL;
+	coin->pass = NULL;
+	coin->move = NULL;
+	coin->control = NULL;
+	coin->attack = NULL;
+	coin->tactic = NULL;
+	coin->display = display_coin;
+
+	return coin;
+}
+
+Coin create_marshall_coin(void)
+{
+	Coin coin;
+	Pix pix;
+
+	coin = malloc(sizeof(struct coin));
+	coin->owner = NULL;
+	coin->type = MARSHALL;
+	coin->hex = NULL;
+	coin->face = COIN_UP; //up or down
+	load_bitmap(&coin->bitmap, MARSHALL_BITMAP);
+	pix.r = 0;
+	pix.g = 255;
+	pix.b = 0;
+	set_ind(&coin->bitmap, &pix); 
+	coin->pos.x = 0;
+	coin->pos.y = 0;
+	coin->deploy = NULL;
+	coin->bolster = NULL;
+	coin->claim = NULL;
+	coin->recruit = NULL;
+	coin->pass = NULL;
+	coin->move = NULL;
+	coin->control = NULL;
+	coin->attack = NULL;
+	coin->tactic = NULL;
+	coin->display = display_coin;
+
+	return coin;
+}
+
+Coin create_mercenary_coin(void)
+{
+	Coin coin;
+	Pix pix;
+
+	coin = malloc(sizeof(struct coin));
+	coin->owner = NULL;
+	coin->type = MERCENARY;
+	coin->hex = NULL;
+	coin->face = COIN_UP; //up or down
+	load_bitmap(&coin->bitmap, MERCENARY_BITMAP);
+	pix.r = 0;
+	pix.g = 255;
+	pix.b = 0;
+	set_ind(&coin->bitmap, &pix); 
+	coin->pos.x = 0;
+	coin->pos.y = 0;
+	coin->deploy = NULL;
+	coin->bolster = NULL;
+	coin->claim = NULL;
+	coin->recruit = NULL;
+	coin->pass = NULL;
+	coin->move = NULL;
+	coin->control = NULL;
+	coin->attack = NULL;
+	coin->tactic = NULL;
+	coin->display = display_coin;
+
+	return coin;
+}
+
+Coin create_pikeman_coin(void)
+{
+	Coin coin;
+	Pix pix;
+
+	coin = malloc(sizeof(struct coin));
+	coin->owner = NULL;
+	coin->type = PIKEMAN;
+	coin->hex = NULL;
+	coin->face = COIN_UP; //up or down
+	load_bitmap(&coin->bitmap, PIKEMAN_BITMAP);
+	pix.r = 0;
+	pix.g = 255;
+	pix.b = 0;
+	set_ind(&coin->bitmap, &pix); 
+	coin->pos.x = 0;
+	coin->pos.y = 0;
+	coin->deploy = NULL;
+	coin->bolster = NULL;
+	coin->claim = NULL;
+	coin->recruit = NULL;
+	coin->pass = NULL;
+	coin->move = NULL;
+	coin->control = NULL;
+	coin->attack = NULL;
+	coin->tactic = NULL;
+	coin->display = display_coin;
+
+	return coin;
+}
+
+Coin create_royal_guard_coin(void)
+{
+	Coin coin;
+	Pix pix;
+
+	coin = malloc(sizeof(struct coin));
+	coin->owner = NULL;
+	coin->type = ROYAL_GUARD;
+	coin->hex = NULL;
+	coin->face = COIN_UP; //up or down
+	load_bitmap(&coin->bitmap, ROYAL_GUARD_BITMAP);
+	pix.r = 0;
+	pix.g = 255;
+	pix.b = 0;
+	set_ind(&coin->bitmap, &pix); 
+	coin->pos.x = 0;
+	coin->pos.y = 0;
+	coin->deploy = NULL;
+	coin->bolster = NULL;
+	coin->claim = NULL;
+	coin->recruit = NULL;
+	coin->pass = NULL;
+	coin->move = NULL;
+	coin->control = NULL;
+	coin->attack = NULL;
+	coin->tactic = NULL;
+	coin->display = display_coin;
+
+	return coin;
+}
+
+Coin create_scout_coin(void)
+{
+	Coin coin;
+	Pix pix;
+
+	coin = malloc(sizeof(struct coin));
+	coin->owner = NULL;
+	coin->type = SCOUT;
+	coin->hex = NULL;
+	coin->face = COIN_UP; //up or down
+	load_bitmap(&coin->bitmap, SCOUT_BITMAP);
+	pix.r = 0;
+	pix.g = 255;
+	pix.b = 0;
+	set_ind(&coin->bitmap, &pix); 
+	coin->pos.x = 0;
+	coin->pos.y = 0;
+	coin->deploy = NULL;
+	coin->bolster = NULL;
+	coin->claim = NULL;
+	coin->recruit = NULL;
+	coin->pass = NULL;
+	coin->move = NULL;
+	coin->control = NULL;
+	coin->attack = NULL;
+	coin->tactic = NULL;
+	coin->display = display_coin;
+
+	return coin;
+}
+
+Coin create_swordsman_coin(void)
+{
+	Coin coin;
+	Pix pix;
+
+	coin = malloc(sizeof(struct coin));
+	coin->owner = NULL;
+	coin->type = SWORDSMAN;
+	coin->hex = NULL;
+	coin->face = COIN_UP; //up or down
+	load_bitmap(&coin->bitmap, SWORDSMAN_BITMAP);
+	pix.r = 0;
+	pix.g = 255;
+	pix.b = 0;
+	set_ind(&coin->bitmap, &pix); 
+	coin->pos.x = 0;
+	coin->pos.y = 0;
+	coin->deploy = NULL;
+	coin->bolster = NULL;
+	coin->claim = NULL;
+	coin->recruit = NULL;
+	coin->pass = NULL;
+	coin->move = NULL;
+	coin->control = NULL;
+	coin->attack = NULL;
+	coin->tactic = NULL;
+	coin->display = display_coin;
+
+	return coin;
+}
+
+Coin create_warrior_priest_coin(void)
+{
+	Coin coin;
+	Pix pix;
+
+	coin = malloc(sizeof(struct coin));
+	coin->owner = NULL;
+	coin->type = WARRIOR_PRIEST;
+	coin->hex = NULL;
+	coin->face = COIN_UP; //up or down
+	load_bitmap(&coin->bitmap, WARRIOR_PRIEST_BITMAP);
+	pix.r = 0;
+	pix.g = 255;
+	pix.b = 0;
+	set_ind(&coin->bitmap, &pix); 
+	coin->pos.x = 0;
+	coin->pos.y = 0;
+	coin->deploy = NULL;
+	coin->bolster = NULL;
+	coin->claim = NULL;
+	coin->recruit = NULL;
+	coin->pass = NULL;
+	coin->move = NULL;
+	coin->control = NULL;
+	coin->attack = NULL;
+	coin->tactic = NULL;
+	coin->display = display_coin;
+
+	return coin;
+}
+
+Coin create_gold_royal_coin(void)
+{
+	Coin coin;
+	Pix pix;
+
+	coin = malloc(sizeof(struct coin));
+	coin->owner = NULL;
+	coin->type = GOLD_ROYAL_COIN;
+	coin->hex = NULL;
+	coin->face = COIN_UP; //up or down
+	load_bitmap(&coin->bitmap, GOLD_ROYAL_COIN_BITMAP);
+	pix.r = 0;
+	pix.g = 255;
+	pix.b = 0;
+	set_ind(&coin->bitmap, &pix); 
+	coin->pos.x = 0;
+	coin->pos.y = 0;
+	coin->deploy = NULL;
+	coin->bolster = NULL;
+	coin->claim = NULL;
+	coin->recruit = NULL;
+	coin->pass = NULL;
+	coin->move = NULL;
+	coin->control = NULL;
+	coin->attack = NULL;
+	coin->tactic = NULL;
+	coin->display = display_coin;
+
+	return coin;
+}
+
+Coin create_silver_royal_coin(void)
+{
+	Coin coin;
+	Pix pix;
+
+	coin = malloc(sizeof(struct coin));
+	coin->owner = NULL;
+	coin->type = SILVER_ROYAL_COIN;
+	coin->hex = NULL;
+	coin->face = COIN_UP; //up or down
+	load_bitmap(&coin->bitmap, SILVER_ROYAL_COIN_BITMAP);
+	pix.r = 0;
+	pix.g = 255;
+	pix.b = 0;
+	set_ind(&coin->bitmap, &pix); 
+	coin->pos.x = 0;
+	coin->pos.y = 0;
+	coin->deploy = NULL;
+	coin->bolster = NULL;
+	coin->claim = NULL;
+	coin->recruit = NULL;
+	coin->pass = NULL;
+	coin->move = NULL;
+	coin->control = NULL;
+	coin->attack = NULL;
+	coin->tactic = NULL;
+	coin->display = display_coin;
+
+	return coin;
+}
+
+Coin create_gold_control_coin(void)
+{
+	Coin coin;
+	Pix pix;
+
+	coin = malloc(sizeof(struct coin));
+	coin->owner = NULL;
+	coin->type = GOLD_CONTROL_COIN;
+	coin->hex = NULL;
+	coin->face = COIN_UP; //up or down
+	load_bitmap(&coin->bitmap, GOLD_CONTROL_COIN_BITMAP);
+	pix.r = 0;
+	pix.g = 255;
+	pix.b = 0;
+	set_ind(&coin->bitmap, &pix); 
+	coin->pos.x = 0;
+	coin->pos.y = 0;
+	coin->deploy = NULL;
+	coin->bolster = NULL;
+	coin->claim = NULL;
+	coin->recruit = NULL;
+	coin->pass = NULL;
+	coin->move = NULL;
+	coin->control = NULL;
+	coin->attack = NULL;
+	coin->tactic = NULL;
+	coin->display = display_coin;
+
+	return coin;
+}
+
+Coin create_silver_control_coin(void)
+{
+	Coin coin;
+	Pix pix;
+
+	coin = malloc(sizeof(struct coin));
+	coin->owner = NULL;
+	coin->type = SILVER_CONTROL_COIN;
+	coin->hex = NULL;
+	coin->face = COIN_UP; //up or down
+	load_bitmap(&coin->bitmap, SILVER_CONTROL_COIN_BITMAP);
+	pix.r = 0;
+	pix.g = 255;
+	pix.b = 0;
+	set_ind(&coin->bitmap, &pix); 
+	coin->pos.x = 0;
+	coin->pos.y = 0;
+	coin->deploy = NULL;
+	coin->bolster = NULL;
+	coin->claim = NULL;
+	coin->recruit = NULL;
+	coin->pass = NULL;
+	coin->move = NULL;
+	coin->control = NULL;
+	coin->attack = NULL;
+	coin->tactic = NULL;
+	coin->display = display_coin;
+
+	return coin;
+}
+
+Coin create_initiative_coin(void)
+{
+	Coin coin;
+	Pix pix;
+
+	coin = malloc(sizeof(struct coin));
+	coin->owner = NULL;
+	coin->type = INITIATIVE_COIN;
+	coin->hex = NULL;
+	coin->face = COIN_UP; //up or down
+	load_bitmap(&coin->bitmap, INITIATIVE_COIN_BITMAP);
+	pix.r = 0;
+	pix.g = 255;
+	pix.b = 0;
+	set_ind(&coin->bitmap, &pix); 
+	coin->pos.x = 0;
+	coin->pos.y = 0;
+	coin->deploy = NULL;
+	coin->bolster = NULL;
+	coin->claim = NULL;
+	coin->recruit = NULL;
+	coin->pass = NULL;
+	coin->move = NULL;
+	coin->control = NULL;
+	coin->attack = NULL;
+	coin->tactic = NULL;
+	coin->display = display_coin;
+
+	return coin;
+}
+
 int destroy_coin(Coin coin)
 {
+	unload_bitmap(&coin->bitmap);
 	free(coin);
 
 	return 0;

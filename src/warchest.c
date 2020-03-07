@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "../inc/coin.h"
 #include "../inc/ds.h"
 #include "../inc/game.h"
@@ -20,7 +21,6 @@ int main(int argc, char *argv[])
 	char *names[NUM_PLAYERS] = {"HUMAN", "RANDOM"};
 
 	init_win(&win);
-	show_scr();
 	gamebox = create_gamebox(); //Stores the board and coins
 	init_gamebox(gamebox); //Creates the board and coins
 	history = run_game(movefuncs, names, FIRST_GAME, gamebox);
@@ -37,7 +37,6 @@ int main(int argc, char *argv[])
 	/*//play_game();*/
 	/*draw_coins();*/
 	/*print_game();*/
-	close_scr();
 
 	return 0;
 }
@@ -70,6 +69,86 @@ int init_gamebox(ListArray gamebox)
 	for (i = 0; i < list_sizes[ARCHER]; i++)
 		add_list(list, (Item) create_archer_coin());
 
+	/*list = get_listarray(gamebox, BESERKER);*/
+	/*for (i = 0; i < list_sizes[BESERKER]; i++)*/
+		/*add_list(list, (Item) create_beserker_coin());*/
+
+	list = get_listarray(gamebox, CAVALRY);
+	for (i = 0; i < list_sizes[CAVALRY]; i++)
+		add_list(list, (Item) create_cavalry_coin());
+
+	list = get_listarray(gamebox, CROSSBOWMAN);
+	for (i = 0; i < list_sizes[CROSSBOWMAN]; i++)
+		add_list(list, (Item) create_crossbowman_coin());
+
+	/*list = get_listarray(gamebox, ENSIGN);*/
+	/*for (i = 0; i < list_sizes[ENSIGN]; i++)*/
+		/*add_list(list, (Item) create_ensign_coin());*/
+
+	/*list = get_listarray(gamebox, FOOTMAN);*/
+	/*for (i = 0; i < list_sizes[FOOTMAN]; i++)*/
+		/*add_list(list, (Item) create_footman_coin());*/
+
+	/*list = get_listarray(gamebox, KNIGHT);*/
+	/*for (i = 0; i < list_sizes[KNIGHT]; i++)*/
+		/*add_list(list, (Item) create_knight_coin());*/
+
+	list = get_listarray(gamebox, LANCER);
+	for (i = 0; i < list_sizes[LANCER]; i++)
+		add_list(list, (Item) create_lancer_coin());
+
+	list = get_listarray(gamebox, LIGHT_CAVALRY);
+	for (i = 0; i < list_sizes[LIGHT_CAVALRY]; i++)
+		add_list(list, (Item) create_light_cavalry_coin());
+
+	/*list = get_listarray(gamebox, MARSHALL);*/
+	/*for (i = 0; i < list_sizes[MARSHALL]; i++)*/
+		/*add_list(list, (Item) create_marshall_coin());*/
+
+	/*list = get_listarray(gamebox, MERCENARY);*/
+	/*for (i = 0; i < list_sizes[MERCENARY]; i++)*/
+		/*add_list(list, (Item) create_mercenary_coin());*/
+
+	list = get_listarray(gamebox, PIKEMAN);
+	for (i = 0; i < list_sizes[PIKEMAN]; i++)
+		add_list(list, (Item) create_pikeman_coin());
+
+	/*list = get_listarray(gamebox, ROYAL_GUARD);*/
+	/*for (i = 0; i < list_sizes[ROYAL_GUARD]; i++)*/
+		/*add_list(list, (Item) create_royal_guard_coin());*/
+
+	list = get_listarray(gamebox, SCOUT);
+	for (i = 0; i < list_sizes[SCOUT]; i++)
+		add_list(list, (Item) create_scout_coin());
+
+	list = get_listarray(gamebox, SWORDSMAN);
+	for (i = 0; i < list_sizes[SWORDSMAN]; i++)
+		add_list(list, (Item) create_swordsman_coin());
+
+	/*list = get_listarray(gamebox, WARRIOR_PRIEST);*/
+	/*for (i = 0; i < list_sizes[WARRIOR_PRIEST]; i++)*/
+		/*add_list(list, (Item) create_warrior_priest_coin());*/
+
+	list = get_listarray(gamebox, GOLD_ROYAL_COIN);
+	for (i = 0; i < list_sizes[GOLD_ROYAL_COIN]; i++)
+		add_list(list, (Item) create_gold_royal_coin());
+
+	list = get_listarray(gamebox, SILVER_ROYAL_COIN);
+	for (i = 0; i < list_sizes[SILVER_ROYAL_COIN]; i++)
+		add_list(list, (Item) create_silver_royal_coin());
+
+	list = get_listarray(gamebox, GOLD_CONTROL_COIN);
+	for (i = 0; i < list_sizes[GOLD_CONTROL_COIN]; i++)
+		add_list(list, (Item) create_gold_control_coin());
+
+	list = get_listarray(gamebox, SILVER_CONTROL_COIN);
+	for (i = 0; i < list_sizes[SILVER_CONTROL_COIN]; i++)
+		add_list(list, (Item) create_silver_control_coin());
+
+	list = get_listarray(gamebox, INITIATIVE_COIN);
+	for (i = 0; i < list_sizes[INITIATIVE_COIN]; i++)
+		add_list(list, (Item) create_initiative_coin());
+
 	return 0;
 }
 
@@ -98,16 +177,14 @@ int destroy_gamebox(ListArray gamebox)
 History run_game(GetMoveFunc movefuncs[NUM_PLAYERS], char *names[NUM_PLAYERS],
 	int game_type, ListArray gamebox)
 {
-	Game game = NULL;
-	History history = NULL;
+	Game game;
+	History history;
 
-	Coin archer; 
-
-	archer = (Coin) peak_list(get_listarray(gamebox, ARCHER), 0);
-	archer->display(archer);
-	/*game = create_game(movefuncs, names);*/
+	game = create_game(movefuncs, names);
 	/*init_game(game, game_type, gamebox);*/
+	show_scr();
 	/*history = play_game(game);*/
+	close_scr();
 	/*destroy_game(game);*/
 
 	return history;

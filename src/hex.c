@@ -9,6 +9,7 @@
 #include "../inc/history.h"
 #include "../inc/player.h"
 #include "../inc/types.h"
+#include "../inc/window.h"
 
 struct hex {
 	int id;
@@ -18,11 +19,12 @@ struct hex {
 	int init_control_coin;
 	Coin control_coin;
 	Stack unit_coins;
-	Bitmap *bitmap;
+	Bitmap bitmap;
+	Pos pos;
 };
 
 struct board {
-	Bitmap *bitmap;
+	Bitmap bitmap;
 	Hex hexes[NUM_HEXES];
 };
 
@@ -36,10 +38,9 @@ Board create_board(void)
 	if ((board = malloc(sizeof(struct board))) < 0)
 		return NULL;
 	
-	board->bitmap = malloc(sizeof(struct bitmap));
-	load_bitmap(board->bitmap, BOARD_BITMAP);
+	load_bitmap(&board->bitmap, BOARD2_BITMAP);
 
-	hex_data = fopen(BOARD_DATA, "r");
+	hex_data = fopen(BOARD2_DATA, "r");
 	if ((err = fgets(line, sizeof(line), hex_data)) == NULL) //header
 		return NULL;
 	for (i = 0; i < NUM_HEXES; i++) {
@@ -102,12 +103,10 @@ Hex create_hex(FILE *hex_data, int n)
 		token = strtok(NULL, ":");
 	}
 
-	if ((hex->bitmap = malloc(sizeof(struct bitmap))) == NULL)
-		return NULL;
 	if (!hex->control_hex)
-		load_bitmap(hex->bitmap, HEX_BITMAP);
+		load_bitmap(&hex->bitmap, HEX_BITMAP);
 	else 
-		load_bitmap(hex->bitmap, CONTROL_HEX_BITMAP);
+		load_bitmap(&hex->bitmap, CONTROL_HEX_BITMAP);
 
 	hex->control_coin = NULL;
 	hex->unit_coins = NULL;
