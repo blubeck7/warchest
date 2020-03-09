@@ -34,7 +34,7 @@ extern Win win;
 #define SILVER_PLAYER_FIRST_UNITS 20 //includes the royal coin 
 #define GOLD_PLAYER_FIRST_TYPES 5 //includes the royal coin
 #define SILVER_PLAYER_FIRST_TYPES 5 //includes the royal coin 
-#define NUM_START_COINS 2
+#define NUM_START_COINS 2 //coins of each type in the bag 
 #define NUM_CONTROL_COINS 6
 #define NUM_CONTROL_COINS_BOARD 2
 #define MOVE_SPACE_SIZE 200
@@ -121,6 +121,7 @@ extern Win win;
 #define GOLD_CONTROL_COIN_BITMAP "res/gold_control_coin.bmp"
 #define SILVER_CONTROL_COIN_BITMAP "res/silver_control_coin.bmp"
 #define INITIATIVE_COIN_BITMAP "res/initiative_coin.bmp"
+#define BACK_BITMAP "res/coin_back.bmp"
 
 /*#define DRAW 10*/
 /*#define SELECT 11*/

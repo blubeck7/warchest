@@ -10,7 +10,8 @@ struct coin {
 	int type;
 	Hex hex;
 	int face; //up or down
-	Bitmap bitmap;
+	Bitmap front;
+	Bitmap back;
 	Pos pos;
 	int (*deploy)(Coin coin, Game game, List move_space);
 	GenMoveFunc bolster;

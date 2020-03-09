@@ -1,9 +1,11 @@
+//TODO: Create dictionary. Replace listarray and queuearray with dictionary
 #ifndef DS_H
 #define DS_H
 
 typedef void *Item;
 
 //typedef struct dgraph *DGraph;
+//typedef struct dict *Dict;
 typedef struct list *List;
 typedef struct listarray *ListArray;
 typedef struct queue *Queue;

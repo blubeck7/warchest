@@ -43,11 +43,13 @@ Coin create_archer_coin(void)
 	coin->type = ARCHER;
 	coin->hex = NULL;
 	coin->face = COIN_UP; //up or down
-	load_bitmap(&coin->bitmap, ARCHER_BITMAP);
+	load_bitmap(&coin->front, ARCHER_BITMAP);
+	load_bitmap(&coin->back, BACK_BITMAP);
 	pix.r = 0;
 	pix.g = 255;
 	pix.b = 0;
-	set_ind(&coin->bitmap, &pix); 
+	set_ind(&coin->front, &pix); 
+	set_ind(&coin->back, &pix); 
 	coin->pos.x = 0;
 	coin->pos.y = 0;
 	coin->deploy = NULL;
@@ -74,11 +76,12 @@ Coin create_beserker_coin(void)
 	coin->type = BESERKER;
 	coin->hex = NULL;
 	coin->face = COIN_UP; //up or down
-	load_bitmap(&coin->bitmap, BESERKER_BITMAP);
+	load_bitmap(&coin->front, BESERKER_BITMAP);
+	load_bitmap(&coin->back, BACK_BITMAP);
 	pix.r = 0;
 	pix.g = 255;
 	pix.b = 0;
-	set_ind(&coin->bitmap, &pix); 
+	set_ind(&coin->front, &pix); 
 	coin->pos.x = 0;
 	coin->pos.y = 0;
 	coin->deploy = NULL;
@@ -105,11 +108,12 @@ Coin create_cavalry_coin(void)
 	coin->type = CAVALRY;
 	coin->hex = NULL;
 	coin->face = COIN_UP; //up or down
-	load_bitmap(&coin->bitmap, CAVALRY_BITMAP);
+	load_bitmap(&coin->front, CAVALRY_BITMAP);
+	load_bitmap(&coin->back, BACK_BITMAP);
 	pix.r = 0;
 	pix.g = 255;
 	pix.b = 0;
-	set_ind(&coin->bitmap, &pix); 
+	set_ind(&coin->front, &pix); 
 	coin->pos.x = 0;
 	coin->pos.y = 0;
 	coin->deploy = NULL;
@@ -136,11 +140,12 @@ Coin create_crossbowman_coin(void)
 	coin->type = CROSSBOWMAN;
 	coin->hex = NULL;
 	coin->face = COIN_UP; //up or down
-	load_bitmap(&coin->bitmap, CROSSBOWMAN_BITMAP);
+	load_bitmap(&coin->front, CROSSBOWMAN_BITMAP);
+	load_bitmap(&coin->back, BACK_BITMAP);
 	pix.r = 0;
 	pix.g = 255;
 	pix.b = 0;
-	set_ind(&coin->bitmap, &pix); 
+	set_ind(&coin->front, &pix); 
 	coin->pos.x = 0;
 	coin->pos.y = 0;
 	coin->deploy = NULL;
@@ -167,11 +172,12 @@ Coin create_ensign_coin(void)
 	coin->type = ENSIGN;
 	coin->hex = NULL;
 	coin->face = COIN_UP; //up or down
-	load_bitmap(&coin->bitmap, ENSIGN_BITMAP);
+	load_bitmap(&coin->front, ENSIGN_BITMAP);
+	load_bitmap(&coin->back, BACK_BITMAP);
 	pix.r = 0;
 	pix.g = 255;
 	pix.b = 0;
-	set_ind(&coin->bitmap, &pix); 
+	set_ind(&coin->front, &pix); 
 	coin->pos.x = 0;
 	coin->pos.y = 0;
 	coin->deploy = NULL;
@@ -198,11 +204,12 @@ Coin create_footman_coin(void)
 	coin->type = FOOTMAN;
 	coin->hex = NULL;
 	coin->face = COIN_UP; //up or down
-	load_bitmap(&coin->bitmap, FOOTMAN_BITMAP);
+	load_bitmap(&coin->front, FOOTMAN_BITMAP);
+	load_bitmap(&coin->back, BACK_BITMAP);
 	pix.r = 0;
 	pix.g = 255;
 	pix.b = 0;
-	set_ind(&coin->bitmap, &pix); 
+	set_ind(&coin->front, &pix); 
 	coin->pos.x = 0;
 	coin->pos.y = 0;
 	coin->deploy = NULL;
@@ -229,11 +236,12 @@ Coin create_knight_coin(void)
 	coin->type = KNIGHT;
 	coin->hex = NULL;
 	coin->face = COIN_UP; //up or down
-	load_bitmap(&coin->bitmap, KNIGHT_BITMAP);
+	load_bitmap(&coin->front, KNIGHT_BITMAP);
+	load_bitmap(&coin->back, BACK_BITMAP);
 	pix.r = 0;
 	pix.g = 255;
 	pix.b = 0;
-	set_ind(&coin->bitmap, &pix); 
+	set_ind(&coin->front, &pix); 
 	coin->pos.x = 0;
 	coin->pos.y = 0;
 	coin->deploy = NULL;
@@ -260,11 +268,12 @@ Coin create_lancer_coin(void)
 	coin->type = LANCER;
 	coin->hex = NULL;
 	coin->face = COIN_UP; //up or down
-	load_bitmap(&coin->bitmap, LANCER_BITMAP);
+	load_bitmap(&coin->front, LANCER_BITMAP);
+	load_bitmap(&coin->back, BACK_BITMAP);
 	pix.r = 0;
 	pix.g = 255;
 	pix.b = 0;
-	set_ind(&coin->bitmap, &pix); 
+	set_ind(&coin->front, &pix); 
 	coin->pos.x = 0;
 	coin->pos.y = 0;
 	coin->deploy = NULL;
@@ -291,11 +300,12 @@ Coin create_light_cavalry_coin(void)
 	coin->type = LIGHT_CAVALRY;
 	coin->hex = NULL;
 	coin->face = COIN_UP; //up or down
-	load_bitmap(&coin->bitmap, LIGHT_CAVALRY_BITMAP);
+	load_bitmap(&coin->front, LIGHT_CAVALRY_BITMAP);
+	load_bitmap(&coin->back, BACK_BITMAP);
 	pix.r = 0;
 	pix.g = 255;
 	pix.b = 0;
-	set_ind(&coin->bitmap, &pix); 
+	set_ind(&coin->front, &pix); 
 	coin->pos.x = 0;
 	coin->pos.y = 0;
 	coin->deploy = NULL;
@@ -322,11 +332,12 @@ Coin create_marshall_coin(void)
 	coin->type = MARSHALL;
 	coin->hex = NULL;
 	coin->face = COIN_UP; //up or down
-	load_bitmap(&coin->bitmap, MARSHALL_BITMAP);
+	load_bitmap(&coin->front, MARSHALL_BITMAP);
+	load_bitmap(&coin->back, BACK_BITMAP);
 	pix.r = 0;
 	pix.g = 255;
 	pix.b = 0;
-	set_ind(&coin->bitmap, &pix); 
+	set_ind(&coin->front, &pix); 
 	coin->pos.x = 0;
 	coin->pos.y = 0;
 	coin->deploy = NULL;
@@ -353,11 +364,12 @@ Coin create_mercenary_coin(void)
 	coin->type = MERCENARY;
 	coin->hex = NULL;
 	coin->face = COIN_UP; //up or down
-	load_bitmap(&coin->bitmap, MERCENARY_BITMAP);
+	load_bitmap(&coin->front, MERCENARY_BITMAP);
+	load_bitmap(&coin->back, BACK_BITMAP);
 	pix.r = 0;
 	pix.g = 255;
 	pix.b = 0;
-	set_ind(&coin->bitmap, &pix); 
+	set_ind(&coin->front, &pix); 
 	coin->pos.x = 0;
 	coin->pos.y = 0;
 	coin->deploy = NULL;
@@ -384,11 +396,12 @@ Coin create_pikeman_coin(void)
 	coin->type = PIKEMAN;
 	coin->hex = NULL;
 	coin->face = COIN_UP; //up or down
-	load_bitmap(&coin->bitmap, PIKEMAN_BITMAP);
+	load_bitmap(&coin->front, PIKEMAN_BITMAP);
+	load_bitmap(&coin->back, BACK_BITMAP);
 	pix.r = 0;
 	pix.g = 255;
 	pix.b = 0;
-	set_ind(&coin->bitmap, &pix); 
+	set_ind(&coin->front, &pix); 
 	coin->pos.x = 0;
 	coin->pos.y = 0;
 	coin->deploy = NULL;
@@ -415,11 +428,12 @@ Coin create_royal_guard_coin(void)
 	coin->type = ROYAL_GUARD;
 	coin->hex = NULL;
 	coin->face = COIN_UP; //up or down
-	load_bitmap(&coin->bitmap, ROYAL_GUARD_BITMAP);
+	load_bitmap(&coin->front, ROYAL_GUARD_BITMAP);
+	load_bitmap(&coin->back, BACK_BITMAP);
 	pix.r = 0;
 	pix.g = 255;
 	pix.b = 0;
-	set_ind(&coin->bitmap, &pix); 
+	set_ind(&coin->front, &pix); 
 	coin->pos.x = 0;
 	coin->pos.y = 0;
 	coin->deploy = NULL;
@@ -446,11 +460,12 @@ Coin create_scout_coin(void)
 	coin->type = SCOUT;
 	coin->hex = NULL;
 	coin->face = COIN_UP; //up or down
-	load_bitmap(&coin->bitmap, SCOUT_BITMAP);
+	load_bitmap(&coin->front, SCOUT_BITMAP);
+	load_bitmap(&coin->back, BACK_BITMAP);
 	pix.r = 0;
 	pix.g = 255;
 	pix.b = 0;
-	set_ind(&coin->bitmap, &pix); 
+	set_ind(&coin->front, &pix); 
 	coin->pos.x = 0;
 	coin->pos.y = 0;
 	coin->deploy = NULL;
@@ -477,11 +492,12 @@ Coin create_swordsman_coin(void)
 	coin->type = SWORDSMAN;
 	coin->hex = NULL;
 	coin->face = COIN_UP; //up or down
-	load_bitmap(&coin->bitmap, SWORDSMAN_BITMAP);
+	load_bitmap(&coin->front, SWORDSMAN_BITMAP);
+	load_bitmap(&coin->back, BACK_BITMAP);
 	pix.r = 0;
 	pix.g = 255;
 	pix.b = 0;
-	set_ind(&coin->bitmap, &pix); 
+	set_ind(&coin->front, &pix); 
 	coin->pos.x = 0;
 	coin->pos.y = 0;
 	coin->deploy = NULL;
@@ -508,11 +524,12 @@ Coin create_warrior_priest_coin(void)
 	coin->type = WARRIOR_PRIEST;
 	coin->hex = NULL;
 	coin->face = COIN_UP; //up or down
-	load_bitmap(&coin->bitmap, WARRIOR_PRIEST_BITMAP);
+	load_bitmap(&coin->front, WARRIOR_PRIEST_BITMAP);
+	load_bitmap(&coin->back, BACK_BITMAP);
 	pix.r = 0;
 	pix.g = 255;
 	pix.b = 0;
-	set_ind(&coin->bitmap, &pix); 
+	set_ind(&coin->front, &pix); 
 	coin->pos.x = 0;
 	coin->pos.y = 0;
 	coin->deploy = NULL;
@@ -539,11 +556,12 @@ Coin create_gold_royal_coin(void)
 	coin->type = GOLD_ROYAL_COIN;
 	coin->hex = NULL;
 	coin->face = COIN_UP; //up or down
-	load_bitmap(&coin->bitmap, GOLD_ROYAL_COIN_BITMAP);
+	load_bitmap(&coin->front, GOLD_ROYAL_COIN_BITMAP);
+	load_bitmap(&coin->back, BACK_BITMAP);
 	pix.r = 0;
 	pix.g = 255;
 	pix.b = 0;
-	set_ind(&coin->bitmap, &pix); 
+	set_ind(&coin->front, &pix); 
 	coin->pos.x = 0;
 	coin->pos.y = 0;
 	coin->deploy = NULL;
@@ -570,11 +588,12 @@ Coin create_silver_royal_coin(void)
 	coin->type = SILVER_ROYAL_COIN;
 	coin->hex = NULL;
 	coin->face = COIN_UP; //up or down
-	load_bitmap(&coin->bitmap, SILVER_ROYAL_COIN_BITMAP);
+	load_bitmap(&coin->front, SILVER_ROYAL_COIN_BITMAP);
+	load_bitmap(&coin->back, BACK_BITMAP);
 	pix.r = 0;
 	pix.g = 255;
 	pix.b = 0;
-	set_ind(&coin->bitmap, &pix); 
+	set_ind(&coin->front, &pix); 
 	coin->pos.x = 0;
 	coin->pos.y = 0;
 	coin->deploy = NULL;
@@ -601,11 +620,12 @@ Coin create_gold_control_coin(void)
 	coin->type = GOLD_CONTROL_COIN;
 	coin->hex = NULL;
 	coin->face = COIN_UP; //up or down
-	load_bitmap(&coin->bitmap, GOLD_CONTROL_COIN_BITMAP);
+	load_bitmap(&coin->front, GOLD_CONTROL_COIN_BITMAP);
+	load_bitmap(&coin->back, BACK_BITMAP);
 	pix.r = 0;
 	pix.g = 255;
 	pix.b = 0;
-	set_ind(&coin->bitmap, &pix); 
+	set_ind(&coin->front, &pix); 
 	coin->pos.x = 0;
 	coin->pos.y = 0;
 	coin->deploy = NULL;
@@ -632,11 +652,12 @@ Coin create_silver_control_coin(void)
 	coin->type = SILVER_CONTROL_COIN;
 	coin->hex = NULL;
 	coin->face = COIN_UP; //up or down
-	load_bitmap(&coin->bitmap, SILVER_CONTROL_COIN_BITMAP);
+	load_bitmap(&coin->front, SILVER_CONTROL_COIN_BITMAP);
+	load_bitmap(&coin->back, BACK_BITMAP);
 	pix.r = 0;
 	pix.g = 255;
 	pix.b = 0;
-	set_ind(&coin->bitmap, &pix); 
+	set_ind(&coin->front, &pix); 
 	coin->pos.x = 0;
 	coin->pos.y = 0;
 	coin->deploy = NULL;
@@ -663,11 +684,12 @@ Coin create_initiative_coin(void)
 	coin->type = INITIATIVE_COIN;
 	coin->hex = NULL;
 	coin->face = COIN_UP; //up or down
-	load_bitmap(&coin->bitmap, INITIATIVE_COIN_BITMAP);
+	load_bitmap(&coin->front, INITIATIVE_COIN_BITMAP);
+	load_bitmap(&coin->back, BACK_BITMAP);
 	pix.r = 0;
 	pix.g = 255;
 	pix.b = 0;
-	set_ind(&coin->bitmap, &pix); 
+	set_ind(&coin->front, &pix); 
 	coin->pos.x = 0;
 	coin->pos.y = 0;
 	coin->deploy = NULL;
@@ -686,7 +708,8 @@ Coin create_initiative_coin(void)
 
 int destroy_coin(Coin coin)
 {
-	unload_bitmap(&coin->bitmap);
+	unload_bitmap(&coin->front);
+	unload_bitmap(&coin->back);
 	free(coin);
 
 	return 0;
@@ -694,7 +717,10 @@ int destroy_coin(Coin coin)
 
 int display_coin(Coin coin)
 {
-	draw_bitmap(&coin->bitmap, &win, &coin->pos);
+	if (coin->face == COIN_UP)
+		draw_bitmap(&coin->front, &win, &coin->pos);
+	else
+		draw_bitmap(&coin->back, &win, &coin->pos);
 
 	return 0;
 }

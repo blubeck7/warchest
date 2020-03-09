@@ -21,11 +21,14 @@ struct hex {
 	Stack unit_coins;
 	Bitmap bitmap;
 	Pos pos;
+	int display;
 };
 
 struct board {
 	Bitmap bitmap;
+	Pos pos;
 	Hex hexes[NUM_HEXES];
+	int display;
 };
 
 Board create_board(void)
@@ -39,6 +42,8 @@ Board create_board(void)
 		return NULL;
 	
 	load_bitmap(&board->bitmap, BOARD2_BITMAP);
+	board->pos.x = 0;
+	board->pos.y = 0;
 
 	hex_data = fopen(BOARD2_DATA, "r");
 	if ((err = fgets(line, sizeof(line), hex_data)) == NULL) //header
@@ -59,6 +64,8 @@ int init_board(Board board, ListArray gamebox)
 	int i, j, k;
 	List list;
 	
+	board->display = 1;
+
 	j = k = 0;
 	for (i = 0; i < NUM_HEXES; i++) {
 		if (board->hexes[i]->init_control_coin == GOLD_CONTROL_COIN) {
@@ -78,9 +85,31 @@ int destroy_board(Board board)
 	return 0;
 }
 
+int display_board(Board board)
+{
+	int i;
+
+	if (board->display)
+		draw_bitmap(&board->bitmap, &win, &board->pos);
+	toggle_display_board(board);
+
+	for (i = 0; i < NUM_HEXES; i++)
+		display_hex(board->hexes[i]);
+
+	return 0;
+}
+
+int toggle_display_board(Board board)
+{
+	board->display = (board->display + 1) % 2;
+
+	return 0;
+}
+
 Hex create_hex(FILE *hex_data, int n)
 {
 	Hex hex;
+	Pix pix;
 	char line[128], *token, *adj, *err;
 	int i;
 
@@ -96,6 +125,8 @@ Hex create_hex(FILE *hex_data, int n)
 	adj = strtok(NULL, ","); //adjacency list
 	hex->control_hex = atoi(strtok(NULL, ",")); //control hex
 	hex->init_control_coin = atoi(strtok(NULL, ",")); //init control coin
+	hex->pos.x = atoi(strtok(NULL, ","));
+	hex->pos.y = atoi(strtok(NULL, ","));
 	token = strtok(adj, ":"); //parse adjaceny list
 	i = 0;
 	while (i < hex->num_adj) {
@@ -103,74 +134,39 @@ Hex create_hex(FILE *hex_data, int n)
 		token = strtok(NULL, ":");
 	}
 
+	hex->control_coin = NULL;
+	hex->unit_coins = NULL;
+
 	if (!hex->control_hex)
 		load_bitmap(&hex->bitmap, HEX_BITMAP);
 	else 
 		load_bitmap(&hex->bitmap, CONTROL_HEX_BITMAP);
 
-	hex->control_coin = NULL;
-	hex->unit_coins = NULL;
+	pix.r = 0;
+	pix.g = 255;
+	pix.b = 0;
+	set_ind(&hex->bitmap, &pix); 
+
+	hex->display = 1;
 
 	return hex;
 }
 
-/*int init_board(void)*/
-/*{*/
-	/*FILE *file;*/
-	/*char line[128], *token, *adj;*/
-	/*int i, j;*/
-	/*char *err;*/
+int display_hex(Hex hex)
+{
+	if (hex->display)
+		draw_bitmap(&hex->bitmap, &win, &hex->pos);
+	toggle_display_hex(hex);
 
-	/*file = fopen("res/board.csv", "r");*/
-	/*//header*/
-	/*if ((err = fgets(line, sizeof(line), file)) == NULL)*/
-		/*return -1;*/
-	/*while (fgets(line, sizeof(line), file)) {*/
-		/*//hex reference number*/
-		/*token = strtok(line, ",");*/
-		/*i = atoi(token);*/
+	return 0;
+}
 
-		/*//hex id*/
-		/*token = strtok(NULL, ",");*/
-		/*game.board.hexes[i].id = atoi(token);*/
+int toggle_display_hex(Hex hex)
+{
+	hex->display = (hex->display + 1) % 2;
 
-		/*//number of adjacent hexes*/
-		/*token = strtok(NULL, ",");*/
-		/*game.board.hexes[i].num_adj = atoi(token);*/
-
-		/*//adjacency list*/
-		/*adj = strtok(NULL, ",");*/
-
-		/*//control space*/
-		/*token = strtok(NULL, ",");*/
-		/*game.board.hexes[i].control_space = atoi(token);*/
-
-		/*//control maker*/
-		/*token = strtok(NULL, ",");*/
-		/*game.board.hexes[i].control_marker = atoi(token);*/
-
-		/*//number of units*/
-		/*token = strtok(NULL, ",");*/
-		/*game.board.hexes[i].num_units = atoi(token);*/
-
-		/*//unit type*/
-		/*token = strtok(NULL, ",");*/
-		/*game.board.hexes[i].unit = atoi(token);*/
-
-		/*//parse adjaceny list*/
-		/*token = strtok(adj, ":");*/
-		/*j = 0;*/
-		/*while (j < game.board.hexes[i].num_adj) {*/
-			/*game.board.hexes[i].adj[j] = atoi(token);*/
-			/*token = strtok(NULL, ":");*/
-			/*j++;*/
-		/*}*/
-	/*}*/
-	
-	/*fclose(file);*/
-
-	/*return 0;*/
-/*}*/
+	return 0;
+}
 
 int add_unit_coin_hex(Hex hex, Coin coin)
 {

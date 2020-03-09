@@ -181,11 +181,14 @@ History run_game(GetMoveFunc movefuncs[NUM_PLAYERS], char *names[NUM_PLAYERS],
 	History history;
 
 	game = create_game(movefuncs, names);
-	/*init_game(game, game_type, gamebox);*/
+	init_game(game, game_type, gamebox);
 	show_scr();
-	/*history = play_game(game);*/
+	display_game(game);
+	//history = play_game(game);
+	sleep(3);
 	close_scr();
 	/*destroy_game(game);*/
+	
 
 	return history;
 }

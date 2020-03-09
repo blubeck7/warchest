@@ -10,16 +10,17 @@
 #include "../inc/types.h"
 
 struct game {
-	Player initiative_player;
 	int has_winner;
 	int num_moves;
 	int max_moves;
+	Board board;
+	Player players[NUM_PLAYERS];
+	Player initiative_player;
+	Player cur_player;
 	int cur_player_id;
 	int round_start;
 	int triggered;
 	int did_initiative_coin_switch;
-	Board board;
-	Player players[NUM_PLAYERS];
 	History history;
 };
 
@@ -27,6 +28,8 @@ Game create_game(GetMoveFunc movefuncs[NUM_PLAYERS], char *names[NUM_PLAYERS])
 {
 	int i, color;
 	Game game;
+
+	srand(time(NULL));
 
 	game = malloc(sizeof(struct game));
 	game->board = NULL;
@@ -43,9 +46,15 @@ Game create_game(GetMoveFunc movefuncs[NUM_PLAYERS], char *names[NUM_PLAYERS])
 
 int init_game(Game game, int game_type, ListArray gamebox)
 {
+	Coin coin;
+
+	game->has_winner = 0;
+	game->num_moves = 0;
+	game->max_moves = MAX_MOVES;
 
 	game->board = peak_list(get_listarray(gamebox, BOARD2), 0);
 	init_board(game->board, gamebox);
+
 	switch (game_type) {
 	case FIRST_GAME:
 		init_first_game_player(game->players, gamebox);
@@ -58,24 +67,46 @@ int init_game(Game game, int game_type, ListArray gamebox)
 		break;
 	}
 
-	srand(time(NULL));
+	//initiative_coin
+	coin = (Coin) peak_list(get_listarray(gamebox, INITIATIVE_COIN), 0);
+	if (rand() % 2) {
+		add_initiative_coin_player(game->players[GOLD_PLAYER], coin);
+		game->initiative_player = game->players[GOLD_PLAYER];
+		game->cur_player = game->players[GOLD_PLAYER];
+		game->cur_player_id = GOLD_PLAYER;
+	} else {
+		add_initiative_coin_player(game->players[SILVER_PLAYER], coin);
+		game->initiative_player = game->players[SILVER_PLAYER];
+		game->cur_player = game->players[SILVER_PLAYER];
+		game->cur_player_id = SILVER_PLAYER;
+	}
+
+	game->round_start = 1;
+	game->triggered = 0;
+	game->did_initiative_coin_switch = 0;
 
 	return 0;
 }
 
 History play_game(Game game)
 {
-	Move move;
-	Player cur_player;
+	//Move move;
 
-	while(!is_done_game(game)) {
-		cur_player = whose_move_game(game);
-		move = get_move_player(cur_player, game);
-		update_game(game, move);
-		//display_game(game);
-	}
+	//while(!is_done_game(game)) {
+		//move = get_move_player(game->cur_player, game);
+		/*update_game(game, move);*/
+		/*add_move_history(game->history, move);*/
+		display_game(game);
+	//}
 
 	return game->history;
+}
+
+int display_game(Game game)
+{
+	display_board(game->board);
+
+	return 0;
 }
 
 int is_done_game(Game game)
@@ -84,14 +115,6 @@ int is_done_game(Game game)
 		return 1;
 
 	return 0;
-}
-
-Player whose_move_game(Game game)
-{
-	if (game->round_start)
-		return game->initiative_player;
-
-	return NULL;
 }
 
 int update_game(Game game, Move move)
