@@ -3,6 +3,22 @@
 
 #include "types.h"
 
+struct game {
+	int num_moves;
+	int max_moves;
+	int has_winner;
+	Player winner;
+	Board board;
+	Player players[NUM_PLAYERS];
+	Player initiative_player;
+	Player cur_player;
+	int cur_player_id;
+	int round_start;
+	int triggered;
+	int did_initiative_coin_switch;
+	History history;
+};
+
 Game create_game(GetMoveFunc movefuncs[NUM_PLAYERS], char *names[NUM_PLAYERS]);
 int destroy_game(Game game);
 int init_game(Game game, int game_type, ListArray gamebox);

@@ -10,28 +10,6 @@
 #include "../inc/player.h"
 #include "../inc/types.h"
 
-struct player {
-	char *name;
-	int color;
-	int num_types;
-	Coin initiative_coin;
-	List control_coins;
-	ListArray supply;
-	List bag;
-	List hand;
-	List discard;
-	List removed;
-	GetMoveFunc get_move;
-	//int num_hand;
-	/*List hex_stacks; //the hexes with deployed unit stacks*/
-	//int num_deployed;
-	//List deployed[MAX_NUM_UNITS]; 
-	//int num_discarded;
-	//Discard discarded[MAX_NUM_UNITS];
-	//int num_removed;
-	//int removed[MAX_NUM_UNITS];
-};
-
 Player create_player(GetMoveFunc movefunc, char *name, int color)
 {
 	Player player;
@@ -57,14 +35,25 @@ Player create_player(GetMoveFunc movefunc, char *name, int color)
 	return player;
 }
 
-int init_first_game_player(Player players[NUM_PLAYERS], ListArray gamebox)
+int destroy_player(Player player)
+{
+	destroy_list(player->control_coins);
+	destroy_listarray(player->supply);
+	destroy_list(player->bag);
+	destroy_list(player->hand);
+	destroy_list(player->discard);
+	destroy_list(player->removed);
+	free(player);
+
+	return 0;
+}
+
+int init_first_game_players(Player players[NUM_PLAYERS], ListArray gamebox)
 {
 	int i, n;
 	Player gold, silver;
 	List list_src, list_d;
 	Coin coin;
-
-	srand(time(NULL));
 
 	gold = players[GOLD_PLAYER];
 	silver = players[SILVER_PLAYER];
@@ -72,6 +61,14 @@ int init_first_game_player(Player players[NUM_PLAYERS], ListArray gamebox)
 	//num_types
 	gold->num_types = GOLD_PLAYER_FIRST_TYPES;
 	silver->num_types = SILVER_PLAYER_FIRST_TYPES;
+	gold->unit_types[0] = ARCHER;
+	gold->unit_types[1] = CAVALRY;
+	gold->unit_types[2] = LANCER;
+	gold->unit_types[3] = SCOUT;
+	silver->unit_types[0] = CROSSBOWMAN;
+	silver->unit_types[1] = LIGHT_CAVALRY;
+	silver->unit_types[2] = PIKEMAN;
+	silver->unit_types[3] = SWORDSMAN;
 
 	//control_coins
 	for (i = NUM_CONTROL_COINS_BOARD; i < NUM_CONTROL_COINS; i++) {
@@ -223,6 +220,50 @@ int init_first_game_player(Player players[NUM_PLAYERS], ListArray gamebox)
 	return 0;
 }
 
+int display_player(Player player)
+{
+	int i, j, n, m;
+	List list;
+	Coin coin;
+	Pos pos;
+
+
+	m = 0;
+	pos = player->pos;
+	/*Display Supply*/
+	draw_bitmap(&labels[0], &win, &pos);
+	pos.x = pos.x + labels[0].width + 2;
+	m++;
+	
+	for (i = 0; i < player->num_types; i++) {
+		list = get_listarray(player->supply, player->unit_types[i]);
+		n = len_list(list);
+		for (j = 0; j < n; j++) {
+			coin = (Coin) peak_list(list, j);
+			set_coin_pos(coin, pos);
+			coin->display(coin);
+			m++;
+			if ((m % 8) == 0) {
+				pos.x = player->pos.x;
+				pos.y = player->pos.y + (m / 8) * (coin->front.height + 2); 
+			} else
+				pos.x = (pos.x + coin->front.width + 2);
+		}
+	}
+
+	return 0;
+}
+
+int print_color_player(Player player)
+{
+	if (player->color == GOLD_PLAYER)
+		fprintf(out, "GOLD");
+	else
+		fprintf(out, "SILVER");
+
+	return 0;
+}
+
 Move get_move_player(Player player, Game game)
 {
 	return player->get_move(player, game);
@@ -263,8 +304,6 @@ Move random_move_player(Player player, Game game)
 	List moves;
 	Move move;
 	
-	srand(time(NULL));
-
 	moves = create_list(MOVE_SPACE_SIZE);
 	gen_moves_game(player->hand, game, moves);
 	move = (Move) peak_list(moves, rand() % len_list(moves));

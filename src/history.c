@@ -20,6 +20,14 @@ History create_history(void)
 	return history;
 }
 
+int destroy_history(History history)
+{
+	destroy_stack(history->moves);
+	free(history);
+
+	return 0;
+}
+
 int add_move_history(History history, Move move)
 {
 	add_stack(history->moves, (Item) move);

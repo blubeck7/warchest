@@ -11,26 +11,6 @@
 #include "../inc/types.h"
 #include "../inc/window.h"
 
-struct hex {
-	int id;
-	int num_adj;
-	int adj[NUM_ADJ_HEXES];
-	int control_hex;
-	int init_control_coin;
-	Coin control_coin;
-	Stack unit_coins;
-	Bitmap bitmap;
-	Pos pos;
-	int display;
-};
-
-struct board {
-	Bitmap bitmap;
-	Pos pos;
-	Hex hexes[NUM_HEXES];
-	int display;
-};
-
 Board create_board(void)
 {
 	Board board;
@@ -71,9 +51,11 @@ int init_board(Board board, ListArray gamebox)
 		if (board->hexes[i]->init_control_coin == GOLD_CONTROL_COIN) {
 			list = get_listarray(gamebox, GOLD_CONTROL_COIN);
 			board->hexes[i]->control_coin = (Coin) peak_list(list, j++);
+			set_coin_pos(board->hexes[i]->control_coin, board->hexes[i]->pos);
 		} else if (board->hexes[i]->init_control_coin == SILVER_CONTROL_COIN) {
 			list = get_listarray(gamebox, SILVER_CONTROL_COIN);
 			board->hexes[i]->control_coin = (Coin) peak_list(list, k++);
+			set_coin_pos(board->hexes[i]->control_coin, board->hexes[i]->pos);
 		}
 	}
 
@@ -156,7 +138,22 @@ int display_hex(Hex hex)
 {
 	if (hex->display)
 		draw_bitmap(&hex->bitmap, &win, &hex->pos);
+
+	if (hex->control_coin) {
+		hex->control_coin->display(hex->control_coin);
+		toggle_display_coin(hex->control_coin);
+	}
 	toggle_display_hex(hex);
+
+	return 0;
+}
+
+int print_all_hex(Hex hex)
+{
+	printf("Hex:\n");
+	printf("id=%d, num_adj=%d, control_hex=%d, init_control_coin=%d\n",
+		hex->id, hex->num_adj, hex->control_hex, hex->init_control_coin);
+	printf("control_coin=%p, bitmap=%p\n", hex->control_coin, &hex->bitmap);
 
 	return 0;
 }

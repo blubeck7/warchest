@@ -1,6 +1,8 @@
+//#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+//#include <unistd.h>
 #include "../inc/coin.h"
 #include "../inc/ds.h"
 #include "../inc/game.h"
@@ -8,21 +10,6 @@
 #include "../inc/history.h"
 #include "../inc/player.h"
 #include "../inc/types.h"
-
-struct game {
-	int has_winner;
-	int num_moves;
-	int max_moves;
-	Board board;
-	Player players[NUM_PLAYERS];
-	Player initiative_player;
-	Player cur_player;
-	int cur_player_id;
-	int round_start;
-	int triggered;
-	int did_initiative_coin_switch;
-	History history;
-};
 
 Game create_game(GetMoveFunc movefuncs[NUM_PLAYERS], char *names[NUM_PLAYERS])
 {
@@ -44,20 +31,39 @@ Game create_game(GetMoveFunc movefuncs[NUM_PLAYERS], char *names[NUM_PLAYERS])
 	return game;
 }
 
+int destroy_game(Game game)
+{
+	int i;
+
+	for (i = 0; i < NUM_PLAYERS; i++)
+		destroy_player(game->players[i]);
+	destroy_history(game->history);
+	free(game);
+
+	return 0;
+}
+
 int init_game(Game game, int game_type, ListArray gamebox)
 {
 	Coin coin;
 
-	game->has_winner = 0;
 	game->num_moves = 0;
 	game->max_moves = MAX_MOVES;
+	game->has_winner = 0;
+	game->winner = NULL;
 
 	game->board = peak_list(get_listarray(gamebox, BOARD2), 0);
 	init_board(game->board, gamebox);
 
 	switch (game_type) {
 	case FIRST_GAME:
-		init_first_game_player(game->players, gamebox);
+		init_first_game_players(game->players, gamebox);
+		game->players[GOLD_PLAYER]->pos.x = game->board->pos.x +
+			game->board->bitmap.width + 2;
+		game->players[GOLD_PLAYER]->pos.y = 0;
+		game->players[SILVER_PLAYER]->pos.x = game->board->pos.x +
+			game->board->bitmap.width + 2;
+		game->players[SILVER_PLAYER]->pos.y = game->board->pos.y - 100;
 		break;
 	case RANDOM_GAME:
 		/*init_players_random();*/
@@ -90,14 +96,14 @@ int init_game(Game game, int game_type, ListArray gamebox)
 
 History play_game(Game game)
 {
-	//Move move;
+	Move move;
 
-	//while(!is_done_game(game)) {
-		//move = get_move_player(game->cur_player, game);
-		/*update_game(game, move);*/
-		/*add_move_history(game->history, move);*/
+	while(!is_done_game(game)) {
+		move = get_move_player(game->cur_player, game);
+		update_game(game, move);
+		add_move_history(game->history, move);
 		display_game(game);
-	//}
+	}
 
 	return game->history;
 }
@@ -105,6 +111,27 @@ History play_game(Game game)
 int display_game(Game game)
 {
 	display_board(game->board);
+	/*for (i = 0; i < NUM_PLAYERS; i++)*/
+		/*display_player(game->players[i]);*/
+	display_player(game->players[0]);
+
+	fprintf(out, "\n");
+	fprintf(out, "Turn %d/%d\n", game->num_moves + 1, game->max_moves);
+	if (game->has_winner) {
+		print_color_player(game->winner);
+		fprintf(out, " wins!\n"); 
+	} else {
+		if (game->round_start)
+			fprintf(out, "It is a new round.\n");
+		print_color_player(game->cur_player);
+		fprintf(out, " is the current player.\n");
+		print_color_player(game->initiative_player);
+		fprintf(out, " has the initiative coin.\n");
+		if (game->did_initiative_coin_switch)
+			fprintf(out, "The initiative coin has switched.\n");
+		if (game->triggered)
+			fprintf(out, "A unit is triggered.\n");
+	}
 
 	return 0;
 }

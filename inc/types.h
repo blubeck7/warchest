@@ -1,6 +1,7 @@
 #ifndef TYPES_H
 #define TYPES_H
 
+#include <stdio.h>
 #include "ds.h"
 #include "graphics.h"
 #include "window.h"
@@ -22,7 +23,9 @@ struct move {
 	DoMoveFunc do_move;
 };
 
+extern FILE *out;
 extern Win win;
+extern Bitmap labels[6];
 
 #define NUM_PLAYERS 2
 #define GOLD_PLAYER 0
@@ -122,6 +125,7 @@ extern Win win;
 #define SILVER_CONTROL_COIN_BITMAP "res/silver_control_coin.bmp"
 #define INITIATIVE_COIN_BITMAP "res/initiative_coin.bmp"
 #define BACK_BITMAP "res/coin_back.bmp"
+#define SUPPLY_BITMAP "res/supply.bmp"
 
 /*#define DRAW 10*/
 /*#define SELECT 11*/

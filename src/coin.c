@@ -62,6 +62,7 @@ Coin create_archer_coin(void)
 	coin->attack = NULL;
 	coin->tactic = NULL;
 	coin->display = display_coin;
+	coin->display_ind = 1;
 
 	return coin;
 }
@@ -94,6 +95,7 @@ Coin create_beserker_coin(void)
 	coin->attack = NULL;
 	coin->tactic = NULL;
 	coin->display = display_coin;
+	coin->display_ind = 1;
 
 	return coin;
 }
@@ -126,6 +128,7 @@ Coin create_cavalry_coin(void)
 	coin->attack = NULL;
 	coin->tactic = NULL;
 	coin->display = display_coin;
+	coin->display_ind = 1;
 
 	return coin;
 }
@@ -158,6 +161,7 @@ Coin create_crossbowman_coin(void)
 	coin->attack = NULL;
 	coin->tactic = NULL;
 	coin->display = display_coin;
+	coin->display_ind = 1;
 
 	return coin;
 }
@@ -190,6 +194,7 @@ Coin create_ensign_coin(void)
 	coin->attack = NULL;
 	coin->tactic = NULL;
 	coin->display = display_coin;
+	coin->display_ind = 1;
 
 	return coin;
 }
@@ -222,6 +227,7 @@ Coin create_footman_coin(void)
 	coin->attack = NULL;
 	coin->tactic = NULL;
 	coin->display = display_coin;
+	coin->display_ind = 1;
 
 	return coin;
 }
@@ -254,6 +260,7 @@ Coin create_knight_coin(void)
 	coin->attack = NULL;
 	coin->tactic = NULL;
 	coin->display = display_coin;
+	coin->display_ind = 1;
 
 	return coin;
 }
@@ -286,6 +293,7 @@ Coin create_lancer_coin(void)
 	coin->attack = NULL;
 	coin->tactic = NULL;
 	coin->display = display_coin;
+	coin->display_ind = 1;
 
 	return coin;
 }
@@ -318,6 +326,7 @@ Coin create_light_cavalry_coin(void)
 	coin->attack = NULL;
 	coin->tactic = NULL;
 	coin->display = display_coin;
+	coin->display_ind = 1;
 
 	return coin;
 }
@@ -350,6 +359,7 @@ Coin create_marshall_coin(void)
 	coin->attack = NULL;
 	coin->tactic = NULL;
 	coin->display = display_coin;
+	coin->display_ind = 1;
 
 	return coin;
 }
@@ -382,6 +392,7 @@ Coin create_mercenary_coin(void)
 	coin->attack = NULL;
 	coin->tactic = NULL;
 	coin->display = display_coin;
+	coin->display_ind = 1;
 
 	return coin;
 }
@@ -414,6 +425,7 @@ Coin create_pikeman_coin(void)
 	coin->attack = NULL;
 	coin->tactic = NULL;
 	coin->display = display_coin;
+	coin->display_ind = 1;
 
 	return coin;
 }
@@ -446,6 +458,7 @@ Coin create_royal_guard_coin(void)
 	coin->attack = NULL;
 	coin->tactic = NULL;
 	coin->display = display_coin;
+	coin->display_ind = 1;
 
 	return coin;
 }
@@ -478,6 +491,7 @@ Coin create_scout_coin(void)
 	coin->attack = NULL;
 	coin->tactic = NULL;
 	coin->display = display_coin;
+	coin->display_ind = 1;
 
 	return coin;
 }
@@ -510,6 +524,7 @@ Coin create_swordsman_coin(void)
 	coin->attack = NULL;
 	coin->tactic = NULL;
 	coin->display = display_coin;
+	coin->display_ind = 1;
 
 	return coin;
 }
@@ -542,6 +557,7 @@ Coin create_warrior_priest_coin(void)
 	coin->attack = NULL;
 	coin->tactic = NULL;
 	coin->display = display_coin;
+	coin->display_ind = 1;
 
 	return coin;
 }
@@ -574,6 +590,7 @@ Coin create_gold_royal_coin(void)
 	coin->attack = NULL;
 	coin->tactic = NULL;
 	coin->display = display_coin;
+	coin->display_ind = 1;
 
 	return coin;
 }
@@ -606,6 +623,7 @@ Coin create_silver_royal_coin(void)
 	coin->attack = NULL;
 	coin->tactic = NULL;
 	coin->display = display_coin;
+	coin->display_ind = 1;
 
 	return coin;
 }
@@ -638,6 +656,7 @@ Coin create_gold_control_coin(void)
 	coin->attack = NULL;
 	coin->tactic = NULL;
 	coin->display = display_coin;
+	coin->display_ind = 1;
 
 	return coin;
 }
@@ -670,6 +689,7 @@ Coin create_silver_control_coin(void)
 	coin->attack = NULL;
 	coin->tactic = NULL;
 	coin->display = display_coin;
+	coin->display_ind = 1;
 
 	return coin;
 }
@@ -702,6 +722,7 @@ Coin create_initiative_coin(void)
 	coin->attack = NULL;
 	coin->tactic = NULL;
 	coin->display = display_coin;
+	coin->display_ind = 1;
 
 	return coin;
 }
@@ -717,10 +738,19 @@ int destroy_coin(Coin coin)
 
 int display_coin(Coin coin)
 {
-	if (coin->face == COIN_UP)
-		draw_bitmap(&coin->front, &win, &coin->pos);
-	else
-		draw_bitmap(&coin->back, &win, &coin->pos);
+	if (coin->display) {
+		if (coin->face == COIN_UP)
+			draw_bitmap(&coin->front, &win, &coin->pos);
+		else
+			draw_bitmap(&coin->back, &win, &coin->pos);
+	}
+
+	return 0;
+}
+
+int toggle_display_coin(Coin coin)
+{
+	coin->display_ind = (coin->display_ind + 1) % 2;
 
 	return 0;
 }
@@ -728,7 +758,8 @@ int display_coin(Coin coin)
 int print_coin(Coin coin)
 {
 	printf("coin=%p:\n", coin);
-	printf("type=%d, hex=%p, face=%d\n", coin->type, coin->hex, coin->face);
+	printf("type=%d, hex=%p, face=%d, (x,y)=(%d,%d)\n",
+		coin->type, coin->hex, coin->face, coin->pos.x, coin->pos.y);
 
 	return 0;
 }
@@ -743,6 +774,13 @@ int set_face_down_coin(Coin coin)
 int set_face_up_coin(Coin coin)
 {
 	coin->face = COIN_UP;
+
+	return 0;
+}
+
+int set_coin_pos(Coin coin, Pos pos)
+{
+	coin->pos = pos;
 
 	return 0;
 }

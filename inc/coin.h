@@ -22,6 +22,7 @@ struct coin {
 	GenMoveFunc control;
 	GenMoveFunc attack;
 	GenMoveFunc tactic;
+	int display_ind;
 	int (*display)(Coin coin);
 };
 
@@ -49,10 +50,12 @@ Coin create_silver_control_coin(void);
 Coin create_initiative_coin(void);
 int destroy_coin(Coin coin);
 int display_coin(Coin coin);
+int toggle_display_coin(Coin coin);
 int print_coin(Coin coin);
 int print_coin_all(Coin coin);
 int set_face_down_coin(Coin coin);
 int set_face_up_coin(Coin coin);
+int set_coin_pos(Coin coin, Pos pos);
 int gen_moves_coin(Coin coin, Game game, List move_space);
 int same_type_coin(Coin coin1, Coin coin2);
 

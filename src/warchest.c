@@ -11,7 +11,9 @@
 #include "../inc/warchest.h"
 #include "../inc/window.h"
 
+FILE *out;
 Win win;
+Bitmap labels[6];
 
 int main(int argc, char *argv[])
 {
@@ -25,7 +27,6 @@ int main(int argc, char *argv[])
 	init_gamebox(gamebox); //Creates the board and coins
 	history = run_game(movefuncs, names, FIRST_GAME, gamebox);
 	//destroy_gamebox(gamebox);
-
 
 	/*names[0] = "HUMAN";*/
 	/*names[1] = "COMPUTER";*/
@@ -60,6 +61,7 @@ int init_gamebox(ListArray gamebox)
 	Board board;
 	List list;
 	int list_sizes[] = RESOURCES;
+	Pix ind = {0, 255, 0};
 
 	board = create_board(); 
 	add_list(get_listarray(gamebox, BOARD2), (Item) board);
@@ -149,6 +151,10 @@ int init_gamebox(ListArray gamebox)
 	for (i = 0; i < list_sizes[INITIATIVE_COIN]; i++)
 		add_list(list, (Item) create_initiative_coin());
 
+	//also load the labels for Supply, Bag, Hand, dePloyed, Discard, Removed
+	load_bitmap(&labels[0], SUPPLY_BITMAP);	
+	set_ind(&labels[0], &ind);
+
 	return 0;
 }
 
@@ -179,14 +185,17 @@ History run_game(GetMoveFunc movefuncs[NUM_PLAYERS], char *names[NUM_PLAYERS],
 {
 	Game game;
 	History history;
+	char c;
 
 	game = create_game(movefuncs, names);
 	init_game(game, game_type, gamebox);
+	out = fopen("/dev/pts/1", "w");
 	show_scr();
 	display_game(game);
 	//history = play_game(game);
-	sleep(3);
+	scanf("%c", &c);
 	close_scr();
+	fclose(out);	
 	/*destroy_game(game);*/
 	
 
