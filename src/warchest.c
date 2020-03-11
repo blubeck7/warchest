@@ -13,7 +13,7 @@
 
 FILE *out;
 Win win;
-Bitmap labels[6];
+Bitmap labels[9];
 
 int main(int argc, char *argv[])
 {
@@ -153,7 +153,23 @@ int init_gamebox(ListArray gamebox)
 
 	//also load the labels for Supply, Bag, Hand, dePloyed, Discard, Removed
 	load_bitmap(&labels[0], SUPPLY_BITMAP);	
+	load_bitmap(&labels[1], BAG_BITMAP);	
+	load_bitmap(&labels[2], HAND_BITMAP);	
+	load_bitmap(&labels[3], DISCARD_BITMAP);	
+	load_bitmap(&labels[4], REMOVED_BITMAP);	
+	load_bitmap(&labels[5], TWO_BITMAP);	
+	load_bitmap(&labels[6], THREE_BITMAP);	
+	load_bitmap(&labels[7], FOUR_BITMAP);	
+	load_bitmap(&labels[8], FIVE_BITMAP);	
 	set_ind(&labels[0], &ind);
+	set_ind(&labels[1], &ind);
+	set_ind(&labels[2], &ind);
+	set_ind(&labels[3], &ind);
+	set_ind(&labels[4], &ind);
+	set_ind(&labels[5], &ind);
+	set_ind(&labels[6], &ind);
+	set_ind(&labels[7], &ind);
+	set_ind(&labels[8], &ind);
 
 	return 0;
 }
@@ -187,10 +203,10 @@ History run_game(GetMoveFunc movefuncs[NUM_PLAYERS], char *names[NUM_PLAYERS],
 	History history;
 	char c;
 
+	out = fopen("/dev/pts/2", "w");
+	show_scr();
 	game = create_game(movefuncs, names);
 	init_game(game, game_type, gamebox);
-	out = fopen("/dev/pts/1", "w");
-	show_scr();
 	display_game(game);
 	//history = play_game(game);
 	scanf("%c", &c);

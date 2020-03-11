@@ -25,7 +25,7 @@ struct move {
 
 extern FILE *out;
 extern Win win;
-extern Bitmap labels[6];
+extern Bitmap labels[9];
 
 #define NUM_PLAYERS 2
 #define GOLD_PLAYER 0
@@ -126,6 +126,14 @@ extern Bitmap labels[6];
 #define INITIATIVE_COIN_BITMAP "res/initiative_coin.bmp"
 #define BACK_BITMAP "res/coin_back.bmp"
 #define SUPPLY_BITMAP "res/supply.bmp"
+#define BAG_BITMAP "res/bag.bmp"
+#define HAND_BITMAP "res/hand.bmp"
+#define DISCARD_BITMAP "res/discard.bmp"
+#define REMOVED_BITMAP "res/removed.bmp"
+#define TWO_BITMAP "res/two.bmp"
+#define THREE_BITMAP "res/three.bmp"
+#define FOUR_BITMAP "res/four.bmp"
+#define FIVE_BITMAP "res/five.bmp"
 
 /*#define DRAW 10*/
 /*#define SELECT 11*/

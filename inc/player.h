@@ -17,6 +17,7 @@ struct player {
 	List removed;
 	GetMoveFunc get_move;
 	Pos pos;
+	int display_labels;
 	//int num_hand;
 	/*List hex_stacks; //the hexes with deployed unit stacks*/
 	//int num_deployed;
@@ -31,6 +32,10 @@ Player create_player(GetMoveFunc movefunc, char *name, int color);
 int destroy_player(Player player);
 int init_first_game_players(Player players[NUM_PLAYERS], ListArray gamebox);
 int display_player(Player player);
+int display_labels(Pos init_pos);
+int display_supply(Player player, Pos pos);
+int display_bag(Player player, Pos pos, int hide);
+int display_hand(Player player, Pos pos, int hide);
 int print_color_player(Player player);
 Move get_move_player(Player cur_player, Game game);
 int remove_coin_hand_player(Player player, Coin coin);

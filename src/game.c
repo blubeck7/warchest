@@ -1,8 +1,6 @@
-//#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-//#include <unistd.h>
 #include "../inc/coin.h"
 #include "../inc/ds.h"
 #include "../inc/game.h"
@@ -60,10 +58,12 @@ int init_game(Game game, int game_type, ListArray gamebox)
 		init_first_game_players(game->players, gamebox);
 		game->players[GOLD_PLAYER]->pos.x = game->board->pos.x +
 			game->board->bitmap.width + 2;
-		game->players[GOLD_PLAYER]->pos.y = 0;
+		game->players[GOLD_PLAYER]->pos.y = 192;
+		game->players[GOLD_PLAYER]->display_labels = 1;
 		game->players[SILVER_PLAYER]->pos.x = game->board->pos.x +
 			game->board->bitmap.width + 2;
-		game->players[SILVER_PLAYER]->pos.y = game->board->pos.y - 100;
+		game->players[SILVER_PLAYER]->pos.y = 0;
+		game->players[SILVER_PLAYER]->display_labels = 1;
 		break;
 	case RANDOM_GAME:
 		/*init_players_random();*/
@@ -110,10 +110,11 @@ History play_game(Game game)
 
 int display_game(Game game)
 {
+	int i;
 	display_board(game->board);
-	/*for (i = 0; i < NUM_PLAYERS; i++)*/
-		/*display_player(game->players[i]);*/
-	display_player(game->players[0]);
+
+	for (i = 0; i < NUM_PLAYERS; i++)
+		display_player(game->players[i]);
 
 	fprintf(out, "\n");
 	fprintf(out, "Turn %d/%d\n", game->num_moves + 1, game->max_moves);
