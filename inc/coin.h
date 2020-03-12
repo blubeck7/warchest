@@ -6,13 +6,10 @@
 #include "types.h"
 
 struct coin {
-	Player owner;
 	int type;
-	Hex hex;
 	int face; //up or down
-	Bitmap front;
-	Bitmap back;
-	Pos pos;
+	Hex hex;
+	Player owner;
 	int (*deploy)(Coin coin, Game game, List move_space);
 	GenMoveFunc bolster;
 	GenMoveFunc claim;
@@ -22,11 +19,11 @@ struct coin {
 	GenMoveFunc control;
 	GenMoveFunc attack;
 	GenMoveFunc tactic;
+	Pos pos;
 	int display_ind;
 	int (*display)(Coin coin);
 };
 
-Coin create_coin(int type, GenMoveFunc movefuncs[9]);
 Coin create_archer_coin(void);
 Coin create_beserker_coin(void);
 Coin create_cavalry_coin(void);
@@ -58,6 +55,5 @@ int set_face_up_coin(Coin coin);
 int set_coin_pos(Coin coin, Pos pos);
 int gen_moves_coin(Coin coin, Game game, List move_space);
 int same_type_coin(Coin coin1, Coin coin2);
-
 
 #endif //COIN_H

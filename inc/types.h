@@ -13,6 +13,7 @@ typedef struct hex *Hex;
 typedef struct history *History;
 typedef struct move *Move;
 typedef struct player *Player;
+typedef struct supply *Supply;
 
 typedef int (*DoMoveFunc)(Move move, Game game);
 typedef Move (*GetMoveFunc)(Player player, Game game);
@@ -26,6 +27,9 @@ struct move {
 extern FILE *out;
 extern Win win;
 extern Bitmap labels[9];
+
+#define NUM_BITMAPS 35 
+extern Bitmap bitmaps[NUM_BITMAPS];
 
 #define NUM_PLAYERS 2
 #define GOLD_PLAYER 0
@@ -43,7 +47,7 @@ extern Bitmap labels[9];
 #define MOVE_SPACE_SIZE 200
 #define MAX_MOVES 200 
 
-//gamebox keys
+//keys
 #define GAMEBOX_SIZE 23
 #define BOARD2 0
 #define BOARD4 1
@@ -69,6 +73,18 @@ extern Bitmap labels[9];
 #define SILVER_CONTROL_COIN 21
 #define INITIATIVE_COIN 22
 #define RESOURCES {1,1,4,5,4,5,5,5,4,4,5,5,5,4,5,5,5,4,1,1,6,6,1}
+#define BACK_COIN 23 
+#define SUPPLY 24
+#define BAG 25
+#define HAND 26
+#define DISCARD 27
+#define REMOVED 28
+#define TWO 29
+#define THREE 30
+#define FOUR 31
+#define FIVE 32
+#define HEX 33
+#define HEX_CONTROL 34
 
 #define MAX_COINS 2
 #define NONE 0

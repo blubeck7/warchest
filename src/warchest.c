@@ -14,6 +14,7 @@
 FILE *out;
 Win win;
 Bitmap labels[9];
+Bitmap bitmaps[NUM_BITMAPS];
 
 int main(int argc, char *argv[])
 {
@@ -22,6 +23,7 @@ int main(int argc, char *argv[])
 	GetMoveFunc movefuncs[2] = {NULL, NULL};
 	char *names[NUM_PLAYERS] = {"HUMAN", "RANDOM"};
 
+	load_bitmaps();
 	init_win(&win);
 	gamebox = create_gamebox(); //Stores the board and coins
 	init_gamebox(gamebox); //Creates the board and coins
@@ -38,6 +40,66 @@ int main(int argc, char *argv[])
 	/*//play_game();*/
 	/*draw_coins();*/
 	/*print_game();*/
+
+	return 0;
+}
+
+int load_bitmaps(void)
+{
+	Pix ind = {0, 255, 0}; //neon green
+
+	load_bitmap(&bitmaps[BOARD2], BOARD2_BITMAP);
+	load_bitmap(&bitmaps[ARCHER], ARCHER_BITMAP);
+	load_bitmap(&bitmaps[CAVALRY], CAVALRY_BITMAP);
+	load_bitmap(&bitmaps[CROSSBOWMAN], CROSSBOWMAN_BITMAP);
+	load_bitmap(&bitmaps[LANCER], LANCER_BITMAP);
+	load_bitmap(&bitmaps[LIGHT_CAVALRY], LIGHT_CAVALRY_BITMAP);
+	load_bitmap(&bitmaps[PIKEMAN], PIKEMAN_BITMAP);
+	load_bitmap(&bitmaps[SCOUT], SCOUT_BITMAP);
+	load_bitmap(&bitmaps[SWORDSMAN], SWORDSMAN_BITMAP);
+	load_bitmap(&bitmaps[GOLD_ROYAL_COIN], GOLD_ROYAL_COIN_BITMAP);
+	load_bitmap(&bitmaps[SILVER_ROYAL_COIN], SILVER_ROYAL_COIN_BITMAP);
+	load_bitmap(&bitmaps[GOLD_CONTROL_COIN], GOLD_CONTROL_COIN_BITMAP);
+	load_bitmap(&bitmaps[SILVER_CONTROL_COIN], SILVER_CONTROL_COIN_BITMAP);
+	load_bitmap(&bitmaps[INITIATIVE_COIN], INITIATIVE_COIN_BITMAP);
+	load_bitmap(&bitmaps[BACK_COIN], BACK_BITMAP);
+	load_bitmap(&bitmaps[SUPPLY], SUPPLY_BITMAP);
+	load_bitmap(&bitmaps[BAG], BAG_BITMAP);
+	load_bitmap(&bitmaps[HAND], HAND_BITMAP);
+	load_bitmap(&bitmaps[DISCARD], DISCARD_BITMAP);
+	load_bitmap(&bitmaps[REMOVED], REMOVED_BITMAP);
+	load_bitmap(&bitmaps[TWO], TWO_BITMAP);
+	load_bitmap(&bitmaps[THREE], THREE_BITMAP);
+	load_bitmap(&bitmaps[FOUR], FOUR_BITMAP);
+	load_bitmap(&bitmaps[FIVE], FIVE_BITMAP);
+	load_bitmap(&bitmaps[HEX], HEX_BITMAP);
+	load_bitmap(&bitmaps[HEX_CONTROL], CONTROL_HEX_BITMAP);
+
+	set_ind(&bitmaps[ARCHER], &ind);
+	set_ind(&bitmaps[CAVALRY], &ind);
+	set_ind(&bitmaps[CROSSBOWMAN], &ind);
+	set_ind(&bitmaps[LANCER], &ind);
+	set_ind(&bitmaps[LIGHT_CAVALRY], &ind);
+	set_ind(&bitmaps[PIKEMAN], &ind);
+	set_ind(&bitmaps[SCOUT], &ind);
+	set_ind(&bitmaps[SWORDSMAN], &ind);
+	set_ind(&bitmaps[GOLD_ROYAL_COIN], &ind);
+	set_ind(&bitmaps[SILVER_ROYAL_COIN], &ind);
+	set_ind(&bitmaps[GOLD_CONTROL_COIN], &ind);
+	set_ind(&bitmaps[SILVER_CONTROL_COIN], &ind);
+	set_ind(&bitmaps[INITIATIVE_COIN], &ind);
+	set_ind(&bitmaps[BACK_COIN], &ind);
+	set_ind(&bitmaps[SUPPLY], &ind);
+	set_ind(&bitmaps[BAG], &ind);
+	set_ind(&bitmaps[HAND], &ind);
+	set_ind(&bitmaps[DISCARD], &ind);
+	set_ind(&bitmaps[REMOVED], &ind);
+	set_ind(&bitmaps[TWO], &ind);
+	set_ind(&bitmaps[THREE], &ind);
+	set_ind(&bitmaps[FOUR], &ind);
+	set_ind(&bitmaps[FIVE], &ind);
+	set_ind(&bitmaps[HEX], &ind);
+	set_ind(&bitmaps[HEX_CONTROL], &ind);
 
 	return 0;
 }

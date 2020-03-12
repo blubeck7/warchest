@@ -27,5 +27,6 @@ History run_game(GetMoveFunc movefuncs[NUM_PLAYERS], char *names[NUM_PLAYERS],
 	int game_type, ListArray gamebox);
 
 int destroy_gamebox(ListArray gamebox);
+int load_bitmaps(void);
 
 #endif //WARCHEST_H

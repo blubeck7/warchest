@@ -60,10 +60,12 @@ int init_game(Game game, int game_type, ListArray gamebox)
 			game->board->bitmap.width + 2;
 		game->players[GOLD_PLAYER]->pos.y = 192;
 		game->players[GOLD_PLAYER]->display_labels = 1;
+		game->players[GOLD_PLAYER]->hide = 0;
 		game->players[SILVER_PLAYER]->pos.x = game->board->pos.x +
 			game->board->bitmap.width + 2;
 		game->players[SILVER_PLAYER]->pos.y = 0;
 		game->players[SILVER_PLAYER]->display_labels = 1;
+		game->players[SILVER_PLAYER]->hide = 1;
 		break;
 	case RANDOM_GAME:
 		/*init_players_random();*/

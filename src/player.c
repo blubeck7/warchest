@@ -10,6 +10,53 @@
 #include "../inc/player.h"
 #include "../inc/types.h"
 
+Supply create_supply(int num_unit_types, int unit_types[])
+{
+	int i, j;
+	int list_sizes[] = RESOURCES;
+	Supply supply;
+
+	if (num_unit_types < 1 || num_unit_types > MAX_TYPE_UNITS)
+		return NULL;	
+
+	supply = malloc(sizeof(struct supply));
+	supply->num_unit_types = num_unit_types;
+	for (i = 0; i < num_unit_types; i++)
+		supply->unit_types[i] = unit_types[i];
+
+	j = unit_types[0];
+	for (i = 1; i < num_unit_types; i++)
+		if (unit_types[i - 1] < unit_types[i])
+			j = unit_types[i];
+
+	supply->coins = create_listarray(j);
+	for (i = 0; i < num_unit_types; i++) {
+		j = unit_types[i];
+		add_listarray(supply->coins, j, create_list(list_sizes[j]));
+	}
+
+	supply->label.bitmap = &bitmaps[SUPPLY];
+	supply->label.win = &win;
+	supply->label.display_ind = 1;
+	supply->label.hide = 0;
+
+	supply->pos.x = supply->pos.y = 0;
+	supply->display_ind = 1;
+	supply->hide_ind = 0;
+
+	return 0;
+}
+
+int destroy_supply(Supply supply);
+int add_supply(Supply supply, Coin coin); 
+Coin remove_supply(Supply supply, int unit_type); 
+int print_supply(Supply supply);
+int print_all_supply(Supply supply);
+int display_supply(Supply supply);
+int toggle_display_supply(Supply supply);
+int toggle_hide_supply(Supply supply);
+int set_pos_supply(Supply supply, Pos pos);
+
 Player create_player(GetMoveFunc movefunc, char *name, int color)
 {
 	Player player;
@@ -82,7 +129,7 @@ int init_first_game_players(Player players[NUM_PLAYERS], ListArray gamebox)
 
 	//supply
 	list_src = get_listarray(gamebox, ARCHER);
-	list_d = get_listarray(gold->supply, ARCHER);
+	list_d = get_listarray(gold->supply->coins, ARCHER);
 	n = len_list(list_src);
 	for (i = 0; i < n; i++) {	
 		coin = (Coin) peak_list(list_src, i);
@@ -224,111 +271,21 @@ int init_first_game_players(Player players[NUM_PLAYERS], ListArray gamebox)
 
 int display_player(Player player)
 {
-	/*int i, j, n, m;*/
-	/*List list;*/
-	/*Coin coin;*/
-	Pos pos;
+	player->supply.pos = player->pos;
+	display_supply(player->supply);
 
-	if (player->display_labels) {
-		display_labels(player->pos);
-		player->display_labels = 0;
-	}
-
-	pos.x = player->pos.x + labels[0].width + 2;
-	pos.y = player->pos.y;
-	display_supply(player, pos);
-	pos.x = player->pos.x + labels[1].width + 2;
-	pos.y += labels[1].height; 
-	display_bag(player, pos);
-	pos.x = player->pos.x + labels[2].width + 2;
-	pos.y += labels[2].height; 
-	display_hand(player, pos);
-	/*m = 0;*/
-	/*[>Display Supply<]*/
-	/*draw_bitmap(&labels[0], &win, &pos);*/
-	/*m++;*/
-	
-	/*for (i = 0; i < player->num_types; i++) {*/
-		/*list = get_listarray(player->supply, player->unit_types[i]);*/
-		/*n = len_list(list);*/
-		/*for (j = 0; j < n; j++) {*/
-			/*coin = (Coin) peak_list(list, j);*/
-			/*set_coin_pos(coin, pos);*/
-			/*coin->display(coin);*/
-			/*m++;*/
-			/*if ((m % 8) == 0) {*/
-				/*pos.x = player->pos.x;*/
-				/*pos.y = player->pos.y + (m / 8) * (coin->front.height + 2); */
-			/*} else*/
-				/*pos.x = (pos.x + coin->front.width + 2);*/
-		/*}*/
-	/*}*/
-
-	/*[>Display Bag<]*/
-	/*draw_bitmap(&labels[1], &win, &pos);*/
-	/*m++;*/
-	/*if ((m % 8) == 0) {*/
-		/*pos.x = player->pos.x;*/
-		/*pos.y = player->pos.y + (m / 8) * (labels[1].height + 2); */
-	/*} else*/
-		/*pos.x = (pos.x + labels[1].width + 2);*/
-
-	/*n = len_list(player->bag);*/
-	/*for (i = 0; i < n; i++) {*/
-		/*coin = (Coin) peak_list(player->bag, i);*/
-		/*set_coin_pos(coin, pos);*/
-		/*coin->display(coin);*/
-		/*m++;*/
-		/*if ((m % 8) == 0) {*/
-			/*pos.x = player->pos.x;*/
-			/*pos.y = player->pos.y + (m / 8) * (coin->front.height + 2); */
-		/*} else*/
-			/*pos.x = (pos.x + coin->front.width + 2);*/
-	/*}*/
-
-	/*[>Display Hand<]*/
-	/*draw_bitmap(&labels[2], &win, &pos);*/
-	/*m++;*/
-	/*if ((m % 8) == 0) {*/
-		/*pos.x = player->pos.x;*/
-		/*pos.y = player->pos.y + (m / 8) * (labels[2].height + 2); */
-	/*} else*/
-		/*pos.x = (pos.x + labels[1].width + 2);*/
-
-	/*n = len_list(player->hand);*/
-	/*for (i = 0; i < n; i++) {*/
-		/*coin = (Coin) peak_list(player->hand, i);*/
-		/*set_coin_pos(coin, pos);*/
-		/*coin->display(coin);*/
-		/*m++;*/
-		/*if ((m % 8) == 0) {*/
-			/*pos.x = player->pos.x;*/
-			/*pos.y = player->pos.y + (m / 8) * (coin->front.height + 2); */
-		/*} else*/
-			/*pos.x = (pos.x + coin->front.width + 2);*/
-	/*}*/
-
-	/*[>Display Discard<]*/
-	/*draw_bitmap(&labels[3], &win, &pos);*/
-	/*m++;*/
-	/*if ((m % 8) == 0) {*/
-		/*pos.x = player->pos.x;*/
-		/*pos.y = player->pos.y + (m / 8) * (labels[2].height + 2); */
-	/*} else*/
-		/*pos.x = (pos.x + labels[1].width + 2);*/
-
-	/*n = len_list(player->discard);*/
-	/*for (i = 0; i < n; i++) {*/
-		/*coin = (Coin) peak_list(player->discard, i);*/
-		/*set_coin_pos(coin, pos);*/
-		/*coin->display(coin);*/
-		/*m++;*/
-		/*if ((m % 8) == 0) {*/
-			/*pos.x = player->pos.x;*/
-			/*pos.y = player->pos.y + (m / 8) * (coin->front.height + 2); */
-		/*} else*/
-			/*pos.x = (pos.x + coin->front.width + 2);*/
-	/*}*/
+	/*pos.x = player->pos.x + labels[0].width + 2;*/
+	/*pos.y = player->pos.y;*/
+	/*display_supply2(player, pos);*/
+	/*pos.x = player->pos.x + labels[1].width + 2;*/
+	/*pos.y += labels[1].height; */
+	/*display_bag(player, pos);*/
+	/*pos.x = player->pos.x + labels[2].width + 2;*/
+	/*pos.y += labels[2].height; */
+	/*display_hand(player, pos);*/
+	/*pos.x = player->pos.x + labels[2].width + 2;*/
+	/*pos.y += labels[2].height; */
+	/*display_discard(player, pos);*/
 
 	return 0;
 }
@@ -359,100 +316,153 @@ int display_labels(Pos init_pos)
 	return 0;
 }
 
-int display_supply(Player player, Pos pos)
+int display_supply(Supply supply)
 {
 	int i, n;
 	List coins;
 	Coin coin;
-	Pos num_pos;
+	Pos pos, num_pos;
 
-	for (i = 0; i < MAX_TYPE_UNITS; i++) {
-		coins = get_listarray(player->supply, player->unit_types[i]);
-		n = len_list(coins);
-		if (n == 1) {
-			coin = (Coin) peak_list(coins, 0);
-			set_coin_pos(coin, pos);
-			coin->display(coin);
-		} else if (n > 1) {
-			coin = (Coin) peak_list(coins, 0);
-			set_coin_pos(coin, pos);
-			coin->display(coin);
-			num_pos.x = pos.x + labels[n + 3].width / 2;
-			num_pos.y = pos.y + labels[n + 3].height / 2;
-			draw_bitmap(&labels[n + 3], &win, &num_pos);
-		}
-		pos.x += 38;
-	}
-
-	return 0;
-}
-
-int display_bag(Player player, Pos pos)
-{
-	int i, j, type, cnt;
-	Coin coin, draw_coin = NULL;
-	Pos num_pos;
-
-	if (hide)
+	if (supply->hide)
 		return 0;
 
-	for (i = 0; i < MAX_TYPE_UNITS; i++) {
-		type = player->unit_types[i];
-		cnt = 0;
-		for (j = 0; j < len_list(player->bag); j++) {
-			coin = (Coin) peak_list(player->bag, j);
-			if (coin->type == type) {
-				cnt++;
-				draw_coin = coin;
-			}
-		}
+	if (supply->display_ind) {
+		supply->label.pos = supply->pos;
+		display_label(&supply->label);
 
-		if (cnt == 1) {
-			set_coin_pos(draw_coin, pos);
-			draw_coin->display(draw_coin);
-		} else if (cnt > 1) {
-			set_coin_pos(draw_coin, pos);
-			draw_coin->display(draw_coin);
-			num_pos.x = pos.x + labels[cnt + 3].width / 2;
-			num_pos.y = pos.y + labels[cnt + 3].height / 2;
-			draw_bitmap(&labels[cnt + 3], &win, &num_pos);
-		}
+		pos.x = supply->pos.x + bitmaps[supply->label.type].width + 2;
+		pos.y = supply->pos.y;
+		for (i = 0; i < num_unit_types; i++)
+			coins = get_listarray(supply, supply->unit_types[i]);
+			n = len_coins(coins);
+			if (n > 0) {
+				coin = (Coin) peak_list(coins, 0);
+				set_coin_pos(coin, pos);
+				coin->display(coin);
+			}
+			if (n > 1) {
+				num_pos.x = pos.x + bitmaps[n + 27].width / 2;
+				num_pos.y = pos.y + bitmaps[n + 27].height / 2;
+				draw_bitmap(&bitmaps[n + 27], &win, &num_pos);
+			}
 		pos.x += 38;
 	}
 
 	return 0;
 }
 
-int display_hand(Player player, Pos pos)
+int display_label(struct label *label)
 {
-	int i, j, type, cnt;
-	Coin coin, draw_coin = NULL;
-	Pos num_pos;
-//TODO Just make this simply print hte hand since only three coins
+	if (label->hide)
+		return 0;
 
-	for (i = 0; i < MAX_TYPE_UNITS; i++) {
-		type = player->unit_types[i];
-		cnt = 0;
-		for (j = 0; j < len_list(player->hand); j++) {
-			coin = (Coin) peak_list(player->hand, j);
-			if (coin->type == type) {
-				cnt++;
-				draw_coin = coin;
-			}
-		}
-	
-		if (cnt == 1) {
-			set_coin_pos(draw_coin, pos);
-			draw_coin->display(draw_coin);
-		} else if (cnt > 1) {
-			set_coin_pos(draw_coin, pos);
-			draw_coin->display(draw_coin);
-			num_pos.x = pos.x + labels[cnt + 3].width / 2;
-			num_pos.y = pos.y + labels[cnt + 3].height / 2;
-			draw_bitmap(&labels[cnt + 3], &win, &num_pos);
-		}
-		pos.x += 38;
+	if (label->display_ind) {
+		draw_bitmap(&bitmaps[label->type], &win, &label->pos);
+		label->display_ind = (label->display_ind + 1) % mod 2;
 	}
+
+	return 0;
+}
+
+/*int display_supply2(Player player, Pos pos)*/
+/*{*/
+	/*int i, n;*/
+	/*list coins;*/
+	/*coin coin;*/
+	/*pos num_pos;*/
+
+	/*for (i = 0; i < MAX_TYPE_UNITS; i++) {*/
+		/*coins = get_listarray(player->supply, player->unit_types[i]);*/
+		/*n = len_list(coins);*/
+	/*return 0;*/
+/*}*/
+
+/*int display_bag(Player player, Pos pos)*/
+/*{*/
+	/*int i, j, type, cnt;*/
+	/*Coin coin, draw_coin = NULL;*/
+	/*Pos num_pos;*/
+
+	/*if (player->hide)*/
+		/*return 0;*/
+
+	/*for (i = 0; i < MAX_TYPE_UNITS; i++) {*/
+		/*type = player->unit_types[i];*/
+		/*cnt = 0;*/
+		/*for (j = 0; j < len_list(player->bag); j++) {*/
+			/*coin = (Coin) peak_list(player->bag, j);*/
+			/*if (coin->type == type) {*/
+				/*cnt++;*/
+				/*draw_coin = coin;*/
+			/*}*/
+		/*}*/
+
+		/*if (cnt == 1) {*/
+			/*set_coin_pos(draw_coin, pos);*/
+			/*draw_coin->display(draw_coin);*/
+		/*} else if (cnt > 1) {*/
+			/*set_coin_pos(draw_coin, pos);*/
+			/*draw_coin->display(draw_coin);*/
+			/*num_pos.x = pos.x + labels[cnt + 3].width / 2;*/
+			/*num_pos.y = pos.y + labels[cnt + 3].height / 2;*/
+			/*draw_bitmap(&labels[cnt + 3], &win, &num_pos);*/
+		/*}*/
+		/*pos.x += 38;*/
+	/*}*/
+
+	/*return 0;*/
+/*}*/
+
+/*int display_hand(Player player, Pos pos)*/
+/*{*/
+	/*int i, j, type, cnt;*/
+	/*Coin coin, draw_coin = NULL;*/
+	/*Pos num_pos;*/
+/*//TODO Just make this simply print hte hand since only three coins*/
+
+	/*if (player->hide) {*/
+		/*for (i = 0; i < len_list(player->hand); i++) {*/
+			/*coin = (Coin) peak_list(player->hand, i);*/
+			/*set_coin_pos(coin, pos);*/
+			/*set_face_down_coin(coin);*/
+			/*coin->display(coin);*/
+			/*pos.x = pos.x + coin->front.width + 2;*/
+		/*}*/
+		/*return 0;*/
+	/*}*/
+
+	/*for (i = 0; i < MAX_TYPE_UNITS; i++) {*/
+		/*type = player->unit_types[i];*/
+		/*cnt = 0;*/
+		/*for (j = 0; j < len_list(player->hand); j++) {*/
+			/*coin = (Coin) peak_list(player->hand, j);*/
+			/*if (coin->type == type) {*/
+				/*cnt++;*/
+				/*draw_coin = coin;*/
+			/*}*/
+		/*}*/
+	
+		/*if (cnt == 1) {*/
+			/*set_coin_pos(draw_coin, pos);*/
+			/*draw_coin->display(draw_coin);*/
+		/*} else if (cnt > 1) {*/
+			/*set_coin_pos(draw_coin, pos);*/
+			/*draw_coin->display(draw_coin);*/
+			/*num_pos.x = pos.x + labels[cnt + 3].width / 2;*/
+			/*num_pos.y = pos.y + labels[cnt + 3].height / 2;*/
+			/*draw_bitmap(&labels[cnt + 3], &win, &num_pos);*/
+		/*}*/
+		/*pos.x += 38;*/
+	/*}*/
+
+	/*return 0;*/
+/*}*/
+
+int display_discard(Player player, Pos pos)
+{
+	/*int i, j, type, cnt;*/
+	/*Coin coin, draw_coin = NULL;*/
+	/*Pos num_pos;*/
 
 	return 0;
 }

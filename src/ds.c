@@ -359,11 +359,14 @@ int clear_list(List list)
 ListArray create_listarray(int size)
 {
 	ListArray listarray;
+	int i;
 
 	listarray = malloc(sizeof(struct listarray));
 	listarray->num = 0;
 	listarray->size = size;
 	listarray->lists = malloc(size * sizeof(List));
+	for (i = 0; i < size; i++)
+		listarray->lists[i] = NULL;
 
 	return listarray;
 }

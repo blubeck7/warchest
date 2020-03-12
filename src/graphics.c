@@ -24,7 +24,6 @@ int load_bitmap(Bitmap *bitmap, char *path)
 	Pix *pix;
 	uint8_t *ind;
 
-
 	file = fopen(path, "r");
 
 	fseek(file, 0x12, SEEK_SET); //bitmap width and height
