@@ -12,6 +12,7 @@ typedef struct game *Game;
 typedef struct hex *Hex;
 typedef struct history *History;
 typedef struct move *Move;
+typedef struct moves *Moves;
 typedef struct player *Player;
 typedef struct supply *Supply;
 
@@ -97,9 +98,6 @@ extern Bitmap bitmaps[NUM_BITMAPS];
 #define CONTROL 7
 #define ATTACK 8
 #define TACTIC 9
-
-#define COIN_DOWN 0
-#define COIN_UP 1
 
 //hex constants
 #define NUM_HEXES 37 

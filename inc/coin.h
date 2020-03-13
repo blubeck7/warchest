@@ -1,7 +1,40 @@
 #ifndef COIN_H
 #define COIN_H
 
-#include "ds.h"
+#include "types.h"
+
+#define DOWN 0
+#define UP 1
+
+typedef struct coin_data {
+	int face;
+	Bitmap *front;
+	Bitmap *back;	
+	Win *win;
+	Pos pos;
+} CoinData;
+
+struct coin {
+	CoinData data;
+	int (*gen_deploy_moves)(Coin coin, Game game, Moves moves);
+	int (*gen_bolster_moves)(Coin coin, Game game, Moves moves);
+	int (*gen_claim_moves)(Coin coin, Game game, Moves moves);
+	int (*gen_recruit_moves)(Coin coin, Game game, Moves moves);
+	int (*gen_pass_moves)(Coin coin, Game game, Moves moves);
+	int (*gen_move_moves)(Coin coin, Game game, Moves moves);
+	int (*gen_control_moves)(Coin coin, Game game, Moves moves);
+	int (*gen_attack_moves)(Coin coin, Game game, Moves moves);
+	int (*gen_tactic_moves)(Coin coin, Game game, Moves moves); 
+};
+
+int display_coin(Coin coin);
+int set_face_up_coin(Coin coin);
+int set_face_down_coin(Coin coin);
+int set_pos_coin(Coin coin, Pos pos);
+int print_coin(Coin coin);
+
+Coin create_archer_coin(Bitmap *front, Bitmap *back, Win *win);
+/* #include "ds.h"
 #include "game.h"
 #include "types.h"
 
@@ -54,6 +87,6 @@ int set_face_down_coin(Coin coin);
 int set_face_up_coin(Coin coin);
 int set_coin_pos(Coin coin, Pos pos);
 int gen_moves_coin(Coin coin, Game game, List move_space);
-int same_type_coin(Coin coin1, Coin coin2);
+int same_type_coin(Coin coin1, Coin coin2); */
 
 #endif //COIN_H

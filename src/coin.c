@@ -1,660 +1,701 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../inc/coin.h"
-#include "../inc/ds.h"
-#include "../inc/game.h"
-#include "../inc/graphics.h"
-#include "../inc/hex.h"
-#include "../inc/history.h"
-#include "../inc/move.h"
-#include "../inc/player.h"
-#include "../inc/types.h"
-#include "../inc/warchest.h"
+// #include "../inc/ds.h"
+// #include "../inc/game.h"
+// #include "../inc/graphics.h"
+// #include "../inc/hex.h"
+// #include "../inc/history.h"
+// #include "../inc/move.h"
+// #include "../inc/player.h"
+// #include "../inc/types.h"
+// #include "../inc/warchest.h"
 #include "../inc/window.h"
-
-Coin create_archer_coin(void)
-{
-	Coin coin;
-
-	coin = malloc(sizeof(struct coin));
-	coin->type = ARCHER;
-	coin->face = COIN_UP;
-	coin->hex = NULL;
-	coin->owner = NULL;
-
-	coin->deploy = NULL;
-	coin->bolster = NULL;
-	coin->claim = NULL;
-	coin->recruit = NULL;
-	coin->pass = NULL;
-	coin->move = NULL;
-	coin->control = NULL;
-	coin->attack = NULL;
-	coin->tactic = NULL;
-
-	coin->pos.x = coin->pos.y = 0;
-	coin->display_ind = 1;
-	coin->display = display_coin;
-
-	return coin;
-}
-
-Coin create_beserker_coin(void)
-{
-	Coin coin;
-
-	coin = malloc(sizeof(struct coin));
-	coin->type = BESERKER;
-	coin->face = COIN_UP;
-	coin->hex = NULL;
-	coin->owner = NULL;
-
-	coin->deploy = NULL;
-	coin->bolster = NULL;
-	coin->claim = NULL;
-	coin->recruit = NULL;
-	coin->pass = NULL;
-	coin->move = NULL;
-	coin->control = NULL;
-	coin->attack = NULL;
-	coin->tactic = NULL;
-
-	coin->pos.x = coin->pos.y = 0;
-	coin->display_ind = 1;
-	coin->display = display_coin;
-
-	return coin;
-}
-
-Coin create_cavalry_coin(void)
-{
-	Coin coin;
-
-	coin = malloc(sizeof(struct coin));
-	coin->type = CAVALRY;
-	coin->face = COIN_UP;
-	coin->hex = NULL;
-	coin->owner = NULL;
-
-	coin->deploy = NULL;
-	coin->bolster = NULL;
-	coin->claim = NULL;
-	coin->recruit = NULL;
-	coin->pass = NULL;
-	coin->move = NULL;
-	coin->control = NULL;
-	coin->attack = NULL;
-	coin->tactic = NULL;
-
-	coin->pos.x = coin->pos.y = 0;
-	coin->display_ind = 1;
-	coin->display = display_coin;
-
-	return coin;
-}
-
-Coin create_crossbowman_coin(void)
-{
-	Coin coin;
-
-	coin = malloc(sizeof(struct coin));
-	coin->type = CROSSBOWMAN;
-	coin->face = COIN_UP;
-	coin->hex = NULL;
-	coin->owner = NULL;
-
-	coin->deploy = NULL;
-	coin->bolster = NULL;
-	coin->claim = NULL;
-	coin->recruit = NULL;
-	coin->pass = NULL;
-	coin->move = NULL;
-	coin->control = NULL;
-	coin->attack = NULL;
-	coin->tactic = NULL;
-
-	coin->pos.x = coin->pos.y = 0;
-	coin->display_ind = 1;
-	coin->display = display_coin;
-
-	return coin;
-}
-
-Coin create_ensign_coin(void)
-{
-	Coin coin;
-
-	coin = malloc(sizeof(struct coin));
-	coin->type = ENSIGN;
-	coin->face = COIN_UP;
-	coin->hex = NULL;
-	coin->owner = NULL;
-
-	coin->deploy = NULL;
-	coin->bolster = NULL;
-	coin->claim = NULL;
-	coin->recruit = NULL;
-	coin->pass = NULL;
-	coin->move = NULL;
-	coin->control = NULL;
-	coin->attack = NULL;
-	coin->tactic = NULL;
-
-	coin->pos.x = coin->pos.y = 0;
-	coin->display_ind = 1;
-	coin->display = display_coin;
-
-	return coin;
-}
-
-Coin create_footman_coin(void)
-{
-	Coin coin;
-
-	coin = malloc(sizeof(struct coin));
-	coin->type = FOOTMAN;
-	coin->face = COIN_UP;
-	coin->hex = NULL;
-	coin->owner = NULL;
-
-	coin->deploy = NULL;
-	coin->bolster = NULL;
-	coin->claim = NULL;
-	coin->recruit = NULL;
-	coin->pass = NULL;
-	coin->move = NULL;
-	coin->control = NULL;
-	coin->attack = NULL;
-	coin->tactic = NULL;
-
-	coin->pos.x = coin->pos.y = 0;
-	coin->display_ind = 1;
-	coin->display = display_coin;
-
-	return coin;
-}
-
-Coin create_knight_coin(void)
-{
-	Coin coin;
-
-	coin = malloc(sizeof(struct coin));
-	coin->type = KNIGHT;
-	coin->face = COIN_UP;
-	coin->hex = NULL;
-	coin->owner = NULL;
-
-	coin->deploy = NULL;
-	coin->bolster = NULL;
-	coin->claim = NULL;
-	coin->recruit = NULL;
-	coin->pass = NULL;
-	coin->move = NULL;
-	coin->control = NULL;
-	coin->attack = NULL;
-	coin->tactic = NULL;
-
-	coin->pos.x = coin->pos.y = 0;
-	coin->display_ind = 1;
-	coin->display = display_coin;
-
-	return coin;
-}
-
-Coin create_lancer_coin(void)
-{
-	Coin coin;
-
-	coin = malloc(sizeof(struct coin));
-	coin->type = LANCER;
-	coin->face = COIN_UP;
-	coin->hex = NULL;
-	coin->owner = NULL;
-
-	coin->deploy = NULL;
-	coin->bolster = NULL;
-	coin->claim = NULL;
-	coin->recruit = NULL;
-	coin->pass = NULL;
-	coin->move = NULL;
-	coin->control = NULL;
-	coin->attack = NULL;
-	coin->tactic = NULL;
-
-	coin->pos.x = coin->pos.y = 0;
-	coin->display_ind = 1;
-	coin->display = display_coin;
-
-	return coin;
-}
-
-Coin create_light_cavalry_coin(void)
-{
-	Coin coin;
-
-	coin = malloc(sizeof(struct coin));
-	coin->type = LIGHT_CAVALRY;
-	coin->face = COIN_UP;
-	coin->hex = NULL;
-	coin->owner = NULL;
-
-	coin->deploy = NULL;
-	coin->bolster = NULL;
-	coin->claim = NULL;
-	coin->recruit = NULL;
-	coin->pass = NULL;
-	coin->move = NULL;
-	coin->control = NULL;
-	coin->attack = NULL;
-	coin->tactic = NULL;
-
-	coin->pos.x = coin->pos.y = 0;
-	coin->display_ind = 1;
-	coin->display = display_coin;
-
-	return coin;
-}
-
-Coin create_marshall_coin(void)
-{
-	Coin coin;
-
-	coin = malloc(sizeof(struct coin));
-	coin->type = MARSHALL;
-	coin->face = COIN_UP;
-	coin->hex = NULL;
-	coin->owner = NULL;
-
-	coin->deploy = NULL;
-	coin->bolster = NULL;
-	coin->claim = NULL;
-	coin->recruit = NULL;
-	coin->pass = NULL;
-	coin->move = NULL;
-	coin->control = NULL;
-	coin->attack = NULL;
-	coin->tactic = NULL;
-
-	coin->pos.x = coin->pos.y = 0;
-	coin->display_ind = 1;
-	coin->display = display_coin;
-
-	return coin;
-}
-
-Coin create_mercenary_coin(void)
-{
-	Coin coin;
-
-	coin = malloc(sizeof(struct coin));
-	coin->type = MERCENARY;
-	coin->face = COIN_UP;
-	coin->hex = NULL;
-	coin->owner = NULL;
-
-	coin->deploy = NULL;
-	coin->bolster = NULL;
-	coin->claim = NULL;
-	coin->recruit = NULL;
-	coin->pass = NULL;
-	coin->move = NULL;
-	coin->control = NULL;
-	coin->attack = NULL;
-	coin->tactic = NULL;
-
-	coin->pos.x = coin->pos.y = 0;
-	coin->display_ind = 1;
-	coin->display = display_coin;
-
-	return coin;
-}
-
-Coin create_pikeman_coin(void)
-{
-	Coin coin;
-
-	coin = malloc(sizeof(struct coin));
-	coin->type = PIKEMAN;
-	coin->face = COIN_UP;
-	coin->hex = NULL;
-	coin->owner = NULL;
-
-	coin->deploy = NULL;
-	coin->bolster = NULL;
-	coin->claim = NULL;
-	coin->recruit = NULL;
-	coin->pass = NULL;
-	coin->move = NULL;
-	coin->control = NULL;
-	coin->attack = NULL;
-	coin->tactic = NULL;
-
-	coin->pos.x = coin->pos.y = 0;
-	coin->display_ind = 1;
-	coin->display = display_coin;
-
-	return coin;
-}
-
-Coin create_royal_guard_coin(void)
-{
-	Coin coin;
-
-	coin = malloc(sizeof(struct coin));
-	coin->type = ROYAL_GUARD;
-	coin->face = COIN_UP;
-	coin->hex = NULL;
-	coin->owner = NULL;
-
-	coin->deploy = NULL;
-	coin->bolster = NULL;
-	coin->claim = NULL;
-	coin->recruit = NULL;
-	coin->pass = NULL;
-	coin->move = NULL;
-	coin->control = NULL;
-	coin->attack = NULL;
-	coin->tactic = NULL;
-
-	coin->pos.x = coin->pos.y = 0;
-	coin->display_ind = 1;
-	coin->display = display_coin;
-
-	return coin;
-}
-
-Coin create_scout_coin(void)
-{
-	Coin coin;
-
-	coin = malloc(sizeof(struct coin));
-	coin->type = SCOUT;
-	coin->face = COIN_UP;
-	coin->hex = NULL;
-	coin->owner = NULL;
-
-	coin->deploy = NULL;
-	coin->bolster = NULL;
-	coin->claim = NULL;
-	coin->recruit = NULL;
-	coin->pass = NULL;
-	coin->move = NULL;
-	coin->control = NULL;
-	coin->attack = NULL;
-	coin->tactic = NULL;
-
-	coin->pos.x = coin->pos.y = 0;
-	coin->display_ind = 1;
-	coin->display = display_coin;
-
-	return coin;
-}
-
-Coin create_swordsman_coin(void)
-{
-	Coin coin;
-
-	coin = malloc(sizeof(struct coin));
-	coin->type = SWORDSMAN;
-	coin->face = COIN_UP;
-	coin->hex = NULL;
-	coin->owner = NULL;
-
-	coin->deploy = NULL;
-	coin->bolster = NULL;
-	coin->claim = NULL;
-	coin->recruit = NULL;
-	coin->pass = NULL;
-	coin->move = NULL;
-	coin->control = NULL;
-	coin->attack = NULL;
-	coin->tactic = NULL;
-
-	coin->pos.x = coin->pos.y = 0;
-	coin->display_ind = 1;
-	coin->display = display_coin;
-
-	return coin;
-}
-
-Coin create_warrior_priest_coin(void)
-{
-	Coin coin;
-
-	coin = malloc(sizeof(struct coin));
-	coin->type = WARRIOR_PRIEST;
-	coin->face = COIN_UP;
-	coin->hex = NULL;
-	coin->owner = NULL;
-
-	coin->deploy = NULL;
-	coin->bolster = NULL;
-	coin->claim = NULL;
-	coin->recruit = NULL;
-	coin->pass = NULL;
-	coin->move = NULL;
-	coin->control = NULL;
-	coin->attack = NULL;
-	coin->tactic = NULL;
-
-	coin->pos.x = coin->pos.y = 0;
-	coin->display_ind = 1;
-	coin->display = display_coin;
-
-	return coin;
-}
-
-Coin create_gold_royal_coin(void)
-{
-	Coin coin;
-
-	coin = malloc(sizeof(struct coin));
-	coin->type = GOLD_ROYAL_COIN;
-	coin->face = COIN_UP;
-	coin->hex = NULL;
-	coin->owner = NULL;
-
-	coin->deploy = NULL;
-	coin->bolster = NULL;
-	coin->claim = NULL;
-	coin->recruit = NULL;
-	coin->pass = NULL;
-	coin->move = NULL;
-	coin->control = NULL;
-	coin->attack = NULL;
-	coin->tactic = NULL;
-
-	coin->pos.x = coin->pos.y = 0;
-	coin->display_ind = 1;
-	coin->display = display_coin;
-
-	return coin;
-}
-
-Coin create_silver_royal_coin(void)
-{
-	Coin coin;
-
-	coin = malloc(sizeof(struct coin));
-	coin->type = SILVER_ROYAL_COIN;
-	coin->face = COIN_UP;
-	coin->hex = NULL;
-	coin->owner = NULL;
-
-	coin->deploy = NULL;
-	coin->bolster = NULL;
-	coin->claim = NULL;
-	coin->recruit = NULL;
-	coin->pass = NULL;
-	coin->move = NULL;
-	coin->control = NULL;
-	coin->attack = NULL;
-	coin->tactic = NULL;
-
-	coin->pos.x = coin->pos.y = 0;
-	coin->display_ind = 1;
-	coin->display = display_coin;
-
-	return coin;
-}
-
-Coin create_gold_control_coin(void)
-{
-	Coin coin;
-
-	coin = malloc(sizeof(struct coin));
-	coin->type = GOLD_CONTROL_COIN;
-	coin->face = COIN_UP;
-	coin->hex = NULL;
-	coin->owner = NULL;
-
-	coin->deploy = NULL;
-	coin->bolster = NULL;
-	coin->claim = NULL;
-	coin->recruit = NULL;
-	coin->pass = NULL;
-	coin->move = NULL;
-	coin->control = NULL;
-	coin->attack = NULL;
-	coin->tactic = NULL;
-
-	coin->pos.x = coin->pos.y = 0;
-	coin->display_ind = 1;
-	coin->display = display_coin;
-
-	return coin;
-}
-
-Coin create_silver_control_coin(void)
-{
-	Coin coin;
-
-	coin = malloc(sizeof(struct coin));
-	coin->type = SILVER_CONTROL_COIN;
-	coin->face = COIN_UP;
-	coin->hex = NULL;
-	coin->owner = NULL;
-
-	coin->deploy = NULL;
-	coin->bolster = NULL;
-	coin->claim = NULL;
-	coin->recruit = NULL;
-	coin->pass = NULL;
-	coin->move = NULL;
-	coin->control = NULL;
-	coin->attack = NULL;
-	coin->tactic = NULL;
-
-	coin->pos.x = coin->pos.y = 0;
-	coin->display_ind = 1;
-	coin->display = display_coin;
-
-	return coin;
-}
-
-Coin create_initiative_coin(void)
-{
-	Coin coin;
-
-	coin = malloc(sizeof(struct coin));
-	coin->type = INITIATIVE_COIN;
-	coin->face = COIN_UP;
-	coin->hex = NULL;
-	coin->owner = NULL;
-
-	coin->deploy = NULL;
-	coin->bolster = NULL;
-	coin->claim = NULL;
-	coin->recruit = NULL;
-	coin->pass = NULL;
-	coin->move = NULL;
-	coin->control = NULL;
-	coin->attack = NULL;
-	coin->tactic = NULL;
-
-	coin->pos.x = coin->pos.y = 0;
-	coin->display_ind = 1;
-	coin->display = display_coin;
-
-	return coin;
-}
-
-int destroy_coin(Coin coin)
-{
-	free(coin);
-
-	return 0;
-}
 
 int display_coin(Coin coin)
 {
-	if (coin->display_ind) {
-		if (coin->face == COIN_UP)
-			draw_bitmap(&bitmaps[coin->type], &win, &coin->pos);
-		else
-			draw_bitmap(&bitmaps[BACK_COIN], &win, &coin->pos);
-	}
-
-	coin->display_ind = (coin->display_ind + 1) % 2;
-
-	return 0;
-}
-
-int toggle_display_coin(Coin coin)
-{
-	coin->display_ind = (coin->display_ind + 1) % 2;
-
-	return 0;
-}
-
-int print_coin(Coin coin)
-{
-	printf("coin=%p:\n", coin);
-	printf("type=%d, hex=%p, face=%d, (x,y)=(%d,%d)\n",
-		coin->type, coin->hex, coin->face, coin->pos.x, coin->pos.y);
-
-	return 0;
-}
-
-int set_face_down_coin(Coin coin)
-{
-	coin->face = COIN_DOWN;
+	if (coin->data.face)
+		draw_bitmap(coin->data.front, coin->data.win, &coin->data.pos);
+	else
+		draw_bitmap(coin->data.back, coin->data.win, &coin->data.pos);
 
 	return 0;
 }
 
 int set_face_up_coin(Coin coin)
 {
-	coin->face = COIN_UP;
+	coin->data.face = UP;
 
 	return 0;
 }
 
-int set_coin_pos(Coin coin, Pos pos)
+int set_face_down_coin(Coin coin)
 {
-	coin->pos = pos;
+	coin->data.face = DOWN;
 
 	return 0;
 }
 
-int gen_moves_coin(Coin coin, Game game, List move_space)
+int set_pos_coin(Coin coin, Pos pos)
 {
-	coin->deploy(coin, game, move_space);
-	coin->bolster(coin, game, move_space);
-	coin->claim(coin, game, move_space);
-	coin->recruit(coin, game, move_space);
-	coin->pass(coin, game, move_space);
-	coin->move(coin, game, move_space);
-	coin->control(coin, game, move_space);
-	coin->attack(coin, game, move_space);
-	coin->tactic(coin, game, move_space);
+	coin->data.pos = pos;
 
 	return 0;
 }
 
+int print_coin(Coin coin);
 
-int gen_deploy_moves_coin(Coin coin, Game game, List move_space)
+Coin create_archer_coin(Bitmap *front, Bitmap *back, Win *win)
 {
+	Coin coin;
+
+	coin = malloc(sizeof(struct coin));
+	coin->data.face = UP;
+	coin->data.front = front;
+	coin->data.back = back;
+	coin->data.win = win;
+	coin->data.pos.x = coin->data.pos.y = 0;
+
+	return coin;
+}
+// // 	coin->type = ARCHER;
+// 	coin->face = COIN_UP;
+// 	coin->hex = NULL;
+// 	coin->owner = NULL;
+
+// 	coin->deploy = NULL;
+// 	coin->bolster = NULL;
+// 	coin->claim = NULL;
+// 	coin->recruit = NULL;
+// 	coin->pass = NULL;
+// 	coin->move = NULL;
+// 	coin->control = NULL;
+// 	coin->attack = NULL;
+// 	coin->tactic = NULL;
+
+// 	coin->pos.x = coin->pos.y = 0;
+// 	coin->display_ind = 1;
+// 	coin->display = display_coin;
+
+// 	return coin;
+// }
+
+// Coin create_beserker_coin(void)
+// {
+// 	Coin coin;
+
+// 	coin = malloc(sizeof(struct coin));
+// 	coin->type = BESERKER;
+// 	coin->face = COIN_UP;
+// 	coin->hex = NULL;
+// 	coin->owner = NULL;
+
+// 	coin->deploy = NULL;
+// 	coin->bolster = NULL;
+// 	coin->claim = NULL;
+// 	coin->recruit = NULL;
+// 	coin->pass = NULL;
+// 	coin->move = NULL;
+// 	coin->control = NULL;
+// 	coin->attack = NULL;
+// 	coin->tactic = NULL;
+
+// 	coin->pos.x = coin->pos.y = 0;
+// 	coin->display_ind = 1;
+// 	coin->display = display_coin;
+
+// 	return coin;
+// }
+
+// Coin create_cavalry_coin(void)
+// {
+// 	Coin coin;
+
+// 	coin = malloc(sizeof(struct coin));
+// 	coin->type = CAVALRY;
+// 	coin->face = COIN_UP;
+// 	coin->hex = NULL;
+// 	coin->owner = NULL;
+
+// 	coin->deploy = NULL;
+// 	coin->bolster = NULL;
+// 	coin->claim = NULL;
+// 	coin->recruit = NULL;
+// 	coin->pass = NULL;
+// 	coin->move = NULL;
+// 	coin->control = NULL;
+// 	coin->attack = NULL;
+// 	coin->tactic = NULL;
+
+// 	coin->pos.x = coin->pos.y = 0;
+// 	coin->display_ind = 1;
+// 	coin->display = display_coin;
+
+// 	return coin;
+// }
+
+// Coin create_crossbowman_coin(void)
+// {
+// 	Coin coin;
+
+// 	coin = malloc(sizeof(struct coin));
+// 	coin->type = CROSSBOWMAN;
+// 	coin->face = COIN_UP;
+// 	coin->hex = NULL;
+// 	coin->owner = NULL;
+
+// 	coin->deploy = NULL;
+// 	coin->bolster = NULL;
+// 	coin->claim = NULL;
+// 	coin->recruit = NULL;
+// 	coin->pass = NULL;
+// 	coin->move = NULL;
+// 	coin->control = NULL;
+// 	coin->attack = NULL;
+// 	coin->tactic = NULL;
+
+// 	coin->pos.x = coin->pos.y = 0;
+// 	coin->display_ind = 1;
+// 	coin->display = display_coin;
+
+// 	return coin;
+// }
+
+// Coin create_ensign_coin(void)
+// {
+// 	Coin coin;
+
+// 	coin = malloc(sizeof(struct coin));
+// 	coin->type = ENSIGN;
+// 	coin->face = COIN_UP;
+// 	coin->hex = NULL;
+// 	coin->owner = NULL;
+
+// 	coin->deploy = NULL;
+// 	coin->bolster = NULL;
+// 	coin->claim = NULL;
+// 	coin->recruit = NULL;
+// 	coin->pass = NULL;
+// 	coin->move = NULL;
+// 	coin->control = NULL;
+// 	coin->attack = NULL;
+// 	coin->tactic = NULL;
+
+// 	coin->pos.x = coin->pos.y = 0;
+// 	coin->display_ind = 1;
+// 	coin->display = display_coin;
+
+// 	return coin;
+// }
+
+// Coin create_footman_coin(void)
+// {
+// 	Coin coin;
+
+// 	coin = malloc(sizeof(struct coin));
+// 	coin->type = FOOTMAN;
+// 	coin->face = COIN_UP;
+// 	coin->hex = NULL;
+// 	coin->owner = NULL;
+
+// 	coin->deploy = NULL;
+// 	coin->bolster = NULL;
+// 	coin->claim = NULL;
+// 	coin->recruit = NULL;
+// 	coin->pass = NULL;
+// 	coin->move = NULL;
+// 	coin->control = NULL;
+// 	coin->attack = NULL;
+// 	coin->tactic = NULL;
+
+// 	coin->pos.x = coin->pos.y = 0;
+// 	coin->display_ind = 1;
+// 	coin->display = display_coin;
+
+// 	return coin;
+// }
+
+// Coin create_knight_coin(void)
+// {
+// 	Coin coin;
+
+// 	coin = malloc(sizeof(struct coin));
+// 	coin->type = KNIGHT;
+// 	coin->face = COIN_UP;
+// 	coin->hex = NULL;
+// 	coin->owner = NULL;
+
+// 	coin->deploy = NULL;
+// 	coin->bolster = NULL;
+// 	coin->claim = NULL;
+// 	coin->recruit = NULL;
+// 	coin->pass = NULL;
+// 	coin->move = NULL;
+// 	coin->control = NULL;
+// 	coin->attack = NULL;
+// 	coin->tactic = NULL;
+
+// 	coin->pos.x = coin->pos.y = 0;
+// 	coin->display_ind = 1;
+// 	coin->display = display_coin;
+
+// 	return coin;
+// }
+
+// Coin create_lancer_coin(void)
+// {
+// 	Coin coin;
+
+// 	coin = malloc(sizeof(struct coin));
+// 	coin->type = LANCER;
+// 	coin->face = COIN_UP;
+// 	coin->hex = NULL;
+// 	coin->owner = NULL;
+
+// 	coin->deploy = NULL;
+// 	coin->bolster = NULL;
+// 	coin->claim = NULL;
+// 	coin->recruit = NULL;
+// 	coin->pass = NULL;
+// 	coin->move = NULL;
+// 	coin->control = NULL;
+// 	coin->attack = NULL;
+// 	coin->tactic = NULL;
+
+// 	coin->pos.x = coin->pos.y = 0;
+// 	coin->display_ind = 1;
+// 	coin->display = display_coin;
+
+// 	return coin;
+// }
+
+// Coin create_light_cavalry_coin(void)
+// {
+// 	Coin coin;
+
+// 	coin = malloc(sizeof(struct coin));
+// 	coin->type = LIGHT_CAVALRY;
+// 	coin->face = COIN_UP;
+// 	coin->hex = NULL;
+// 	coin->owner = NULL;
+
+// 	coin->deploy = NULL;
+// 	coin->bolster = NULL;
+// 	coin->claim = NULL;
+// 	coin->recruit = NULL;
+// 	coin->pass = NULL;
+// 	coin->move = NULL;
+// 	coin->control = NULL;
+// 	coin->attack = NULL;
+// 	coin->tactic = NULL;
+
+// 	coin->pos.x = coin->pos.y = 0;
+// 	coin->display_ind = 1;
+// 	coin->display = display_coin;
+
+// 	return coin;
+// }
+
+// Coin create_marshall_coin(void)
+// {
+// 	Coin coin;
+
+// 	coin = malloc(sizeof(struct coin));
+// 	coin->type = MARSHALL;
+// 	coin->face = COIN_UP;
+// 	coin->hex = NULL;
+// 	coin->owner = NULL;
+
+// 	coin->deploy = NULL;
+// 	coin->bolster = NULL;
+// 	coin->claim = NULL;
+// 	coin->recruit = NULL;
+// 	coin->pass = NULL;
+// 	coin->move = NULL;
+// 	coin->control = NULL;
+// 	coin->attack = NULL;
+// 	coin->tactic = NULL;
+
+// 	coin->pos.x = coin->pos.y = 0;
+// 	coin->display_ind = 1;
+// 	coin->display = display_coin;
+
+// 	return coin;
+// }
+
+// Coin create_mercenary_coin(void)
+// {
+// 	Coin coin;
+
+// 	coin = malloc(sizeof(struct coin));
+// 	coin->type = MERCENARY;
+// 	coin->face = COIN_UP;
+// 	coin->hex = NULL;
+// 	coin->owner = NULL;
+
+// 	coin->deploy = NULL;
+// 	coin->bolster = NULL;
+// 	coin->claim = NULL;
+// 	coin->recruit = NULL;
+// 	coin->pass = NULL;
+// 	coin->move = NULL;
+// 	coin->control = NULL;
+// 	coin->attack = NULL;
+// 	coin->tactic = NULL;
+
+// 	coin->pos.x = coin->pos.y = 0;
+// 	coin->display_ind = 1;
+// 	coin->display = display_coin;
+
+// 	return coin;
+// }
+
+// Coin create_pikeman_coin(void)
+// {
+// 	Coin coin;
+
+// 	coin = malloc(sizeof(struct coin));
+// 	coin->type = PIKEMAN;
+// 	coin->face = COIN_UP;
+// 	coin->hex = NULL;
+// 	coin->owner = NULL;
+
+// 	coin->deploy = NULL;
+// 	coin->bolster = NULL;
+// 	coin->claim = NULL;
+// 	coin->recruit = NULL;
+// 	coin->pass = NULL;
+// 	coin->move = NULL;
+// 	coin->control = NULL;
+// 	coin->attack = NULL;
+// 	coin->tactic = NULL;
+
+// 	coin->pos.x = coin->pos.y = 0;
+// 	coin->display_ind = 1;
+// 	coin->display = display_coin;
+
+// 	return coin;
+// }
+
+// Coin create_royal_guard_coin(void)
+// {
+// 	Coin coin;
+
+// 	coin = malloc(sizeof(struct coin));
+// 	coin->type = ROYAL_GUARD;
+// 	coin->face = COIN_UP;
+// 	coin->hex = NULL;
+// 	coin->owner = NULL;
+
+// 	coin->deploy = NULL;
+// 	coin->bolster = NULL;
+// 	coin->claim = NULL;
+// 	coin->recruit = NULL;
+// 	coin->pass = NULL;
+// 	coin->move = NULL;
+// 	coin->control = NULL;
+// 	coin->attack = NULL;
+// 	coin->tactic = NULL;
+
+// 	coin->pos.x = coin->pos.y = 0;
+// 	coin->display_ind = 1;
+// 	coin->display = display_coin;
+
+// 	return coin;
+// }
+
+// Coin create_scout_coin(void)
+// {
+// 	Coin coin;
+
+// 	coin = malloc(sizeof(struct coin));
+// 	coin->type = SCOUT;
+// 	coin->face = COIN_UP;
+// 	coin->hex = NULL;
+// 	coin->owner = NULL;
+
+// 	coin->deploy = NULL;
+// 	coin->bolster = NULL;
+// 	coin->claim = NULL;
+// 	coin->recruit = NULL;
+// 	coin->pass = NULL;
+// 	coin->move = NULL;
+// 	coin->control = NULL;
+// 	coin->attack = NULL;
+// 	coin->tactic = NULL;
+
+// 	coin->pos.x = coin->pos.y = 0;
+// 	coin->display_ind = 1;
+// 	coin->display = display_coin;
+
+// 	return coin;
+// }
+
+// Coin create_swordsman_coin(void)
+// {
+// 	Coin coin;
+
+// 	coin = malloc(sizeof(struct coin));
+// 	coin->type = SWORDSMAN;
+// 	coin->face = COIN_UP;
+// 	coin->hex = NULL;
+// 	coin->owner = NULL;
+
+// 	coin->deploy = NULL;
+// 	coin->bolster = NULL;
+// 	coin->claim = NULL;
+// 	coin->recruit = NULL;
+// 	coin->pass = NULL;
+// 	coin->move = NULL;
+// 	coin->control = NULL;
+// 	coin->attack = NULL;
+// 	coin->tactic = NULL;
+
+// 	coin->pos.x = coin->pos.y = 0;
+// 	coin->display_ind = 1;
+// 	coin->display = display_coin;
+
+// 	return coin;
+// }
+
+// Coin create_warrior_priest_coin(void)
+// {
+// 	Coin coin;
+
+// 	coin = malloc(sizeof(struct coin));
+// 	coin->type = WARRIOR_PRIEST;
+// 	coin->face = COIN_UP;
+// 	coin->hex = NULL;
+// 	coin->owner = NULL;
+
+// 	coin->deploy = NULL;
+// 	coin->bolster = NULL;
+// 	coin->claim = NULL;
+// 	coin->recruit = NULL;
+// 	coin->pass = NULL;
+// 	coin->move = NULL;
+// 	coin->control = NULL;
+// 	coin->attack = NULL;
+// 	coin->tactic = NULL;
+
+// 	coin->pos.x = coin->pos.y = 0;
+// 	coin->display_ind = 1;
+// 	coin->display = display_coin;
+
+// 	return coin;
+// }
+
+// Coin create_gold_royal_coin(void)
+// {
+// 	Coin coin;
+
+// 	coin = malloc(sizeof(struct coin));
+// 	coin->type = GOLD_ROYAL_COIN;
+// 	coin->face = COIN_UP;
+// 	coin->hex = NULL;
+// 	coin->owner = NULL;
+
+// 	coin->deploy = NULL;
+// 	coin->bolster = NULL;
+// 	coin->claim = NULL;
+// 	coin->recruit = NULL;
+// 	coin->pass = NULL;
+// 	coin->move = NULL;
+// 	coin->control = NULL;
+// 	coin->attack = NULL;
+// 	coin->tactic = NULL;
+
+// 	coin->pos.x = coin->pos.y = 0;
+// 	coin->display_ind = 1;
+// 	coin->display = display_coin;
+
+// 	return coin;
+// }
+
+// Coin create_silver_royal_coin(void)
+// {
+// 	Coin coin;
+
+// 	coin = malloc(sizeof(struct coin));
+// 	coin->type = SILVER_ROYAL_COIN;
+// 	coin->face = COIN_UP;
+// 	coin->hex = NULL;
+// 	coin->owner = NULL;
+
+// 	coin->deploy = NULL;
+// 	coin->bolster = NULL;
+// 	coin->claim = NULL;
+// 	coin->recruit = NULL;
+// 	coin->pass = NULL;
+// 	coin->move = NULL;
+// 	coin->control = NULL;
+// 	coin->attack = NULL;
+// 	coin->tactic = NULL;
+
+// 	coin->pos.x = coin->pos.y = 0;
+// 	coin->display_ind = 1;
+// 	coin->display = display_coin;
+
+// 	return coin;
+// }
+
+// Coin create_gold_control_coin(void)
+// {
+// 	Coin coin;
+
+// 	coin = malloc(sizeof(struct coin));
+// 	coin->type = GOLD_CONTROL_COIN;
+// 	coin->face = COIN_UP;
+// 	coin->hex = NULL;
+// 	coin->owner = NULL;
+
+// 	coin->deploy = NULL;
+// 	coin->bolster = NULL;
+// 	coin->claim = NULL;
+// 	coin->recruit = NULL;
+// 	coin->pass = NULL;
+// 	coin->move = NULL;
+// 	coin->control = NULL;
+// 	coin->attack = NULL;
+// 	coin->tactic = NULL;
+
+// 	coin->pos.x = coin->pos.y = 0;
+// 	coin->display_ind = 1;
+// 	coin->display = display_coin;
+
+// 	return coin;
+// }
+
+// Coin create_silver_control_coin(void)
+// {
+// 	Coin coin;
+
+// 	coin = malloc(sizeof(struct coin));
+// 	coin->type = SILVER_CONTROL_COIN;
+// 	coin->face = COIN_UP;
+// 	coin->hex = NULL;
+// 	coin->owner = NULL;
+
+// 	coin->deploy = NULL;
+// 	coin->bolster = NULL;
+// 	coin->claim = NULL;
+// 	coin->recruit = NULL;
+// 	coin->pass = NULL;
+// 	coin->move = NULL;
+// 	coin->control = NULL;
+// 	coin->attack = NULL;
+// 	coin->tactic = NULL;
+
+// 	coin->pos.x = coin->pos.y = 0;
+// 	coin->display_ind = 1;
+// 	coin->display = display_coin;
+
+// 	return coin;
+// }
+
+// Coin create_initiative_coin(void)
+// {
+// 	Coin coin;
+
+// 	coin = malloc(sizeof(struct coin));
+// 	coin->type = INITIATIVE_COIN;
+// 	coin->face = COIN_UP;
+// 	coin->hex = NULL;
+// 	coin->owner = NULL;
+
+// 	coin->deploy = NULL;
+// 	coin->bolster = NULL;
+// 	coin->claim = NULL;
+// 	coin->recruit = NULL;
+// 	coin->pass = NULL;
+// 	coin->move = NULL;
+// 	coin->control = NULL;
+// 	coin->attack = NULL;
+// 	coin->tactic = NULL;
+
+// 	coin->pos.x = coin->pos.y = 0;
+// 	coin->display_ind = 1;
+// 	coin->display = display_coin;
+
+// 	return coin;
+// }
+
+// int destroy_coin(Coin coin)
+// {
+// 	free(coin);
+
+// 	return 0;
+// }
+
+// int display_coin(Coin coin)
+// {
+// 	if (coin->display_ind) {
+// 		if (coin->face == COIN_UP)
+// 			draw_bitmap(&bitmaps[coin->type], &win, &coin->pos);
+// 		else
+// 			draw_bitmap(&bitmaps[BACK_COIN], &win, &coin->pos);
+// 	}
+
+// 	coin->display_ind = (coin->display_ind + 1) % 2;
+
+// 	return 0;
+// }
+
+// int toggle_display_coin(Coin coin)
+// {
+// 	coin->display_ind = (coin->display_ind + 1) % 2;
+
+// 	return 0;
+// }
+
+// int print_coin(Coin coin)
+// {
+// 	printf("coin=%p:\n", coin);
+// 	printf("type=%d, hex=%p, face=%d, (x,y)=(%d,%d)\n",
+// 		coin->type, coin->hex, coin->face, coin->pos.x, coin->pos.y);
+
+// 	return 0;
+// }
+
+// int set_face_down_coin(Coin coin)
+// {
+// 	coin->face = COIN_DOWN;
+
+// 	return 0;
+// }
+
+// int set_face_up_coin(Coin coin)
+// {
+// 	coin->face = COIN_UP;
+
+// 	return 0;
+// }
+
+// int set_coin_pos(Coin coin, Pos pos)
+// {
+// 	coin->pos = pos;
+
+// 	return 0;
+// }
+
+// int gen_moves_coin(Coin coin, Game game, List move_space)
+// {
+// 	coin->deploy(coin, game, move_space);
+// 	coin->bolster(coin, game, move_space);
+// 	coin->claim(coin, game, move_space);
+// 	coin->recruit(coin, game, move_space);
+// 	coin->pass(coin, game, move_space);
+// 	coin->move(coin, game, move_space);
+// 	coin->control(coin, game, move_space);
+// 	coin->attack(coin, game, move_space);
+// 	coin->tactic(coin, game, move_space);
+
+// 	return 0;
+// }
+
+
+// int gen_deploy_moves_coin(Coin coin, Game game, List move_space)
+// {
 	/*List hexes;*/
 	/*Hex rhexes[MAX_COINS] = {NULL};*/
 	/*Move move;*/
@@ -678,16 +719,16 @@ int gen_deploy_moves_coin(Coin coin, Game game, List move_space)
 		/*add_list(move_space, move);*/
 	/*}*/
 
-	return 0;
-}
+	// return 0;
+// }
 
-int same_type_coin(Coin coin1, Coin coin2)
-{
-	if (coin1->type == coin2->type)
-		return 1;
+// int same_type_coin(Coin coin1, Coin coin2)
+// {
+// 	if (coin1->type == coin2->type)
+// 		return 1;
 
-	return 0;
-}
+// 	return 0;
+// }
 
 /*	
 	remove_coin_hand_player(move->player, move->played_coin);
