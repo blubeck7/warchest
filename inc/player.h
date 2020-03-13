@@ -31,7 +31,7 @@ int toggle_display_supply(Supply supply);
 int toggle_hide_supply(Supply supply);
 int set_pos_supply(Supply supply, Pos pos);
 
-int display_label(struct label *label)
+int display_label(struct label *label);
 //struct bag
 //{
 	//List coins;
