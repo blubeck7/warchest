@@ -23,12 +23,15 @@ int load_bitmap(Bitmap *bitmap, char *path)
 	uint8_t b, g, r;
 	Pix *pix;
 	uint8_t *ind;
+	size_t ret;
 
 	file = fopen(path, "r");
 
 	fseek(file, 0x12, SEEK_SET); //bitmap width and height
-	fread(&width, 4, 1, file);
-	fread(&height, 4, 1, file);
+	if ((ret = fread(&width, 4, 1, file)) < 0)
+		return -1;
+	if ((ret = fread(&height, 4, 1, file)) < 0)
+		return -1;
 	bitmap->width = width;
 	bitmap->height = height;
 	//printf("bitmap: width=%d, height=%d\n", width, height);
@@ -41,11 +44,13 @@ int load_bitmap(Bitmap *bitmap, char *path)
 	//printf("row size=%d\n", row_size);
 
 	fseek(file, 0x22, SEEK_SET); //the size of the pixel array in bytes
-	fread(&size, 4, 1, file);
+	if ((ret = fread(&size, 4, 1, file)) < 0)
+		return -1;
 	//printf("size=%d\n", size);
 
 	fseek(file, 0x0A, SEEK_SET); //the starting address of the pixels
-	fread(&pix_addr, 4, 1, file);
+	if ((ret = fread(&pix_addr, 4, 1, file)) < 0)
+		return -1;
 	fseek(file, pix_addr, SEEK_SET); //goto the pixel array
 	//printf("pix address=%d\n", pix_addr);
 
@@ -53,9 +58,12 @@ int load_bitmap(Bitmap *bitmap, char *path)
 	for (i = height - 1; i >= 0; i--) {
 		for (j = 0; j <= width - 1; j++) {
 			/* read in a pixel blue, green, red */
-			fread(&b, 1, 1, file);
-			fread(&g, 1, 1, file);
-			fread(&r, 1, 1, file);
+			if ((ret = fread(&b, 1, 1, file)) < 0)
+				return -1;
+			if ((ret = fread(&g, 1, 1, file)) < 0)
+				return -1;
+			if ((ret = fread(&r, 1, 1, file)) < 0)
+				return -1;
 			pix = bitmap->pix_arr + i * width + j;
 			pix->r = r;
 			pix->g = g;

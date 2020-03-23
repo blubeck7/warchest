@@ -9,7 +9,7 @@ warchest: coin.o graphics.o window.o warchest.o
 	gcc -Wall -O2 -std=c11 -o bin/warchest obj/warchest.o \
 	obj/coin.o obj/graphics.o obj/window.o -lm
 
-coin.o: src/coin.c inc/coin.h
+coin.o: src/coin.c inc/coin.h inc/graphics.h inc/window.h
 	gcc -Wall -O2 -std=c11 -c -o obj/coin.o src/coin.c
 
 # ds.o: src/ds.c $(inc_dir)

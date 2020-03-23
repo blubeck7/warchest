@@ -71,7 +71,10 @@ int print_win(Win *win)
 }
 int show_scr(void)
 {
-	write(STDOUT_FILENO, ENT_ALT_SCR, sizeof(ENT_ALT_SCR));
+	ssize_t ret;
+
+	if ((ret = write(STDOUT_FILENO, ENT_ALT_SCR, sizeof(ENT_ALT_SCR))) < 0)
+		return -1;
 	hide_cur();
 
 	return 0;
@@ -79,15 +82,21 @@ int show_scr(void)
 
 int close_scr(void)
 {
+	ssize_t ret;
+
 	show_cur();
-	write(STDOUT_FILENO, EXIT_ALT_SCR, sizeof(EXIT_ALT_SCR));
+	if ((ret = write(STDOUT_FILENO, EXIT_ALT_SCR, sizeof(EXIT_ALT_SCR))) < 0)
+		return -1;
 
 	return 0;
 }
 
 int clear_scr(void)
 {
-	write(STDOUT_FILENO, CLR_SCR, sizeof(CLR_SCR));
+	ssize_t ret;
+
+	if ((ret = write(STDOUT_FILENO, CLR_SCR, sizeof(CLR_SCR))) < 0)
+		return -1;
 
 	return 0;
 }
@@ -107,11 +116,13 @@ int draw(Win *win, Pix *pix)
 {
 	char cmd[BUF_SZ];
 	int i, j, n;
+	ssize_t ret;
 
 	n = sprintf(cmd, RGB, pix->r, pix->g, pix->b);
 	for (i = 0; i < win->srow; i++) {
 		for (j = 0; j < win->scol; j++) {
-			write(STDOUT_FILENO, cmd, n);
+			if ((ret = write(STDOUT_FILENO, cmd, n)) < 0)
+				return -1;
 		}
 	}
 
@@ -120,14 +131,20 @@ int draw(Win *win, Pix *pix)
 
 static int hide_cur(void)
 {
-	write(STDOUT_FILENO, HIDE_CUR, sizeof(HIDE_CUR));
+	ssize_t ret;
+
+	if ((ret = write(STDOUT_FILENO, HIDE_CUR, sizeof(HIDE_CUR))) < 0)
+		return -1;
 
 	return 0;
 }
 
 static int show_cur(void)
 {
-	write(STDOUT_FILENO, SHOW_CUR, sizeof(SHOW_CUR));
+	ssize_t ret;
+
+	if ((ret = write(STDOUT_FILENO, SHOW_CUR, sizeof(SHOW_CUR))) < 0)
+		return -1;
 
 	return 0;
 }
@@ -136,9 +153,11 @@ static int move_cur(int col, int row)
 {
 	char cmd[20];
 	int n;
+	ssize_t ret;
 
 	n = sprintf(cmd, MOVE_CUR, row, col); //xterm move sequence
-	write(STDOUT_FILENO, cmd, n);
+	if ((ret = write(STDOUT_FILENO, cmd, n)) < 0)
+		return -1;
 
 	return 0;
 }

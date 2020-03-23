@@ -1,16 +1,64 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../inc/coin.h"
-// #include "../inc/ds.h"
-// #include "../inc/game.h"
-// #include "../inc/graphics.h"
-// #include "../inc/hex.h"
-// #include "../inc/history.h"
-// #include "../inc/move.h"
-// #include "../inc/player.h"
-// #include "../inc/types.h"
-// #include "../inc/warchest.h"
+#include "../inc/graphics.h"
 #include "../inc/window.h"
+
+int set_face_up_coin(Coin coin)
+{
+	coin->data.face = COIN_UP;
+
+	return 0;
+}
+
+int set_face_down_coin(Coin coin)
+{
+	coin->data.face = COIN_DOWN;
+
+	return 0;
+}
+
+int set_front_coin(Coin coin, Bitmap *front)
+{
+	coin->data.front = front;
+
+	return 0;
+}
+
+int set_back_coin(Coin coin, Bitmap *back)
+{
+	coin->data.back = back;
+
+	return 0;
+}
+
+int set_win_coin(Coin coin, Win *win)
+{
+	coin->data.win = win;
+
+	return 0;
+}
+
+int set_pos_coin(Coin coin, Pos *pos)
+{
+	coin->data.pos = *pos;
+
+	return 0;
+}
+
+int set_txt_coin(Coin coin, char *txt)
+{
+	coin->data.txt = txt;
+
+	return 0;
+}
+
+int set_term_coin(Coin coin, FILE *term)
+{
+	coin->data.term = term;
+
+	return 0;
+}
 
 int display_coin(Coin coin)
 {
@@ -22,42 +70,132 @@ int display_coin(Coin coin)
 	return 0;
 }
 
-int set_face_up_coin(Coin coin)
+int print_coin(Coin coin)
 {
-	coin->data.face = UP;
+	if (coin->data.face)
+		fprintf(coin->data.term, "%s", coin->data.txt);
+	else
+		fprintf(coin->data.term, "x");
+	fflush(coin->data.term);
 
 	return 0;
 }
 
-int set_face_down_coin(Coin coin)
+int init_coin(Coin coin, int face, Bitmap *front, Bitmap *back, Win *win,
+	Pos *pos, char *txt, FILE *term)
 {
-	coin->data.face = DOWN;
+	coin->data.face = face;
+	coin->data.front = front;
+	coin->data.back = back;
+	coin->data.win = win;
+	coin->data.pos = *pos;
+	coin->data.txt = txt;
+	coin->data.term = term;
 
 	return 0;
 }
 
-int set_pos_coin(Coin coin, Pos pos)
-{
-	coin->data.pos = pos;
-
-	return 0;
-}
-
-int print_coin(Coin coin);
-
-Coin create_archer_coin(Bitmap *front, Bitmap *back, Win *win)
+Coin create_archer_coin(void)
 {
 	Coin coin;
 
 	coin = malloc(sizeof(struct coin));
-	coin->data.face = UP;
-	coin->data.front = front;
-	coin->data.back = back;
-	coin->data.win = win;
-	coin->data.pos.x = coin->data.pos.y = 0;
+	coin->data.type = ARCHER;
 
 	return coin;
 }
+
+Coin create_cavalry_coin(void)
+{
+	Coin coin;
+
+	coin = malloc(sizeof(struct coin));
+	coin->data.type = CAVALRY;
+
+	return coin;
+}
+
+Coin create_crossbowman_coin(void)
+{
+	Coin coin;
+
+	coin = malloc(sizeof(struct coin));
+	coin->data.type = CROSSBOWMAN;
+
+	return coin;
+}
+
+Coin create_lancer_coin(void)
+{
+	Coin coin;
+
+	coin = malloc(sizeof(struct coin));
+	coin->data.type = LANCER;
+	
+	return coin;
+}
+
+Coin create_light_cavalry_coin(void)
+{
+	Coin coin;
+
+	coin = malloc(sizeof(struct coin));
+	coin->data.type = LIGHT_CAVALRY;		
+
+	return coin;
+}
+
+Coin create_pikeman_coin(void)
+{
+	Coin coin;
+
+	coin = malloc(sizeof(struct coin));
+	coin->data.type = PIKEMAN;		
+
+	return coin;
+}
+
+Coin create_scout_coin(void)
+{
+	Coin coin;
+
+	coin = malloc(sizeof(struct coin));
+	coin->data.type = SCOUT;	
+
+	return coin;
+}
+
+Coin create_swordsman_coin(void)
+{
+	Coin coin;
+
+	coin = malloc(sizeof(struct coin));
+	coin->data.type = SWORDSMAN;
+
+	return coin;
+}
+
+CoinStack create_coin_stack(void)
+{
+	CoinStack coin_stack;
+
+	coin_stack = malloc(sizeof(struct coin_stack));
+
+	return coin_stack;
+}
+
+int init_coin_stack(CoinStack coin_stack, Bitmap *nums, Win *win, Pos *pos)
+{
+	coin_stack->num_coins = 0;
+	coin_stack->nums = nums;
+	coin_stack->win = win;
+	coin_stack->pos = *pos;
+
+	return 0;
+}
+
+//int add_coin_stack
+
 // // 	coin->type = ARCHER;
 // 	coin->face = COIN_UP;
 // 	coin->hex = NULL;

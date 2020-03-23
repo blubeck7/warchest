@@ -22,26 +22,36 @@ int main(int argc, char *argv[])
 	Bitmap front, back;
 	Coin coin;
 	Pix ind = {0, 255, 0};
-	Pos pos = {40, 40};
+	Pos pos = {0, 0};
+	FILE *out;
 // 	ListArray gamebox;
 // 	History history;
 // 	GetMoveFunc movefuncs[2] = {NULL, NULL};
 // 	char *names[NUM_PLAYERS] = {"HUMAN", "RANDOM"};
 
-// 	load_bitmaps();
 	init_win(&win);
-	load_bitmap(&front, "res/archer_coin.bmp");
+	out = fopen("/dev/pts/1", "r+");
+
+// 	load_bitmaps();
+	load_bitmap(&front, "res/cavalry_coin.bmp");
 	set_ind(&front, &ind);	
 	load_bitmap(&back, "res/coin_back.bmp");
-	set_ind(&back, &ind);	
-	coin = create_archer_coin(&front, &back, &win);
+	set_ind(&back, &ind);
+	
+	coin = create_cavalry_coin();
+	init_coin(coin, COIN_UP, &front, &back, &win, &pos, "cavalry", out);
+	
 	show_scr();
 	display_coin(coin);
-	set_pos_coin(coin, pos);
+	print_coin(coin);
+	pos.x = pos.y = 40;
+	set_pos_coin(coin, &pos);
 	set_face_down_coin(coin);
 	display_coin(coin);
-	sleep(3);
+	print_coin(coin);	
+	sleep(2);
 	close_scr();
+	fclose(out);
 // 	gamebox = create_gamebox(); //Stores the board and coins
 // 	init_gamebox(gamebox); //Creates the board and coins
 // 	history = run_game(movefuncs, names, FIRST_GAME, gamebox);
